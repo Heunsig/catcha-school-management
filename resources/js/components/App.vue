@@ -1,13 +1,9 @@
 <template>
-  <div>
-    Hello World
-  </div>
+  <router-view :key="$route.fullPath"></router-view>
 </template>
 
 <script>
 export default {
-  mounted() {
-    console.log('Component mounted.')
-  }
+
 }
 </script>
