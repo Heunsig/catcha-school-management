@@ -1,10 +1,14 @@
 import './bootstrap.js'
 import Vue from 'vue'
 import App from './components/App'
+import Vuetify from 'vuetify'
+import 'vuetify/dist/vuetify.min.css'
+import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
+Vue.use(Vuetify)
 
 const app = new Vue({
-    el: '#app',
-    template: '<app></app>',
-    components: { App }
+  el: '#app',
+  template: '<app></app>',
+  components: { App }
 })
