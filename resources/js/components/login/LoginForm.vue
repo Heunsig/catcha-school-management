@@ -28,6 +28,9 @@
 
 <script>
   export default {
+    created () {
+      // console.log(this.$)
+    },
     data: () => ({
       email: '',
       password: ''
@@ -38,7 +41,11 @@
           username: this.email,
           password: this.password
         }).then(() => {
-          this.$router.push({name: 'main'})
+          if (this.$route.query.redirect) {
+            this.$router.push({path: this.$route.query.redirect})
+          } else {
+            this.$router.push({name: 'main'})
+          }
         })
       }
     }

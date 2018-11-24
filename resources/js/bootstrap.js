@@ -1,10 +1,12 @@
 import lodash from 'lodash'
 import axios from 'axios'
+import configData from './config'
 
+window.config = configData
 window._ = lodash
 window.axios = axios
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
-window.axios.defaults.baseURL = 'http://catcha-school-management.project/api'
+window.axios.defaults.baseURL = config.AXIOS_BASE_URL
 window.axios.interceptors.response.use(null, function (error) {
     if (error.response) {
       console.log(error.response.data)

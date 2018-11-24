@@ -1,8 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import store from './store/store'
 
 import LoginForm from './components/login/LoginForm'
 import Main from './components/Main'
+import StudentList from './components/app/student/StudentList'
 
 Vue.use(VueRouter)
 
@@ -11,14 +13,48 @@ const router = new VueRouter({
     {
       path: '/login',
       component: LoginForm,
-      name: 'login'
+      name: 'login',
+      meta: {
+        requiresVisitor: true
+      }
     },
     {
       path: '/',
       component: Main,
-      name: 'main'
+      name: 'main',
+      meta: {
+        requiresAuth: true
+      },
+      children: [
+        {
+          path:'student',
+          component: StudentList,
+          name: 'student.list'
+        }
+      ]
     }
   ]
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!store.getters.loggedIn) {
+      next({
+        name: 'login',
+        query: { redirect: to.fullPath }
+      })
+    } else {
+      next()
+    }
+  } else if (to.matched.some(record => record.meta.requiresVisitor)) {
+    if (store.getters.loggedIn) {
+      next({ name: 'main' })
+    } else {
+      next()
+    }
+  } else {
+    next()
+  }
 })
 
 export default router
