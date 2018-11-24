@@ -16,7 +16,7 @@
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="primary">Login</v-btn>
+                <v-btn color="primary" @click="login()">Login</v-btn>
               </v-card-actions>
             </v-card>
           </v-flex>
@@ -31,6 +31,16 @@
     data: () => ({
       email: '',
       password: ''
-    })
+    }),
+    methods: {
+      login () {
+        this.$store.dispatch('retrieveToken', {
+          username: this.email,
+          password: this.password
+        }).then(() => {
+          this.$router.push({name: 'main'})
+        })
+      }
+    }
   }
 </script>

@@ -4,6 +4,21 @@ import axios from 'axios'
 window._ = lodash
 window.axios = axios
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
+window.axios.defaults.baseURL = 'http://catcha-school-management.project/api'
+window.axios.interceptors.response.use(null, function (error) {
+    if (error.response) {
+      console.log(error.response.data)
+      console.log(error.response.status)
+      console.log(error.response.headers)
+    } else if (error.request) {
+      console.log(error.request)
+    } else {
+      console.log('Error', error.message)
+    }
+    console.log(error.config)
+    return Promise.reject(error)
+});
+
 
 let token = document.head.querySelector('meta[name="csrf-token"]')
 

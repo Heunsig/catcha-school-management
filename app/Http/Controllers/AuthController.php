@@ -59,10 +59,18 @@ class AuthController extends Controller
 
     public function logout()
     {
-        auth()->user()->tokens->each(function($token, $key){
-            $token->revoke();
-        });
-
+        auth()->user()->token()->revoke();
         return response()->json('Logged Out!');
+
+        /**
+         * This code is from a youtube https://youtu.be/HGh0cKEVXPI?t=1381
+         * 
+         */
+        
+        // auth()->user()->tokens->each(function($token, $key){
+        //     $token->revoke();
+        // });
+
+        // return response()->json('Logged Out!');
     }
 }
