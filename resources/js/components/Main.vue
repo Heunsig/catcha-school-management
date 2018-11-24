@@ -28,7 +28,7 @@
           :size="40"
           color="grey lighten-4"
         >
-          <img src="http://lorempixel.com/40/40" alt="avatar">
+          <img :src="AVATAR_BASE_URL+'/50/Heunsig.png'" alt="avatar">
         </v-avatar>
         <v-card>
           <v-list dense>
@@ -63,8 +63,9 @@
         </v-layout>
       </v-container>
     </v-content>
-    <v-footer color="indigo" app>
-      <span class="white--text">&copy; 2017</span>
+    <v-footer app color="indigo" class="pa-3">
+      <v-spacer></v-spacer>
+      <div class="white--text">&copy; {{ new Date().getFullYear() }}</div>
     </v-footer>
   </v-app>
 </template>
@@ -73,11 +74,6 @@
     data: () => ({
       drawer: null
     }),
-    computed: {
-      APP_NAME () {
-        return config.APP_NAME
-      }
-    },
     methods: {
       logout () {
         this.$store.dispatch('destroyToken').then(() => {

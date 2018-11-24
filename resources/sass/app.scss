@@ -14,3 +14,42 @@ Lacacy of bootstrap
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
 */
+
+$prefix: ca-;
+
+@mixin title-basic-set {
+  color: #4d4d4d;
+}
+
+.#{$prefix} {
+  &title- {
+    &1 {
+      @include title-basic-set;
+      font-size: 2.5em;
+    }
+  }
+  &breadcrumbs {
+    padding: 0 0 0 3px!important;
+    margin: 0!important;
+  }
+
+  &disabled {
+    color: #a5a5a5;
+  }
+
+  &table {
+    .tbody {
+      tr {
+        .td {
+          height: 60px!important;
+        }
+      }
+    }
+  }
+}
+
+
+
+table.v-table tbody td, table.v-table tbody th {
+  height: 60px!important;
+}

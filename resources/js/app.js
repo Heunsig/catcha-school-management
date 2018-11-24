@@ -6,8 +6,10 @@ import 'vuetify/dist/vuetify.min.css'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import router from './router'
 import store from './store/store'
+import globalMixin from './mixin/global'
 
 Vue.use(Vuetify)
+Vue.mixin(globalMixin)
 
 const app = new Vue({
   el: '#app',

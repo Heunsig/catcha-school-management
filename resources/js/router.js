@@ -5,6 +5,7 @@ import store from './store/store'
 import LoginForm from './components/login/LoginForm'
 import Main from './components/Main'
 import StudentList from './components/app/student/StudentList'
+import StudentRegistration from './components/app/student/StudentRegistration'
 
 Vue.use(VueRouter)
 
@@ -29,7 +30,12 @@ const router = new VueRouter({
         {
           path:'student',
           component: StudentList,
-          name: 'student.list'
+          name: 'student.list',
+        },
+        {
+          path: 'student/register',
+          component: StudentRegistration,
+          name: 'student.registration'
         }
       ]
     }
