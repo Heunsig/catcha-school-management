@@ -6,6 +6,7 @@ import LoginForm from './components/login/LoginForm'
 import Main from './components/Main'
 import StudentList from './components/app/student/StudentList'
 import StudentRegistration from './components/app/student/StudentRegistration'
+import StudentDetail from './components/app/student/StudentDetail'
 
 Vue.use(VueRouter)
 
@@ -36,6 +37,11 @@ const router = new VueRouter({
           path: 'student/register',
           component: StudentRegistration,
           name: 'student.registration'
+        },
+        {
+          path: 'student/:student_id',
+          component: StudentDetail,
+          name: 'student.detail'
         }
       ]
     }

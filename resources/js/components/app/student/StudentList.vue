@@ -48,7 +48,11 @@
               <td>{{ props.item.name }}</td>
               <td>{{ props.item.email }}</td>
               <td>{{ props.item.birth_day }}</td>
-              <td><!-- Actions --></td>
+              <td>
+                <v-btn icon>
+                  <v-icon color="primary">visibility</v-icon>
+                </v-btn>
+              </td>
             </template>
             <v-alert slot="no-results" :value="true" color="error" icon="warning">
               Your search for "{{ search }}" found no results.
