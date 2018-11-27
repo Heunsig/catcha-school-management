@@ -15,7 +15,7 @@ class CreateStudentTable extends Migration
     {
         Schema::create('student', function (Blueprint $table) {
             $table->integer('id')->unsigned()->primary();
-            $table->string('state', 30);
+            $table->string('status', 50);
         });
     }
 

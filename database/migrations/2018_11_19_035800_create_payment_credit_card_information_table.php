@@ -16,10 +16,10 @@ class CreatePaymentCreditCardInformationTable extends Migration
         Schema::create('credit_card_information', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('payment_id')->unsigned();
-            $table->string('card_numbers');
-            $table->string('name_on_card');
-            $table->string('expiration_month');
-            $table->string('expiration_year');
+            $table->string('card_numbers', 25);
+            $table->string('name_on_card', 191);
+            $table->string('expiration_month', 2);
+            $table->string('expiration_year', 2);
         });
     }
 

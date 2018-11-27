@@ -19,7 +19,7 @@ class CreateLinkPaymentProductTable extends Migration
             $table->integer('product_id')->unsigned();
             $table->integer('price');
             $table->integer('quantity');
-            $table->string('note');
+            $table->string('note')->nullable();
         });
     }
 

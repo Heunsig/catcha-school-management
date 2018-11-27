@@ -19,8 +19,8 @@ class CreateLinkClassStudentTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->datetime('created_at');
             $table->integer('created_by')->unsigned();
-            $table->datetime('updated_at');
-            $table->integer('updated_by')->unsigned();
+            $table->datetime('updated_at')->nullable();
+            $table->integer('updated_by')->unsigned()->nullable();
             $table->datetime('deleted_at')->nullable();
             $table->integer('deleted_by')->unsigned()->nullable();
         });

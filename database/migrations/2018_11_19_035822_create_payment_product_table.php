@@ -17,13 +17,13 @@ class CreatePaymentProductTable extends Migration
             $table->increments('id');
             $table->integer('parent_product_id')->unsigned()->nullable();
             $table->string('name');
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->integer('price');
             $table->integer('quantity');
             $table->datetime('created_at');
             $table->integer('created_by')->unsigned();
-            $table->datetime('updated_at');
-            $table->integer('updated_by')->unsigned();
+            $table->datetime('updated_at')->nullable();
+            $table->integer('updated_by')->unsigned()->nullable();
             $table->datetime('deleted_at')->nullable();
             $table->integer('deleted_by')->unsigned()->nullable();
         });

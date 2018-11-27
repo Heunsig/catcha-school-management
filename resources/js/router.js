@@ -6,7 +6,11 @@ import LoginForm from './components/login/LoginForm'
 import Main from './components/Main'
 import StudentList from './components/app/student/StudentList'
 import StudentRegistration from './components/app/student/StudentRegistration'
-import StudentDetail from './components/app/student/StudentDetail'
+
+import StudentDetailLayout from './components/app/student/detail/StudentDetailLayout'
+import StudentBasicInformation from './components/app/student/detail/StudentDetailBasicInformation'
+import StudentClass from './components/app/student/detail/StudentDetailClass'
+import StduentInvoice from './components/app/student/detail/StudentDetailInvoice'
 
 Vue.use(VueRouter)
 
@@ -40,8 +44,24 @@ const router = new VueRouter({
         },
         {
           path: 'student/:student_id',
-          component: StudentDetail,
-          name: 'student.detail'
+          component: StudentDetailLayout,
+          children: [
+            {
+              path: '',
+              component: StudentBasicInformation,
+              name: 'student.basic_information'
+            },
+            {
+              path: 'class',
+              component: StudentClass,
+              name: 'student.class'
+            },
+            {
+              path: 'invoice',
+              component: StduentInvoice,
+              name: 'student.invoice'
+            }
+          ]
         }
       ]
     }

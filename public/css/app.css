@@ -15,6 +15,20 @@ Lacacy of bootstrap
 }
 */
 
+.ca-class.ca-done,
+.ca-class.ca-ready,
+.ca-class.ca-working,
+.ca-class.ca-deleted {
+  border-left-style: solid;
+  border-left-width: 4px;
+}
+
+.ca- {
+  /*
+   * "c" means "component" this indicator is for a component
+   */
+}
+
 .ca-title-1 {
   color: #4d4d4d;
   font-size: 2.5em;
@@ -45,6 +59,13 @@ Lacacy of bootstrap
   font-size: 0.92em;
 }
 
+.ca-typo-stress {
+  /*
+       * Held off
+       */
+  font-size: 1.14em;
+}
+
 .ca-breadcrumbs {
   padding: 0 0 0 3px !important;
   margin: 0 !important;
@@ -62,6 +83,9 @@ Lacacy of bootstrap
   padding: 0;
   margin: 0;
   list-style: none;
+  /*padding: 0;
+    margin: 0;
+    list-style: none;*/
 }
 
 .ca-list-item {
@@ -87,6 +111,205 @@ Lacacy of bootstrap
   border-bottom: none;
 }
 
+.ca-label {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.ca-label-title {
+  min-width: 50px;
+  padding: 7px;
+  font-weight: bold;
+}
+
+.ca-label-content {
+  padding: 7px;
+}
+
+.ca-label-wrap {
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+.ca-tab {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  /*padding: 0;
+    margin: 0;
+    list-style: none;*/
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+}
+
+.ca-tab-item {
+  padding: 10px;
+  font-size: 1.14em;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.ca-tab-item:hover {
+  background: #3f51b5;
+  color: #fff;
+  /*padding: 10px;
+      font-size: 1.14em;
+      font-weight: bold;*/
+}
+
+.ca-tab-item.ca-active {
+  background: #3f51b5;
+  color: #fff;
+  /*padding: 10px;
+      font-size: 1.14em;
+      font-weight: bold;*/
+}
+
+.ca-class-process {
+  margin-bottom: 70px;
+}
+
+.ca-class-process-header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.ca-class-process:last-child {
+  margin-bottom: 0;
+}
+
+.ca-class {
+  padding: 10px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.ca-class-header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-bottom: 7px;
+}
+
+.ca-class-header-name {
+  font-size: 1.29em;
+}
+
+.ca-class-footer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.ca-class.ca-done {
+  border-left-color: #828282;
+}
+
+.ca-class.ca-ready {
+  border-left-color: #fff33f;
+}
+
+.ca-class.ca-working {
+  border-left-color: #63d063;
+}
+
+.ca-class.ca-deleted {
+  border-left-color: #ed3c3c;
+}
+
+.ca-tracking-box {
+  margin-left: 7px;
+  margin-right: 7px;
+  text-align: center;
+}
+
+.ca-tracking-box-title {
+  font-size: 12px;
+}
+
+.ca-tracking-box:last-child {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.ca-c-name {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.ca-invoice .ca-invoice-title {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 7px 14px;
+  background: #f1f1f1;
+  border-bottom: 1px solid #d8d8d8;
+}
+
+.ca-invoice .ca-invoice-body {
+  padding: 14px;
+}
+
+.ca-invoice .ca-invoice-body-header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-bottom: 8px;
+}
+
+.ca-invoice .ca-invoice-detail {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  padding-bottom: 15px !important;
+  margin-bottom: 15px !important;
+  border-bottom: 1px dashed #aaaaaa;
+}
+
+.ca-invoice .ca-invoice-detail .ca-item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.ca-invoice .ca-invoice-detail .ca-item .ca-item-name {
+  font-size: 1.21em;
+}
+
+.ca-invoice .ca-invoice-detail .ca-item .ca-price {
+  font-size: 1.21em;
+}
+
 /*
  * Overwrite on Vuetify
  */
@@ -94,5 +317,13 @@ Lacacy of bootstrap
 table.v-table tbody td,
 table.v-table tbody th {
   height: 60px !important;
+}
+
+/*
+ * Overwrite on flag-icon-css
+ */
+
+.flag-icon {
+  border: 1px solid #e3e3e3;
 }
 

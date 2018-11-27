@@ -16,14 +16,14 @@ class CreatePaymentTable extends Migration
         Schema::create('payment', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('payment_method_id')->unsigned();
-            $table->string('state', 30);
+            $table->string('status', 50);
             $table->boolean('is_refund')->default(false);
-            $table->datetime('payment_date')->nullable();
+            $table->datetime('payment_date');
             $table->text('note')->nullable();
             $table->datetime('created_at');
             $table->integer('created_by')->unsigned();
-            $table->datetime('updated_at');
-            $table->integer('updated_by')->unsigned();
+            $table->datetime('updated_at')->nullable();
+            $table->integer('updated_by')->unsigned()->nullable();
             $table->datetime('deleted_at')->nullable();
             $table->integer('deleted_by')->unsigned()->nullable();
         });
