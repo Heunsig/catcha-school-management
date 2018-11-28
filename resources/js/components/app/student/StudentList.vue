@@ -45,9 +45,9 @@
                   <img :src="AVATAR_BASE_URL+'/50/Heunsig.png'" alt="avatar"/>
                 </v-avatar>
               </td>
-              <td>{{ props.item.name }}</td>
-              <td>{{ props.item.email }}</td>
-              <td>{{ props.item.birth_day }}</td>
+              <td>{{ props.item.user.full_name }}</td>
+              <td>{{ props.item.user.email }}</td>
+              <td>{{ props.item.status }}</td>
               <td>
                 <v-btn icon>
                   <v-icon color="primary">visibility</v-icon>
@@ -84,11 +84,11 @@ export default {
       },
       {
         text: 'Name',
-        value: 'name'
+        value: 'user.full_name'
       },
       {
         text: 'Email',
-        value: 'email'
+        value: 'user.email'
       },
       {
         text: 'Birth Day',
@@ -100,12 +100,19 @@ export default {
       }
     ],
     students: [
-      {
-        name: 'Heunsig',
-        email: 'heun3344@gmail.com',
-        birth_day: '12/26/1990'
-      }
+      // {
+      //   name: 'Heunsig',
+      //   email: 'heun3344@gmail.com',
+      //   birth_day: '12/26/1990'
+      // }
     ]
-  })
+  }),
+  created () {
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.getters.token
+    axios.get('/student').then(res => {
+      console.log('res', res)
+      this.students = res.data
+    })
+  }
 }
 </script>

@@ -41,6 +41,25 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    protected $appends = [
+        'full_name'
+    ];
+
+
+    public function getFullNameAttribute($value)
+    {
+        $full_name = $this->first_name;
+        if ($this->middle_name) {
+            $full_name .= ' ' . $this->middle_name;
+        }
+
+        if($this->last_name) {
+            $full_name .= ' ' . $this->last_name;
+        }
+
+        return $full_name;
+    }
+
     /**
      * This method is to change email which is a base element which is to 
      * find a exact passport to another element, such as user id, name or number.

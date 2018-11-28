@@ -6,6 +6,9 @@ export default {
     APP_NAME () {
       return config.APP_NAME
     },
+    AXIOS_BASE_URL () {
+      return config.AXIOS_BASE_URL
+    },
     AVATAR_BASE_URL () {
       return config.AVATAR_BASE_URL
     }

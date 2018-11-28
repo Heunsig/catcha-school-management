@@ -12520,6 +12520,9 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
   getters: {
     loggedIn: function loggedIn(state) {
       return state.token !== null;
+    },
+    token: function token(state) {
+      return state.token;
     }
   },
   mutations: {
@@ -12569,7 +12572,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(16);
-module.exports = __webpack_require__(600);
+module.exports = __webpack_require__(601);
 
 
 /***/ }),
@@ -12594,7 +12597,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_flag_icon_css_css_flag_icon_min_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_flag_icon_css_css_flag_icon_min_css__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__router__ = __webpack_require__(572);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__store_store__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__mixin_global__ = __webpack_require__(599);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__mixin_global__ = __webpack_require__(600);
 
 
 
@@ -70336,10 +70339,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         sortable: false
       }, {
         text: 'Name',
-        value: 'name'
+        value: 'user.full_name'
       }, {
         text: 'Email',
-        value: 'email'
+        value: 'user.email'
       }, {
         text: 'Birth Day',
         value: 'birth_day'
@@ -70347,12 +70350,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         text: 'Actions',
         sortable: false
       }],
-      students: [{
-        name: 'Heunsig',
-        email: 'heun3344@gmail.com',
-        birth_day: '12/26/1990'
-      }]
+      students: [
+        // {
+        //   name: 'Heunsig',
+        //   email: 'heun3344@gmail.com',
+        //   birth_day: '12/26/1990'
+        // }
+      ]
     };
+  },
+  created: function created() {
+    var _this = this;
+
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.getters.token;
+    axios.get('/student').then(function (res) {
+      console.log('res', res);
+      _this.students = res.data;
+    });
   }
 });
 
@@ -70511,11 +70525,13 @@ var render = function() {
                                 1
                               ),
                               _vm._v(" "),
-                              _c("td", [_vm._v(_vm._s(props.item.name))]),
+                              _c("td", [
+                                _vm._v(_vm._s(props.item.user.full_name))
+                              ]),
                               _vm._v(" "),
-                              _c("td", [_vm._v(_vm._s(props.item.email))]),
+                              _c("td", [_vm._v(_vm._s(props.item.user.email))]),
                               _vm._v(" "),
-                              _c("td", [_vm._v(_vm._s(props.item.birth_day))]),
+                              _c("td", [_vm._v(_vm._s(props.item.status))]),
                               _vm._v(" "),
                               _c(
                                 "td",
@@ -70858,6 +70874,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -70869,19 +70898,37 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       middle_name: '',
       last_name: '',
       nickname: '',
+      status: '',
       note: '',
+      status_options: [],
       is_ps_shown: false,
       is_psc_shown: false
     };
   },
   methods: {
     submit: function submit() {
+      var _this = this;
+
       this.$validator.validateAll().then(function (result) {
         if (result) {
           // Success
+          axios.defaults.headers.common['Authorization'] = 'Bearer ' + _this.$store.getters.token;
+          axios.post(_this.AXIOS_BASE_URL + '/student', {
+            email: _this.email,
+            password: _this.password,
+            first_name: _this.first_name,
+            middle_name: _this.middle_name,
+            last_name: _this.last_name,
+            nickname: _this.nickname,
+            status: _this.status,
+            note: _this.note,
+            created_By: 1
+          }).then(function (res) {
+            console.log('res', res);
+          });
         } else {
-            // Failure
-          }
+          // Failure
+        }
       });
     },
     clear: function clear() {
@@ -70895,6 +70942,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.note = '';
       this.$validator.reset();
     }
+  },
+  created: function created() {
+    var _this2 = this;
+
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.getters.token;
+    axios.get(this.AXIOS_BASE_URL + '/category/student_status').then(function (res) {
+      _this2.status_options = res.data;
+    });
   }
 });
 
@@ -71168,6 +71223,40 @@ var render = function() {
                                 _vm.nickname = $$v
                               },
                               expression: "nickname"
+                            }
+                          })
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-flex",
+                        { attrs: { xs12: "" } },
+                        [
+                          _c("v-select", {
+                            directives: [
+                              {
+                                name: "validate",
+                                rawName: "v-validate",
+                                value: "required",
+                                expression: "'required'"
+                              }
+                            ],
+                            attrs: {
+                              items: _vm.status_options,
+                              "item-text": "name",
+                              "item-value": "id",
+                              label: "Status",
+                              "data-vv-name": "status",
+                              "error-messages": _vm.errors.collect("status"),
+                              required: ""
+                            },
+                            model: {
+                              value: _vm.status,
+                              callback: function($$v) {
+                                _vm.status = $$v
+                              },
+                              expression: "status"
                             }
                           })
                         ],
@@ -72071,7 +72160,7 @@ if (false) {
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = null
+var __vue_script__ = __webpack_require__(603)
 /* template */
 var __vue_template__ = __webpack_require__(594)
 /* template functional */
@@ -72144,7 +72233,7 @@ var render = function() {
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "ca-label-content" }, [
-                        _vm._v("heun3344@gmail.com")
+                        _vm._v(_vm._s(_vm.student.user.email))
                       ])
                     ])
                   ]),
@@ -72156,7 +72245,7 @@ var render = function() {
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "ca-label-content" }, [
-                        _vm._v("Heunsig")
+                        _vm._v(_vm._s(_vm.student.user.first_name))
                       ])
                     ])
                   ]),
@@ -72167,7 +72256,9 @@ var render = function() {
                         _vm._v("Middle Name")
                       ]),
                       _vm._v(" "),
-                      _c("div", { staticClass: "ca-label-content" })
+                      _c("div", { staticClass: "ca-label-content" }, [
+                        _vm._v(_vm._s(_vm.student.user.middle_name))
+                      ])
                     ])
                   ]),
                   _vm._v(" "),
@@ -72178,7 +72269,7 @@ var render = function() {
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "ca-label-content" }, [
-                        _vm._v("Jo")
+                        _vm._v(_vm._s(_vm.student.user.last_name))
                       ])
                     ])
                   ]),
@@ -72190,7 +72281,7 @@ var render = function() {
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "ca-label-content" }, [
-                        _vm._v("Joe")
+                        _vm._v(_vm._s(_vm.student.user.nickname))
                       ])
                     ])
                   ]),
@@ -72202,9 +72293,7 @@ var render = function() {
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "ca-label-content" }, [
-                        _vm._v(
-                          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
-                        )
+                        _vm._v(_vm._s(_vm.student.user.note))
                       ])
                     ])
                   ])
@@ -72238,7 +72327,7 @@ if (false) {
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = null
+var __vue_script__ = __webpack_require__(604)
 /* template */
 var __vue_template__ = __webpack_require__(596)
 /* template functional */
@@ -72296,9 +72385,174 @@ var render = function() {
           _vm._v(" "),
           _c("v-spacer"),
           _vm._v(" "),
-          _c("v-btn", { attrs: { depressed: "", color: "primary" } }, [
-            _vm._v("Add")
-          ])
+          _c(
+            "v-dialog",
+            {
+              attrs: { persistent: "", "max-width": "350" },
+              model: {
+                value: _vm.dialog,
+                callback: function($$v) {
+                  _vm.dialog = $$v
+                },
+                expression: "dialog"
+              }
+            },
+            [
+              _c(
+                "v-btn",
+                {
+                  attrs: { slot: "activator", color: "primary", dark: "" },
+                  slot: "activator"
+                },
+                [_vm._v("Add Class")]
+              ),
+              _vm._v(" "),
+              _c(
+                "v-card",
+                [
+                  _c("v-card-title", { staticClass: "ca-title-4" }, [
+                    _vm._v("Add New Class")
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "v-card-text",
+                    [
+                      _c(
+                        "v-container",
+                        { staticClass: "pa-0", attrs: { fluid: "" } },
+                        [
+                          _c(
+                            "v-layout",
+                            { attrs: { wrap: "" } },
+                            [
+                              _c(
+                                "v-flex",
+                                { attrs: { xs12: "" } },
+                                [
+                                  _c("v-select", {
+                                    attrs: {
+                                      items: _vm.classes,
+                                      "item-text": "name",
+                                      "item-value": "id",
+                                      label: "Choose Class"
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-flex",
+                                { attrs: { xs12: "" } },
+                                [
+                                  _c(
+                                    "v-menu",
+                                    {
+                                      attrs: {
+                                        "close-on-content-click": false,
+                                        "nudge-right": 40,
+                                        lazy: "",
+                                        transition: "scale-transition",
+                                        "offset-y": "",
+                                        "full-width": "",
+                                        "min-width": "290px"
+                                      },
+                                      model: {
+                                        value: _vm.date_picker,
+                                        callback: function($$v) {
+                                          _vm.date_picker = $$v
+                                        },
+                                        expression: "date_picker"
+                                      }
+                                    },
+                                    [
+                                      _c("v-text-field", {
+                                        attrs: {
+                                          slot: "activator",
+                                          label:
+                                            "When does this student begin the class?",
+                                          "prepend-icon": "event",
+                                          readonly: ""
+                                        },
+                                        slot: "activator",
+                                        model: {
+                                          value: _vm.start_date,
+                                          callback: function($$v) {
+                                            _vm.start_date = $$v
+                                          },
+                                          expression: "start_date"
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _c("v-date-picker", {
+                                        on: {
+                                          input: function($event) {
+                                            _vm.date_picker = false
+                                          }
+                                        },
+                                        model: {
+                                          value: _vm.start_date,
+                                          callback: function($$v) {
+                                            _vm.start_date = $$v
+                                          },
+                                          expression: "start_date"
+                                        }
+                                      })
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-card-actions",
+                    [
+                      _c("v-spacer"),
+                      _vm._v(" "),
+                      _c(
+                        "v-btn",
+                        {
+                          attrs: { color: "green darken-1", flat: "" },
+                          on: {
+                            click: function($event) {
+                              _vm.dialog = false
+                            }
+                          }
+                        },
+                        [_vm._v("Disagree")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-btn",
+                        {
+                          attrs: { color: "green darken-1", flat: "" },
+                          on: {
+                            click: function($event) {
+                              _vm.dialog = false
+                            }
+                          }
+                        },
+                        [_vm._v("Agree")]
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
         ],
         1
       ),
@@ -72826,9 +73080,9 @@ if (false) {
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(602)
+var __vue_script__ = __webpack_require__(598)
 /* template */
-var __vue_template__ = __webpack_require__(598)
+var __vue_template__ = __webpack_require__(599)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -72868,6 +73122,194 @@ module.exports = Component.exports
 
 /***/ }),
 /* 598 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      headers: [{
+        text: 'Dessert (100g serving)',
+        align: 'left',
+        sortable: false,
+        value: 'name'
+      }, { text: 'Calories', value: 'calories' }, { text: 'Fat (g)', value: 'fat' }, { text: 'Carbs (g)', value: 'carbs' }, { text: 'Protein (g)', value: 'protein' }, { text: 'Iron (%)', value: 'iron' }],
+      desserts: [{
+        value: false,
+        name: 'Frozen Yogurt',
+        calories: 159,
+        fat: 6.0,
+        carbs: 24,
+        protein: 4.0,
+        iron: '1%',
+        expanded: false
+      }, {
+        value: false,
+        name: 'Ice cream sandwich',
+        calories: 237,
+        fat: 9.0,
+        carbs: 37,
+        protein: 4.3,
+        iron: '1%'
+      }, {
+        value: false,
+        name: 'Eclair',
+        calories: 262,
+        fat: 16.0,
+        carbs: 23,
+        protein: 6.0,
+        iron: '7%'
+      }, {
+        value: false,
+        name: 'Cupcake',
+        calories: 305,
+        fat: 3.7,
+        carbs: 67,
+        protein: 4.3,
+        iron: '8%'
+      }, {
+        value: false,
+        name: 'Gingerbread',
+        calories: 356,
+        fat: 16.0,
+        carbs: 49,
+        protein: 3.9,
+        iron: '16%'
+      }, {
+        value: false,
+        name: 'Jelly bean',
+        calories: 375,
+        fat: 0.0,
+        carbs: 94,
+        protein: 0.0,
+        iron: '0%'
+      }, {
+        value: false,
+        name: 'Lollipop',
+        calories: 392,
+        fat: 0.2,
+        carbs: 98,
+        protein: 0,
+        iron: '2%'
+      }, {
+        value: false,
+        name: 'Honeycomb',
+        calories: 408,
+        fat: 3.2,
+        carbs: 87,
+        protein: 6.5,
+        iron: '45%'
+      }, {
+        value: false,
+        name: 'Donut',
+        calories: 452,
+        fat: 25.0,
+        carbs: 51,
+        protein: 4.9,
+        iron: '22%'
+      }, {
+        value: false,
+        name: 'KitKat',
+        calories: 518,
+        fat: 26.0,
+        carbs: 65,
+        protein: 7,
+        iron: '6%'
+      }]
+    };
+  }
+});
+
+/***/ }),
+/* 599 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -73109,7 +73551,7 @@ if (false) {
 }
 
 /***/ }),
-/* 599 */
+/* 600 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -73123,6 +73565,9 @@ if (false) {
     APP_NAME: function APP_NAME() {
       return config.APP_NAME;
     },
+    AXIOS_BASE_URL: function AXIOS_BASE_URL() {
+      return config.AXIOS_BASE_URL;
+    },
     AVATAR_BASE_URL: function AVATAR_BASE_URL() {
       return config.AVATAR_BASE_URL;
     }
@@ -73130,14 +73575,89 @@ if (false) {
 });
 
 /***/ }),
-/* 600 */
+/* 601 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 601 */,
-/* 602 */
+/* 602 */,
+/* 603 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      student: {
+        user: {}
+      }
+    };
+  },
+  created: function created() {
+    var _this = this;
+
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.getters.token;
+    axios.get('/student/' + this.$route.params.student_id + '/basic_information').then(function (res) {
+      console.log('res', res);
+      _this.student = res.data;
+    });
+  }
+});
+
+/***/ }),
+/* 604 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -73228,99 +73748,212 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      headers: [{
-        text: 'Dessert (100g serving)',
-        align: 'left',
-        sortable: false,
-        value: 'name'
-      }, { text: 'Calories', value: 'calories' }, { text: 'Fat (g)', value: 'fat' }, { text: 'Carbs (g)', value: 'carbs' }, { text: 'Protein (g)', value: 'protein' }, { text: 'Iron (%)', value: 'iron' }],
-      desserts: [{
-        value: false,
-        name: 'Frozen Yogurt',
-        calories: 159,
-        fat: 6.0,
-        carbs: 24,
-        protein: 4.0,
-        iron: '1%',
-        expanded: false
-      }, {
-        value: false,
-        name: 'Ice cream sandwich',
-        calories: 237,
-        fat: 9.0,
-        carbs: 37,
-        protein: 4.3,
-        iron: '1%'
-      }, {
-        value: false,
-        name: 'Eclair',
-        calories: 262,
-        fat: 16.0,
-        carbs: 23,
-        protein: 6.0,
-        iron: '7%'
-      }, {
-        value: false,
-        name: 'Cupcake',
-        calories: 305,
-        fat: 3.7,
-        carbs: 67,
-        protein: 4.3,
-        iron: '8%'
-      }, {
-        value: false,
-        name: 'Gingerbread',
-        calories: 356,
-        fat: 16.0,
-        carbs: 49,
-        protein: 3.9,
-        iron: '16%'
-      }, {
-        value: false,
-        name: 'Jelly bean',
-        calories: 375,
-        fat: 0.0,
-        carbs: 94,
-        protein: 0.0,
-        iron: '0%'
-      }, {
-        value: false,
-        name: 'Lollipop',
-        calories: 392,
-        fat: 0.2,
-        carbs: 98,
-        protein: 0,
-        iron: '2%'
-      }, {
-        value: false,
-        name: 'Honeycomb',
-        calories: 408,
-        fat: 3.2,
-        carbs: 87,
-        protein: 6.5,
-        iron: '45%'
-      }, {
-        value: false,
-        name: 'Donut',
-        calories: 452,
-        fat: 25.0,
-        carbs: 51,
-        protein: 4.9,
-        iron: '22%'
-      }, {
-        value: false,
-        name: 'KitKat',
-        calories: 518,
-        fat: 26.0,
-        carbs: 65,
-        protein: 7,
-        iron: '6%'
-      }]
+      dialog: false,
+      date_picker: false,
+      start_date: '',
+      classes: []
     };
+  },
+  created: function created() {
+    var _this = this;
+
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.getters.token;
+    axios.get(this.AXIOS_BASE_URL + '/class').then(function (res) {
+      console.log('res', res);
+      _this.classes = res.data;
+    });
   }
 });
 

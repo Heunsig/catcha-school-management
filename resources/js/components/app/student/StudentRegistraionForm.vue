@@ -95,6 +95,19 @@
               </v-text-field>
             </v-flex>
             <v-flex xs12>
+              <v-select
+                v-model="status"
+                :items="status_options"
+                item-text="name"
+                item-value="id"
+                label="Status"
+                data-vv-name="status"
+                :error-messages="errors.collect('status')"
+                v-validate="'required'"
+                required
+              ></v-select>
+            </v-flex>
+            <v-flex xs12>
               <v-textarea
                 v-model="note"
                 label="Note"
@@ -126,7 +139,9 @@ export default {
     middle_name: '',
     last_name: '',
     nickname: '',
+    status: '',
     note: '',
+    status_options: [],
     is_ps_shown: false,
     is_psc_shown: false,
   }),
@@ -135,6 +150,20 @@ export default {
       this.$validator.validateAll().then(result => {
         if (result) {
           // Success
+          axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.getters.token
+          axios.post(`${this.AXIOS_BASE_URL}/student`,{
+            email: this.email,
+            password: this.password,
+            first_name: this.first_name,
+            middle_name: this.middle_name,
+            last_name: this.last_name,
+            nickname: this.nickname,
+            status: this.status,
+            note: this.note,
+            created_By: 1
+          }).then(res => {
+            console.log('res', res)
+          })
         } else {
           // Failure
         }
@@ -151,6 +180,12 @@ export default {
       this.note = ''
       this.$validator.reset()
     }
+  },
+  created () {
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.getters.token
+    axios.get(`${this.AXIOS_BASE_URL}/category/student_status`).then(res => {
+      this.status_options = res.data
+    })
   }
 }
 </script>
