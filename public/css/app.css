@@ -15,15 +15,118 @@ Lacacy of bootstrap
 }
 */
 
-.ca-class.ca-done,
-.ca-class.ca-ready,
-.ca-class.ca-working,
+/*@import './variables.scss';*/
+
+.ca-class {
+  -webkit-box-shadow: 0px 2px 8px 0px #d2d2d2;
+          box-shadow: 0px 2px 8px 0px #d2d2d2;
+  border-right: 1px solid #bcbcbc;
+  border-bottom: 1px solid #bcbcbc;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  padding: 15px;
+}
+
+.ca-class-header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  /*align-items: stretch;*/
+}
+
+.ca-class-header .ca- {
+  /*&status-box {
+        padding-right: 15px;
+        text-align: center;
+        vertical-align: middle;
+        width: 90px;
+      }*/
+}
+
+.ca-class-header .ca-meta {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.ca-class.ca-completed {
+  border-left: 8px solid grey;
+}
+
+.ca-class.ca-completed .ca-status {
+  color: grey;
+}
+
 .ca-class.ca-deleted {
-  border-left-style: solid;
-  border-left-width: 4px;
+  border-left: 8px solid red;
+}
+
+.ca-class.ca-deleted .ca-status {
+  color: red;
+}
+
+.ca-class.ca-wating {
+  border-left: 8px solid #e7b021;
+}
+
+.ca-class.ca-wating .ca-status {
+  color: #e7b021;
+}
+
+.ca-class.ca-inprogress {
+  border-left: 8px solid #64d664;
+}
+
+.ca-class.ca-inprogress .ca-status {
+  color: #64d664;
 }
 
 .ca- {
+  /*&class {
+    padding: 10px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    &-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 7px;
+
+      &-name {
+        font-size: 1.29em;
+      }
+    }
+
+    &-footer {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+  }*/
+  /*&class.ca-done {
+    @extend %colored-indicator;
+    border-left-color: #828282;
+  }
+
+  &class.ca-ready {
+    @extend %colored-indicator;
+    border-left-color: #fff33f;
+  }
+
+  &class.ca-working {
+    @extend %colored-indicator;
+    border-left-color: #63d063;
+  }
+
+  &class.ca-deleted {
+    @extend %colored-indicator;
+    border-left-color: #ed3c3c;
+  }*/
   /*
    * "c" means "component" this indicator is for a component
    */
@@ -173,11 +276,11 @@ Lacacy of bootstrap
       font-weight: bold;*/
 }
 
-.ca-class-process {
+.ca-class-group {
   margin-bottom: 70px;
 }
 
-.ca-class-process-header {
+.ca-class-group-header {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -186,56 +289,18 @@ Lacacy of bootstrap
           align-items: center;
 }
 
-.ca-class-process:last-child {
+.ca-class-group:last-child {
   margin-bottom: 0;
 }
 
-.ca-class {
-  padding: 10px;
-  margin-top: 15px;
-  margin-bottom: 15px;
-}
-
-.ca-class-header {
+.ca-tracking-container {
+  margin-top: 10px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  margin-bottom: 7px;
-}
-
-.ca-class-header-name {
-  font-size: 1.29em;
-}
-
-.ca-class-footer {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: end;
-      -ms-flex-pack: end;
-          justify-content: flex-end;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-}
-
-.ca-class.ca-done {
-  border-left-color: #828282;
-}
-
-.ca-class.ca-ready {
-  border-left-color: #fff33f;
-}
-
-.ca-class.ca-working {
-  border-left-color: #63d063;
-}
-
-.ca-class.ca-deleted {
-  border-left-color: #ed3c3c;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 
 .ca-tracking-box {
@@ -245,7 +310,7 @@ Lacacy of bootstrap
 }
 
 .ca-tracking-box-title {
-  font-size: 12px;
+  font-size: 0.71em;
 }
 
 .ca-tracking-box:last-child {
@@ -256,6 +321,15 @@ Lacacy of bootstrap
 .ca-c-name {
   word-wrap: break-word;
   overflow-wrap: break-word;
+}
+
+.ca-button-box {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 
 .ca-invoice .ca-invoice-title {

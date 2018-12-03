@@ -150,8 +150,7 @@ export default {
       this.$validator.validateAll().then(result => {
         if (result) {
           // Success
-          axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.getters.token
-          axios.post(`${this.AXIOS_BASE_URL}/student`,{
+          this.$axios.post(`/student`,{
             email: this.email,
             password: this.password,
             first_name: this.first_name,
@@ -159,8 +158,7 @@ export default {
             last_name: this.last_name,
             nickname: this.nickname,
             status: this.status,
-            note: this.note,
-            created_By: 1
+            note: this.note
           }).then(res => {
             console.log('res', res)
           })
@@ -182,8 +180,7 @@ export default {
     }
   },
   created () {
-    axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.getters.token
-    axios.get(`${this.AXIOS_BASE_URL}/category/student_status`).then(res => {
+    this.$axios.get(`/category/student_status`).then(res => {
       this.status_options = res.data
     })
   }

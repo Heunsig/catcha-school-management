@@ -17,29 +17,37 @@ class ProductSeeder extends Seeder
                 'name' => 'ESL program',
                 'price' => 0,
                 'quantity' => -1,
-                'created_at' => today(),
-                'created_by' => 1
+                'created_at' => Carbon::now(),
+                'created_by' => 1,
+                'updated_at' => Carbon::now(),
+                'updated_by' => 1
             ],
             [
                 'name' => 'Conversation program',
                 'price' => 0,
                 'quantity' => -1,
-                'created_at' => today(),
-                'created_by' => 1
+                'created_at' => Carbon::now(),
+                'created_by' => 1,
+                'updated_at' => Carbon::now(),
+                'updated_by' => 1
             ],
             [
                 'name' => 'TOFLE program',
                 'price' => 0,
                 'quantity' => -1,
-                'created_at' => today(),
-                'created_by' => 1
+                'created_at' => Carbon::now(),
+                'created_by' => 1,
+                'updated_at' => Carbon::now(),
+                'updated_by' => 1
             ],
             [
                 'name' => 'TOEIC program',
                 'price' => 0,
                 'quantity' => -1,
-                'created_at' => today(),
-                'created_by' => 1
+                'created_at' => Carbon::now(),
+                'created_by' => 1,
+                'updated_at' => Carbon::now(),
+                'updated_by' => 1
             ]
         ]);
     }

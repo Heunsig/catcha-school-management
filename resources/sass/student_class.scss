@@ -1,0 +1,68 @@
+/*@import './variables.scss';*/
+
+.#{$prefix}class {
+  box-shadow: 0px 2px 8px 0px #d2d2d2;
+  border-right: 1px solid #bcbcbc;
+  border-bottom: 1px solid #bcbcbc;
+
+  margin-top: 15px;
+  margin-bottom: 15px;
+  padding: 15px;
+
+  &-header {
+    display: flex;
+    align-items: center;
+    /*align-items: stretch;*/
+
+    .#{$prefix} {
+      /*&status-box {
+        padding-right: 15px;
+        text-align: center;
+        vertical-align: middle;
+        width: 90px;
+      }*/
+
+      &title {
+
+      }
+
+      &action {
+        
+      }
+
+      &meta {
+        display: flex;
+        align-items: center;
+      }
+
+    }
+  }
+  
+  &.#{$prefix}completed {
+    border-left: 8px solid grey;
+    .#{$prefix}status {
+      color: grey;
+    }
+  }
+
+  &.#{$prefix}deleted {
+    border-left: 8px solid red;
+    .#{$prefix}status {
+      color: red;
+    }
+  }
+
+  &.#{$prefix}wating {
+    border-left: 8px solid #e7b021;
+    .#{$prefix}status {
+      color: #e7b021;
+    }
+  }
+
+  &.#{$prefix}inprogress {
+    border-left: 8px solid #64d664;
+    .#{$prefix}status {
+      color: #64d664;
+    }
+  }
+}

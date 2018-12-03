@@ -14,8 +14,8 @@ Lacacy of bootstrap
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
 */
-
-$prefix: ca-;
+@import './variables.scss';
+@import './student_class.scss';
 
 @mixin title-basic-set {
   color: #4d4d4d;
@@ -168,7 +168,7 @@ $prefix: ca-;
     }
   }
 
-  &class-process {
+  &class-group {
     margin-bottom: 70px;
 
     &-header {
@@ -177,12 +177,11 @@ $prefix: ca-;
     }
   }
 
-  &class-process:last-child {
+  &class-group:last-child {
     margin-bottom: 0;
   }
 
-  
-  &class {
+  /*&class {
     padding: 10px;
     margin-top: 15px;
     margin-bottom: 15px;
@@ -201,10 +200,10 @@ $prefix: ca-;
       justify-content: flex-end;
       align-items: center;
     }
-  }
+  }*/
 
 
-  &class.#{$prefix}done {
+  /*&class.#{$prefix}done {
     @extend %colored-indicator;
     border-left-color: #828282;
   }
@@ -222,8 +221,13 @@ $prefix: ca-;
   &class.#{$prefix}deleted {
     @extend %colored-indicator;
     border-left-color: #ed3c3c;
+  }*/
+  
+  &tracking-container{
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
   }
-
 
   &tracking-box {
     margin-left: 7px;
@@ -231,7 +235,7 @@ $prefix: ca-;
     text-align: center;
 
     &-title {
-      font-size: 12px;
+      font-size: 0.71em;
     }
 
     &-avatar {
@@ -253,6 +257,11 @@ $prefix: ca-;
       overflow-wrap: break-word;
     }
   }
+}
+
+.#{$prefix}button-box {
+  display: flex;
+  justify-content: center;
 }
 
 .#{$prefix}invoice {

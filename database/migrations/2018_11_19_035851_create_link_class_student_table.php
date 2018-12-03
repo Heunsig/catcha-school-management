@@ -16,12 +16,14 @@ class CreateLinkClassStudentTable extends Migration
         Schema::create('link_class_student', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('classinfo_id')->unsigned();
-            $table->integer('user_id')->unsigned();
-            $table->datetime('start_date');
+            $table->integer('student_id')->unsigned();
+            $table->date('start_date');
+            $table->date('completion_date')->nullable();
+            $table->integer('group');
             $table->datetime('created_at');
             $table->integer('created_by')->unsigned();
-            $table->datetime('updated_at')->nullable();
-            $table->integer('updated_by')->unsigned()->nullable();
+            $table->datetime('updated_at');
+            $table->integer('updated_by')->unsigned();
             $table->datetime('deleted_at')->nullable();
             $table->integer('deleted_by')->unsigned()->nullable();
         });

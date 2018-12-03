@@ -99,17 +99,10 @@ export default {
         sortable: false
       }
     ],
-    students: [
-      // {
-      //   name: 'Heunsig',
-      //   email: 'heun3344@gmail.com',
-      //   birth_day: '12/26/1990'
-      // }
-    ]
+    students: []
   }),
   created () {
-    axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.getters.token
-    axios.get('/student').then(res => {
+    this.$axios.get('/student').then(res => {
       console.log('res', res)
       this.students = res.data
     })

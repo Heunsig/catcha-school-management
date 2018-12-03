@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Http\Request;
+// use App\User;
+// use App\Http\Resources\TestCollection;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +29,10 @@ Route::middleware('auth:api')->group(function () {
 
     Route::get('/student/{student_id}/basic_information', 'StudentController@basic_information');
     Route::get('/student/{student_id}/class', 'StudentController@class');
+    Route::post('/student/{student_id}/class', 'StudentController@add_class');
+    Route::post('/student/{student_id}/move_class', 'StudentController@move_class');
+    Route::post('/student/{student_id}/class/edit_date', 'StudentController@edit_date');
+    Route::post('/student/{student_id}/class/delete', 'StudentController@delete_class');
 
     Route::get('/class', 'ClassinfoController@list');
 });
@@ -35,3 +41,7 @@ Route::middleware('auth:api')->group(function () {
 Route::post('/refresh', 'AuthController@refresh');
 Route::post('/login', 'AuthController@login');
 
+
+Route::get('/test', function(){
+    // return TestCollection::collection(User::all());
+});

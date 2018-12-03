@@ -16,44 +16,58 @@ class ClassSeeder extends Seeder
             [
                 'name' => 'Beginning Track 1',
                 'description' => '',
-                'created_at' => today(),
-                'created_by' => 1
+                'created_at' => Carbon::now(),
+                'created_by' => 1,
+                'updated_at' => Carbon::now(),
+                'updated_by' => 1
             ],
             [
                 'name' => 'Beginning Track 2',
                 'description' => '',
-                'created_at' => today(),
-                'created_by' => 1
+                'created_at' => Carbon::now(),
+                'created_by' => 1,
+                'updated_at' => Carbon::now(),
+                'updated_by' => 1
             ],
             [
                 'name' => 'Intermediate Track 1',
                 'description' => '',
-                'created_at' => today(),
-                'created_by' => 1
+                'created_at' => Carbon::now(),
+                'created_by' => 1,
+                'updated_at' => Carbon::now(),
+                'updated_by' => 1
             ],
             [
                 'name' => 'Intermediate Track 2',
                 'description' => '',
-                'created_at' => today(),
-                'created_by' => 1
+                'created_at' => Carbon::now(),
+                'created_by' => 1,
+                'updated_at' => Carbon::now(),
+                'updated_by' => 1
             ],
             [
                 'name' => 'High Intermediate Track 1',
                 'description' => '',
-                'created_at' => today(),
-                'created_by' => 1
+                'created_at' => Carbon::now(),
+                'created_by' => 1,
+                'updated_at' => Carbon::now(),
+                'updated_by' => 1
             ],
             [
                 'name' => 'High Intermediate Track 2',
                 'description' => '',
-                'created_at' => today(),
-                'created_by' => 1
+                'created_at' => Carbon::now(),
+                'created_by' => 1,
+                'updated_at' => Carbon::now(),
+                'updated_by' => 1
             ],
             [
                 'name' => 'Advanced',
                 'description' => '',
-                'created_at' => today(),
-                'created_by' => 1
+                'created_at' => Carbon::now(),
+                'created_by' => 1,
+                'updated_at' => Carbon::now(),
+                'updated_by' => 1
             ],
         ]);
     }

@@ -7,10 +7,10 @@ import Main from './components/Main'
 import StudentList from './components/app/student/StudentList'
 import StudentRegistration from './components/app/student/StudentRegistration'
 
-import StudentDetailLayout from './components/app/student/detail/StudentDetailLayout'
-import StudentBasicInformation from './components/app/student/detail/StudentDetailBasicInformation'
-import StudentClass from './components/app/student/detail/StudentDetailClass'
-import StduentInvoice from './components/app/student/detail/StudentDetailInvoice'
+import StudentDetailLayout from './components/app/student/detail/Layout'
+import StudentBasicInformation from './components/app/student/detail/BasicInformation'
+import StudentClass from './components/app/student/detail/Class'
+import StduentInvoice from './components/app/student/detail/Invoice'
 
 Vue.use(VueRouter)
 

@@ -4,13 +4,13 @@ export default {
   }),
   computed: {
     APP_NAME () {
-      return config.APP_NAME
+      return this.$config.APP_NAME
     },
     AXIOS_BASE_URL () {
-      return config.AXIOS_BASE_URL
+      return this.$config.AXIOS_BASE_URL
     },
     AVATAR_BASE_URL () {
-      return config.AVATAR_BASE_URL
+      return this.$config.AVATAR_BASE_URL
     }
   }
 }
