@@ -30,7 +30,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/student/{student_id}/basic_information', 'StudentController@basic_information');
     Route::get('/student/{student_id}/class', 'StudentController@class');
     Route::post('/student/{student_id}/class', 'StudentController@add_class');
-    Route::post('/student/{student_id}/move_class', 'StudentController@move_class');
+    Route::post('/student/{student_id}/change_class', 'StudentController@change_class');
     Route::post('/student/{student_id}/class/edit_date', 'StudentController@edit_date');
     Route::post('/student/{student_id}/class/delete', 'StudentController@delete_class');
 

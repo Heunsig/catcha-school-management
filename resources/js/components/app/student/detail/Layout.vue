@@ -5,7 +5,7 @@
         <v-card class="elevation-0 transparent">
           <v-card-title>
             <div>
-              <h1 class="ca-title-1">Heunsig's Details</h1>
+              <h1 class="ca-title-1">{{ full_name }}'s Details</h1>
               <v-breadcrumbs :items="breadcrumbs" class="ca-breadcrumbs">
                 <template slot="item" slot-scope="props">
                   <span v-if="props.item.disabled" :class="[props.item.disabled && 'ca-disabled']">{{ props.item.text }}</span>
@@ -21,14 +21,14 @@
           <v-layout wrap>
             <v-flex xs12>
               <v-card>
-                <v-img src="https://picsum.photos/510/600?random" aspect-ratio="1.3"></v-img>
+                <v-img :src="AVATAR_BASE_URL + '/510/'+ full_name +'.png'" aspect-ratio="1.3"></v-img>
                 <v-card-text>
                   <div class="ca-title-3 mb-2 ca-c-name">
                     <span class="flag-icon flag-icon-kr"></span>
-                    Heunsig Jo Hidne osheoe ajsmdmdeyrmd dhe<small class="ml-1">(Joe)</small>
+                    {{ full_name }}<small class="ml-1">({{ nickname }})</small>
                   </div>
                   <div class="ca-title-5">
-                    heun3344@gmail.com
+                    {{ email }}
                   </div>
                   <div class="ca-title-5">
                     217-760-1587
@@ -161,6 +161,22 @@ export default {
         disabled: true
       }
     ]
-  })
+  }),
+  computed: {
+    full_name () {
+      return this.$store.getters['student/basic_information'].full_name
+    },
+    nickname () {
+      return this.$store.getters['student/basic_information'].nickname
+    },
+    email () {
+      return this.$store.getters['student/basic_information'].email
+    }
+  },
+  created () {
+    this.$store.dispatch('student/get_student', {
+      student_id: this.$route.params.student_id
+    })
+  }
 }
 </script>

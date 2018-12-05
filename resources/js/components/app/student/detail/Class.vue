@@ -6,64 +6,48 @@
       <v-btn
         depressed
         color="primary"
-        @click="new_class_addition_dialog = !new_class_addition_dialog"
+        @click="open_dialog_class_addition()"
       >
         Add Class
       </v-btn>
       <new-class-addition-dialog
-        :is_active="new_class_addition_dialog"
         :classes="classes"
-        @add_class="add_class($event)"
-        @close="new_class_addition_dialog = false"
+        @submit="add_new_class($event)"
       ></new-class-addition-dialog>
     </v-card-title>
     <v-card-text>
-      <div class="ca-class-group" v-for="(group, i) in class_groups">
-        <template v-for="_class in group">
-          <ca-class-item
-            :key="_class.id"
-            :group="group"
-            :_class="_class"
-            :fn_open_dialog="open_dialog_class_change"
-            :fn_open_date_edit_dialog="open_dialog_date_edit"
-            :fn_open_deletion_dialog="open_dialog_deletion"
-          >
-          </ca-class-item>
-        </template>
-      </div>
+      <class-group 
+        v-for="(group, i) in class_groups"
+        :key="i"
+        :group="group"
+      >
+      </class-group>
       <class-change-dialog
-        :is_active="class_change_dialog"
         :classes="classes"
-        :selected_classinfo="selected_classinfo"
-        @move="move($event)"
-        @close="class_change_dialog = false"
+        @submit="change_class($event)"
       >
       </class-change-dialog>
       <date-edit-dialog
-        :is_active="date_edit_dialog"
-        :start_date="start_date"
-        :completion_date="completion_date"
-        :selected_classinfo="selected_classinfo2"
-        @edit="edit($event)"
-        @close="date_edit_dialog = false"
+        @submit="edit_date($event)"
       >
       </date-edit-dialog>
       <class-deletion-dialog
-        :is_active="class_deletion_dialog"
-        :selected_classinfo="selected_classinfo3"
-        @del="del($event)"
-        @close="class_deletion_dialog = false"
+        @submit="del_class($event)"
       >
       </class-deletion-dialog>
     </v-card-text>
   </v-card>
 </template>
 <script>
+import bus from 'bus'
+
 import NewClassAdditionDialog from './particles/class/NewClassAdditionDialog'
 import ClassChangeDialog from './particles/class/ClassChangeDialog'
 import CaClassItem from './particles/class/CaClassItem'
 import DateEditDialog from './particles/class/DateEditDialog'
 import ClassDeletionDialog from './particles/class/ClassDeletionDialog'
+
+import ClassGroup from './particles/class/list/ClassGroup'
 
 export default {
   components: {
@@ -71,60 +55,65 @@ export default {
     ClassChangeDialog,
     CaClassItem,
     DateEditDialog,
-    ClassDeletionDialog
+    ClassDeletionDialog,
+    ClassGroup
   },
   data () {
     return {
-      new_class_addition_dialog: false,
-      class_change_dialog: false,
-      date_edit_dialog: false,
-      class_deletion_dialog: false,
-      selected_classinfo: {},
-      selected_classinfo2: {},
-      selected_classinfo3: {},
-      selected_group: [],
       classes: [],
-      class_groups: [],
-      start_date: '',
-      completion_date: ''
+      class_groups: []
     }
   },
   methods: {
-    open_dialog_class_change (class_obj, group) {
-      this.selected_classinfo = class_obj
-      this.selected_group = group
-      this.class_change_dialog = true
+    open_dialog_class_addition () {
+      bus.$emit('open_dialog_class_addition')
     },
-    open_dialog_date_edit (start_date, completion_date, class_obj, group) {
-      this.start_date = start_date
-      this.completion_date = completion_date
-      this.selected_classinfo2 = class_obj
-      this.selected_group = group
-      this.date_edit_dialog = true
+    add_new_class (payload) {
+      this.$axios.post(`/student/${this.$route.params.student_id}/class`, {
+        classinfo_id: payload.classinfo_id,
+        start_date: payload.start_date
+      }).then(res => {
+        console.log('res s', res)
+        this.class_groups.push([res.data])
+      })
     },
-    open_dialog_deletion (class_obj, group) {
-      this.selected_classinfo3 = class_obj
-      this.selected_group = group
-      this.class_deletion_dialog = true
+    edit_date (payload) {
+      this.$axios.post(`/student/${this.$route.params.student_id}/class/edit_date`, {
+        student_class_id: payload.selected_class_item.id,
+        start_date: payload.start_date,
+        completion_date: payload.completion_date
+      }).then(res => {
+        let item_index = payload.selected_group.indexOf(payload.selected_class_item)
+        this.$set(payload.selected_group, item_index, res.data)
+      })
     },
-    add_class (new_class) {
-      this.class_groups.push([new_class])
+    del_class (payload) {
+      // 
+      // Need to modify because if a client uses filtered mode, classes which are deleted should
+      // be deleted. However, if a client uses non-filtered mode, classes which are deleted should
+      // be shown up on the page.
+      // 
+      this.$axios.post(`/student/${this.$route.params.student_id}/class/delete`,{
+        student_class_id: payload.selected_class_item.id
+      }).then(res => {
+        let item_index = payload.selected_group.indexOf(payload.selected_class_item)
+        payload.selected_group.splice(item_index, 1)
+        if (!payload.selected_group.length) {
+          this.class_groups.splice(this.class_groups.indexOf(payload.selected_group), 1)
+        }
+      })
     },
-    edit (obj) {
-      this.selected_group[this.selected_group.indexOf(obj.original_obj)] = obj.edited_obj
-    },
-    del (obj) {
-      this.selected_group.splice(this.selected_group.indexOf(obj.original_obj), 1)
-      if (!this.selected_group.length) {
-        console.log('ddd', this.class_groups.indexOf(this.selected_group))
-        this.class_groups.splice(this.class_groups.indexOf(this.selected_group), 1)
-      }
-    },
-    move (obj) {
-      // console.log(this.selected_group.indexOf(this.selected_classinfo))
-      let index = this.selected_group.indexOf(this.selected_classinfo)
-      this.selected_group[index] = obj.previous_obj
-      this.selected_group.push(obj.new_obj)
+    change_class (payload) {
+      this.$axios.post(`/student/${this.$route.params.student_id}/change_class`, {
+        classinfo_id: payload.classinfo_id,
+        start_date: payload.start_date,
+        selected_student_class_id: payload.selected_class_item.id,
+        selected_student_class_group: payload.selected_class_item.group
+      }).then(res => {
+        let original_item_index = payload.selected_group.indexOf(payload.selected_class_item)
+        this.$set(payload.selected_group, original_item_index, res.data.original_class)
+        payload.selected_group.push(res.data.new_class)
+      })
     }
   },
   created () {
@@ -146,7 +135,9 @@ export default {
       }
 
       this.class_groups = filtered_data_arr
+      // this.class_groups = pure_data
     })
+
   }
 }
 </script>

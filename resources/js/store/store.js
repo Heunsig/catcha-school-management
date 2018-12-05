@@ -2,9 +2,14 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from '../helpers/axios'
 
+import studentModule from './student'
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({
+  modules: {
+    student: studentModule
+  },
   state: {
     token: localStorage.getItem('access_token') || null
   },

@@ -15,7 +15,8 @@ Lacacy of bootstrap
 }
 */
 @import './variables.scss';
-@import './student_class.scss';
+@import './typography.scss';
+@import './student/class/index.scss';
 
 @mixin title-basic-set {
   color: #4d4d4d;
@@ -58,19 +59,16 @@ Lacacy of bootstrap
     }
   }
 
-  &typo- {
+  /*&typo- {
     &meta {
       color: #656565;
       font-size: 0.92em;
     }
 
     &stress {
-      /*
-       * Held off
-       */
       font-size: 1.14em;
     }
-  }
+  }*/
 
   &breadcrumbs {
     padding: 0 0 0 3px!important;
@@ -168,7 +166,7 @@ Lacacy of bootstrap
     }
   }
 
-  &class-group {
+  /*&class-group {
     margin-bottom: 70px;
 
     &-header {
@@ -179,7 +177,7 @@ Lacacy of bootstrap
 
   &class-group:last-child {
     margin-bottom: 0;
-  }
+  }*/
 
   /*&class {
     padding: 10px;
@@ -223,7 +221,7 @@ Lacacy of bootstrap
     border-left-color: #ed3c3c;
   }*/
   
-  &tracking-container{
+  /*&tracking-container{
     margin-top: 10px;
     display: flex;
     justify-content: center;
@@ -246,7 +244,7 @@ Lacacy of bootstrap
   &tracking-box:last-child {
     margin-left: 0px;
     margin-right: 0px;
-  }
+  }*/
 
   /*
    * "c" means "component" this indicator is for a component
@@ -259,10 +257,10 @@ Lacacy of bootstrap
   }
 }
 
-.#{$prefix}button-box {
+/*.#{$prefix}button-box {
   display: flex;
   justify-content: center;
-}
+}*/
 
 .#{$prefix}invoice {
   .#{$prefix}invoice-title {

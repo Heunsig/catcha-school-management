@@ -92,16 +92,16 @@ class StudentController extends Controller
         return response()->json(new StudentClassResource($class));
     }
 
-    public function move_class(Request $request, $student_id)
+    public function change_class(Request $request, $student_id)
     {
 
         DB::beginTransaction();
 
         try {
-            $student = Student::where('id',$student_id)->first();
+            $student = Student::where('id', $student_id)->first();
 
             $class = $student->classinfo()->newPivotStatement()
-                                            ->where('id', $request->previous_class_id)
+                                            ->where('id', $request->selected_student_class_id)
                                             ->update([
                 'completion_date' => Carbon::now()->format('Y-m-d'),
                 'updated_at' => Carbon::now(),
@@ -110,7 +110,7 @@ class StudentController extends Controller
 
             $student->classinfo()->attach($request->classinfo_id, [
                 'start_date' => $request->start_date,
-                'group' => $request->group,
+                'group' => $request->selected_student_class_group,
                 'created_by' => $request->user()->id,
                 'updated_by' => $request->user()->id,
             ]);
@@ -123,13 +123,13 @@ class StudentController extends Controller
         }
 
         $a = $student->classinfo()->withPivot('id')->orderBy('pivot_created_at', 'desc')->first()->pivot->id;
-        $previous_class = $student->classinfo()->wherePivot('id', $request->previous_class_id)->first();
+        $original_class = $student->classinfo()->wherePivot('id', $request->selected_student_class_id)->first();
         $new_class = $student->classinfo()->wherePivot('id', $a)->first();
 
 
         return response()->json([
-            'previous_obj' => new StudentClassResource($previous_class),
-            'new_obj' => new StudentClassResource($new_class)
+            'original_class' => new StudentClassResource($original_class),
+            'new_class' => new StudentClassResource($new_class)
         ]);
     }
 
@@ -137,7 +137,7 @@ class StudentController extends Controller
     {
         $student = Student::where('id', $student_id)->first();
         $class = $student->classinfo()->newPivotStatement()
-                                        ->where('id', $request->class_id)
+                                        ->where('id', $request->student_class_id)
                                         ->update([
                 'start_date' => $request->start_date,
                 'completion_date' => $request->completion_date,
@@ -146,7 +146,7 @@ class StudentController extends Controller
             ]);
 
         // $a = $student->classinfo()->withPivot('id')->orderBy('pivot_created_at', 'desc')->first()->pivot->id;
-        $class = $student->classinfo()->wherePivot('id', $request->class_id)->first();
+        $class = $student->classinfo()->wherePivot('id', $request->student_class_id)->first();
 
         return response()->json(new StudentClassResource($class));
     }
@@ -155,13 +155,13 @@ class StudentController extends Controller
     {
         $student = Student::where('id', $student_id)->first();
         $class = $student->classinfo()->newPivotStatement()
-                                      ->where('id', $request->class_id)
+                                      ->where('id', $request->student_class_id)
                                       ->update([
                                         'deleted_at' => Carbon::now(),
                                         'deleted_by' => $request->user()->id
                                       ]);
 
-        $class = $student->classinfo()->wherePivot('id', $request->class_id)->first();                                    
+        $class = $student->classinfo()->wherePivot('id', $request->student_class_id)->first();                                    
 
         return response()->json(new StudentClassResource($class));
     }

@@ -27,7 +27,7 @@
               >
                 <v-text-field
                   slot="activator"
-                  v-model="computedDateFormatted"
+                  v-model="date_formatted"
                   label="When does this student begin the class?"
                   prepend-icon="event"
                   readonly
@@ -40,48 +40,45 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="green darken-1" flat @click="$emit('close')">Disagree</v-btn>
-        <v-btn color="green darken-1" flat @click="add_class()">Agree</v-btn>
+        <v-btn color="green darken-1" flat @click="is_active = false">Disagree</v-btn>
+        <v-btn color="green darken-1" flat @click="submit()">Agree</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 <script>
+import bus from 'bus'
+
 export default {
   props: [
-    'is_active',
     'classes'
   ],
   data: () => ({
+    is_active: false,
     date_picker: false,
     start_date: '',
     selected_class_id: null,
+    // classes: []
   }),
   computed: {
-    computedDateFormatted () {
-      return this.formatDate(this.start_date)
+    date_formatted () {
+      return this.$moment(this.start_date).format('MM/DD/YYYY')
     }
   },
   methods: {
-    formatDate (date) {
-      if (!date) return null
-
-      const [year, month, day] = date.split('-')
-      return `${month}/${day}/${year}`
-    },
-    add_class () {
-      this.$axios.post(`/student/${this.$route.params.student_id}/class`, {
+    submit () {
+      this.$emit('submit', {
         classinfo_id: this.selected_class_id,
         start_date: this.start_date
-      }).then(res => {
-        console.log('res s', res)
-        this.$emit('add_class', res.data)
-        this.$emit('close')
       })
+      this.is_active = false
     },
   },
   created () {
     this.start_date = this.$moment().format("YYYY-MM-DD")
+    bus.$on('open_dialog_class_addition', (payload) => {
+      this.is_active = true
+    })
   },
 }
 </script>

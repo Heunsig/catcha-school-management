@@ -15,9 +15,53 @@ Lacacy of bootstrap
 }
 */
 
-/*@import './variables.scss';*/
+.ca-typo-title-1,
+.ca-typo-title-2,
+.ca-typo-title-3,
+.ca-typo-title-4,
+.ca-typo-title-5,
+.ca-typo-title-6 {
+  color: #4d4d4d;
+}
 
-.ca-class {
+.ca-typo-title-1 {
+  font-size: 2.5em;
+}
+
+.ca-typo-title-2 {
+  font-size: 2.14em;
+}
+
+.ca-typo-title-3 {
+  font-size: 1.79em;
+}
+
+.ca-typo-title-4 {
+  font-size: 1.43em;
+}
+
+.ca-typo-title-5 {
+  font-size: 1.07em;
+}
+
+.ca-typo-title-6 {
+  font-size: 0.71em;
+}
+
+.ca-typo-style-meta {
+  color: #656565;
+  font-size: 0.92em;
+}
+
+.ca-student-class-group {
+  margin-bottom: 70px;
+}
+
+.ca-student-class-group:last-child {
+  margin-bottom: 0;
+}
+
+.ca-student-class-item {
   -webkit-box-shadow: 0px 2px 8px 0px #d2d2d2;
           box-shadow: 0px 2px 8px 0px #d2d2d2;
   border-right: 1px solid #bcbcbc;
@@ -27,26 +71,7 @@ Lacacy of bootstrap
   padding: 15px;
 }
 
-.ca-class-header {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  /*align-items: stretch;*/
-}
-
-.ca-class-header .ca- {
-  /*&status-box {
-        padding-right: 15px;
-        text-align: center;
-        vertical-align: middle;
-        width: 90px;
-      }*/
-}
-
-.ca-class-header .ca-meta {
+.ca-student-class-item .__header {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -55,39 +80,101 @@ Lacacy of bootstrap
           align-items: center;
 }
 
-.ca-class.ca-completed {
+.ca-student-class-item .__header .__title-box .__date-box {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.ca-student-class-item._completed {
   border-left: 8px solid grey;
 }
 
-.ca-class.ca-completed .ca-status {
+.ca-student-class-item._completed .__status {
   color: grey;
 }
 
-.ca-class.ca-deleted {
+.ca-student-class-item._deleted {
   border-left: 8px solid red;
 }
 
-.ca-class.ca-deleted .ca-status {
+.ca-student-class-item._deleted .__status {
   color: red;
 }
 
-.ca-class.ca-wating {
+.ca-student-class-item._wating {
   border-left: 8px solid #e7b021;
 }
 
-.ca-class.ca-wating .ca-status {
+.ca-student-class-item._wating .__status {
   color: #e7b021;
 }
 
-.ca-class.ca-inprogress {
+.ca-student-class-item._inprogress {
   border-left: 8px solid #64d664;
 }
 
-.ca-class.ca-inprogress .ca-status {
+.ca-student-class-item._inprogress .__status {
   color: #64d664;
 }
 
-.ca- {
+.ca-menu-tracker {
+  margin-top: 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.ca-menu-tracker .__work {
+  margin-left: 7px;
+  margin-right: 7px;
+  text-align: center;
+}
+
+.ca-menu-tracker .__work:last-child {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.ca-menu-action {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  margin-bottom: 5px;
+}
+
+.ca {
+  /*&typo- {
+    &meta {
+      color: #656565;
+      font-size: 0.92em;
+    }
+
+    &stress {
+      font-size: 1.14em;
+    }
+  }*/
+  /*&class-group {
+    margin-bottom: 70px;
+
+    &-header {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  &class-group:last-child {
+    margin-bottom: 0;
+  }*/
   /*&class {
     padding: 10px;
     margin-top: 15px;
@@ -108,81 +195,93 @@ Lacacy of bootstrap
       align-items: center;
     }
   }*/
-  /*&class.ca-done {
+  /*&class.cadone {
     @extend %colored-indicator;
     border-left-color: #828282;
   }
 
-  &class.ca-ready {
+  &class.caready {
     @extend %colored-indicator;
     border-left-color: #fff33f;
   }
 
-  &class.ca-working {
+  &class.caworking {
     @extend %colored-indicator;
     border-left-color: #63d063;
   }
 
-  &class.ca-deleted {
+  &class.cadeleted {
     @extend %colored-indicator;
     border-left-color: #ed3c3c;
+  }*/
+  /*&tracking-container{
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+  }
+
+  &tracking-box {
+    margin-left: 7px;
+    margin-right: 7px;
+    text-align: center;
+
+    &-title {
+      font-size: 0.71em;
+    }
+
+    &-avatar {
+
+    }
+  }
+
+  &tracking-box:last-child {
+    margin-left: 0px;
+    margin-right: 0px;
   }*/
   /*
    * "c" means "component" this indicator is for a component
    */
 }
 
-.ca-title-1 {
+.catitle-1 {
   color: #4d4d4d;
   font-size: 2.5em;
 }
 
-.ca-title-2 {
+.catitle-2 {
   color: #4d4d4d;
   font-size: 2.14em;
 }
 
-.ca-title-3 {
+.catitle-3 {
   color: #4d4d4d;
   font-size: 1.79em;
 }
 
-.ca-title-4 {
+.catitle-4 {
   color: #4d4d4d;
   font-size: 1.43em;
 }
 
-.ca-title-5 {
+.catitle-5 {
   color: #4d4d4d;
   font-size: 1.07em;
 }
 
-.ca-typo-meta {
-  color: #656565;
-  font-size: 0.92em;
-}
-
-.ca-typo-stress {
-  /*
-       * Held off
-       */
-  font-size: 1.14em;
-}
-
-.ca-breadcrumbs {
+.cabreadcrumbs {
   padding: 0 0 0 3px !important;
   margin: 0 !important;
 }
 
-.ca-disabled {
+.cadisabled {
   color: #a5a5a5;
 }
 
-.ca-table .tbody tr .td {
+.catable .tbody tr .td {
   height: 60px !important;
 }
 
-.ca-list {
+.calist {
   padding: 0;
   margin: 0;
   list-style: none;
@@ -191,7 +290,7 @@ Lacacy of bootstrap
     list-style: none;*/
 }
 
-.ca-list-item {
+.calist-item {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -200,7 +299,7 @@ Lacacy of bootstrap
   border-bottom: 1px solid #dcdcdc;
 }
 
-.ca-list-item-avatar {
+.calist-item-avatar {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -210,11 +309,11 @@ Lacacy of bootstrap
           align-items: center;
 }
 
-.ca-list-item:last-child {
+.calist-item:last-child {
   border-bottom: none;
 }
 
-.ca-label {
+.calabel {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -223,22 +322,22 @@ Lacacy of bootstrap
           align-items: center;
 }
 
-.ca-label-title {
+.calabel-title {
   min-width: 50px;
   padding: 7px;
   font-weight: bold;
 }
 
-.ca-label-content {
+.calabel-content {
   padding: 7px;
 }
 
-.ca-label-wrap {
+.calabel-wrap {
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
 }
 
-.ca-tab {
+.catab {
   padding: 0;
   margin: 0;
   list-style: none;
@@ -253,14 +352,14 @@ Lacacy of bootstrap
           justify-content: flex-start;
 }
 
-.ca-tab-item {
+.catab-item {
   padding: 10px;
   font-size: 1.14em;
   font-weight: bold;
   cursor: pointer;
 }
 
-.ca-tab-item:hover {
+.catab-item:hover {
   background: #3f51b5;
   color: #fff;
   /*padding: 10px;
@@ -268,7 +367,7 @@ Lacacy of bootstrap
       font-weight: bold;*/
 }
 
-.ca-tab-item.ca-active {
+.catab-item.ca-active {
   background: #3f51b5;
   color: #fff;
   /*padding: 10px;
@@ -276,63 +375,17 @@ Lacacy of bootstrap
       font-weight: bold;*/
 }
 
-.ca-class-group {
-  margin-bottom: 70px;
-}
-
-.ca-class-group-header {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-}
-
-.ca-class-group:last-child {
-  margin-bottom: 0;
-}
-
-.ca-tracking-container {
-  margin-top: 10px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-}
-
-.ca-tracking-box {
-  margin-left: 7px;
-  margin-right: 7px;
-  text-align: center;
-}
-
-.ca-tracking-box-title {
-  font-size: 0.71em;
-}
-
-.ca-tracking-box:last-child {
-  margin-left: 0px;
-  margin-right: 0px;
-}
-
-.ca-c-name {
+.cac-name {
   word-wrap: break-word;
   overflow-wrap: break-word;
 }
 
-.ca-button-box {
-  display: -webkit-box;
-  display: -ms-flexbox;
+/*.cabutton-box {
   display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-}
+  justify-content: center;
+}*/
 
-.ca-invoice .ca-invoice-title {
+.cainvoice .cainvoice-title {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -344,11 +397,11 @@ Lacacy of bootstrap
   border-bottom: 1px solid #d8d8d8;
 }
 
-.ca-invoice .ca-invoice-body {
+.cainvoice .cainvoice-body {
   padding: 14px;
 }
 
-.ca-invoice .ca-invoice-body-header {
+.cainvoice .cainvoice-body-header {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -358,7 +411,7 @@ Lacacy of bootstrap
   margin-bottom: 8px;
 }
 
-.ca-invoice .ca-invoice-detail {
+.cainvoice .cainvoice-detail {
   padding: 0;
   margin: 0;
   list-style: none;
@@ -367,7 +420,7 @@ Lacacy of bootstrap
   border-bottom: 1px dashed #aaaaaa;
 }
 
-.ca-invoice .ca-invoice-detail .ca-item {
+.cainvoice .cainvoice-detail .caitem {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -376,11 +429,11 @@ Lacacy of bootstrap
           align-items: center;
 }
 
-.ca-invoice .ca-invoice-detail .ca-item .ca-item-name {
+.cainvoice .cainvoice-detail .caitem .caitem-name {
   font-size: 1.21em;
 }
 
-.ca-invoice .ca-invoice-detail .ca-item .ca-price {
+.cainvoice .cainvoice-detail .caitem .caprice {
   font-size: 1.21em;
 }
 

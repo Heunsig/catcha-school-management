@@ -1,44 +1,41 @@
 <template>
   <v-dialog v-model="is_active" persistent max-width="400">
     <v-card>
-      <v-card-title class="ca-title-4">Do you want to delete {{ selected_classinfo.name }}?</v-card-title>
+      <v-card-title class="ca-title-4">Do you want to delete {{ selected_class_item.name }}?</v-card-title>
       <v-card-text>
         
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="green darken-1" flat @click="$emit('close')">Disagree</v-btn>
-        <v-btn color="green darken-1" flat @click="delete_class()">Agree</v-btn>
+        <v-btn color="green darken-1" flat @click="is_active = false">Disagree</v-btn>
+        <v-btn color="green darken-1" flat @click="submit()">Agree</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 <script>
+import bus from 'bus'
 export default {
-  props: [
-    'is_active',
-    'selected_classinfo',
-    'fn_open_deletion_dialog'
-  ],
   data: () => ({
-
+    is_active: false,
+    selected_class_item: {},
+    selected_group: []
   }),
   methods: {
-    delete_class () {
-      console.log(this.selected_classinfo)
-      this.$axios.post(`/student/${this.$route.params.student_id}/class/delete`,{
-        class_id: this.selected_classinfo.id
-      }).then(res => {
-        this.$emit('del', {
-          original_obj: this.selected_classinfo
-        })
-        this.$emit('close')
-        // console.log('res', res)
-        // this.$emit('del', {
-        //   original_obj: this.selected_classinfo
-        // })
+    submit () {
+      this.$emit('submit', {
+        selected_class_item: this.selected_class_item,
+        selected_group: this.selected_group
       })
+      this.is_active = false
     }
+  },
+  created () {
+    bus.$on('open_dialog_deletion', (payload) => {
+      this.selected_class_item = payload.selected_class_item
+      this.selected_group = payload.selected_group
+      this.is_active = true
+    })
   }
 }
 </script>

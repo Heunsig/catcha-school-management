@@ -1,0 +1,60 @@
+.#{$prefix}-student-class-item {
+  box-shadow: 0px 2px 8px 0px #d2d2d2;
+  border-right: 1px solid #bcbcbc;
+  border-bottom: 1px solid #bcbcbc;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  padding: 15px;
+
+  .__header {
+    display: flex;
+    align-items: center;
+
+    .__title-box {
+      .__date-box {
+        display: flex;
+        align-items: center;
+
+        .__date {
+          
+        }
+        
+        .__action {
+
+        }
+
+      } 
+    }
+  }
+
+
+  &._completed {
+    border-left: 8px solid grey;
+    .__status {
+      color: grey;
+    }
+
+  }
+
+  &._deleted {
+    border-left: 8px solid red;
+    .__status {
+      color: red;
+    }
+  }
+
+  &._wating {
+    border-left: 8px solid #e7b021;
+    .__status {
+      color: #e7b021;
+    }
+  }
+
+  &._inprogress {
+    border-left: 8px solid #64d664;
+    .__status {
+      color: #64d664;
+    }
+  }
+
+}

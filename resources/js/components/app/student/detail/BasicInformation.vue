@@ -9,37 +9,37 @@
           <v-flex xs12>
             <div class="ca-label">
               <div class="ca-label-title ca-title-5">Email</div>
-              <div class="ca-label-content">{{ student.email }}</div>
+              <div class="ca-label-content">{{ basic_information.email }}</div>
             </div>
           </v-flex>
           <v-flex xs4>
             <div class="ca-label">
               <div class="ca-label-title ca-title-5">First Name</div>
-              <div class="ca-label-content">{{ student.first_name }}</div>
+              <div class="ca-label-content">{{ basic_information.first_name }}</div>
             </div>
           </v-flex>
           <v-flex xs4>
             <div class="ca-label">
               <div class="ca-label-title ca-title-5">Middle Name</div>
-              <div class="ca-label-content">{{ student.middle_name }}</div>
+              <div class="ca-label-content">{{ basic_information.middle_name }}</div>
             </div>
           </v-flex>
           <v-flex xs4>
             <div class="ca-label">
               <div class="ca-label-title ca-title-5">Last Name</div>
-              <div class="ca-label-content">{{ student.last_name }}</div>
+              <div class="ca-label-content">{{ basic_information.last_name }}</div>
             </div>
           </v-flex>
           <v-flex xs12>
             <div class="ca-label">
               <div class="ca-label-title ca-title-5">Nickname</div>
-              <div class="ca-label-content">{{ student.nickname }}</div>
+              <div class="ca-label-content">{{ basic_information.nickname }}</div>
             </div>
           </v-flex>
           <v-flex xs12>
             <div class="ca-label ca-label-wrap">
               <div class="ca-label-title ca-title-5">Note</div>
-              <div class="ca-label-content">{{ student.note }}</div>
+              <div class="ca-label-content">{{ basic_information.note }}</div>
             </div>
           </v-flex>
         </v-layout>
@@ -49,14 +49,13 @@
 </template>
 <script>
 export default {
-  data: () => ({
-    student: {}
-  }),
-  created () {
-    this.$axios.get(`/student/${this.$route.params.student_id}/basic_information`).then(res => {
-      console.log('res1', res)
-      this.student = res.data
-    })
+  computed: {
+    basic_information () {
+      return this.$store.getters['student/basic_information']
+    }
   }
+  // data: () => ({
+  //   student: {}
+  // })
 }
 </script>

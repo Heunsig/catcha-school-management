@@ -15,7 +15,7 @@ import moment from 'moment'
 
 import router from './router'
 import store from './store/store'
-import globalMixin from './mixin/global'
+import globalMixin from './mixins/global'
 
 Vue.use(Vuetify)
 Vue.use(VeeValidate)

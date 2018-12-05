@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="is_active" persistent max-width="400">
     <v-card>
-      <v-card-title class="ca-title-4">"{{ selected_classinfo.name }}" moves to which?</v-card-title>
+      <v-card-title class="ca-title-4">"{{ selected_class_item.name }}" moves to which?</v-card-title>
       <v-card-text>
         <v-container fluid class="pa-0">
           <v-layout wrap>
@@ -27,7 +27,7 @@
               >
                 <v-text-field
                   slot="activator"
-                  v-model="computedDateFormatted"
+                  v-model="date_formatted"
                   label="When does this student begin the class?"
                   prepend-icon="event"
                   readonly
@@ -40,55 +40,49 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="green darken-1" flat @click="$emit('close')">Disagree</v-btn>
-        <v-btn color="green darken-1" flat @click="move_class()">Agree</v-btn>
+        <v-btn color="green darken-1" flat @click="is_active = false">Disagree</v-btn>
+        <v-btn color="green darken-1" flat @click="submit()">Agree</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 <script>
+import bus from 'bus'
 export default {
   props: [
-    'is_active',
-    'classes',
-    'selected_classinfo'
+    'classes'
   ],
   data: () => ({
+    is_active: false,
     date_picker: false,
     start_date: '',
     selected_class_id: null,
+    selected_class_item: {},
+    selected_group: []
   }),
   computed: {
-    computedDateFormatted () {
-      return this.formatDate(this.start_date)
+    date_formatted () {
+      return this.$moment(this.start_date).format('MM/DD/YYYY')
     }
   },
   methods: {
-    formatDate (date) {
-      if (!date) return null
-
-      const [year, month, day] = date.split('-')
-      return `${month}/${day}/${year}`
-    },
-    move_class () {
-      this.$axios.post(`/student/${this.$route.params.student_id}/move_class`, {
+    submit () {
+      this.$emit('submit', {
         classinfo_id: this.selected_class_id,
         start_date: this.start_date,
-        previous_class_id: this.selected_classinfo.id,
-        group: this.selected_classinfo.group
-      }).then(res => {
-        console.log('res', res)
-
-        this.$emit('move', {
-          new_obj: res.data.new_obj,
-          previous_obj: res.data.previous_obj
-        })
-        this.$emit('close')
+        selected_class_item: this.selected_class_item,
+        selected_group: this.selected_group
       })
+      this.is_active = false
     }
   },
   created () {
     this.start_date = this.$moment().format("YYYY-MM-DD")
+    bus.$on('open_dialog_class_change', (payload) => {
+      this.selected_class_item = payload.selected_class_item
+      this.selected_group = payload.selected_group
+      this.is_active = true
+    })
   }
 }
 </script>
