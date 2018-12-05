@@ -43,7 +43,6 @@ import bus from 'bus'
 
 import NewClassAdditionDialog from './particles/class/NewClassAdditionDialog'
 import ClassChangeDialog from './particles/class/ClassChangeDialog'
-import CaClassItem from './particles/class/CaClassItem'
 import DateEditDialog from './particles/class/DateEditDialog'
 import ClassDeletionDialog from './particles/class/ClassDeletionDialog'
 
@@ -53,7 +52,6 @@ export default {
   components: {
     NewClassAdditionDialog,
     ClassChangeDialog,
-    CaClassItem,
     DateEditDialog,
     ClassDeletionDialog,
     ClassGroup
