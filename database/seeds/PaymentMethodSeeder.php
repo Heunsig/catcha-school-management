@@ -14,12 +14,15 @@ class PaymentMethodSeeder extends Seeder
     {
         DB::table('payment_method')->insert([
             [
+                'key' => 'CA',
                 'method' => 'Cash'
             ],
             [
+                'key' => 'CC',
                 'method' => 'Credit Card'
             ],
             [
+                'key' => 'PP',
                 'method' => 'Paypal'
             ],
         ]);

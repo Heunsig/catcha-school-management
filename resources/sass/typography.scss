@@ -1,6 +1,7 @@
 $typo: #{$prefix}-typo;
 
 %title-setup{
+  font-weight: bold;
   color: #4d4d4d;
 }
 
@@ -36,10 +37,51 @@ $typo: #{$prefix}-typo;
   }  
 }
 
+.#{$typo} {
+  &-1 {
+    font-size: 2.5em;
+  }
+
+  &-2 {
+    font-size: 2.14em;
+  }
+
+  &-3 {
+    font-size: 1.79em;
+  }
+
+  &-4 {
+    font-size: 1.43em;
+  }
+
+  &-5 {
+    font-size: 1.07em; 
+  }
+
+  &-6 { 
+    font-size: 0.71em;
+  }
+}
+
 
 .#{$typo}-style {
   &-meta {
     color: #656565;
     font-size: 0.92em;
+
+    &-big {
+      color: #656565;
+      font-size: 1.29em;
+    }
+
+    &-medium {
+      color: #656565;
+      font-size: 1em;
+    }
+
+    &-small {
+      color: #656565;
+      font-size: 0.86em;
+    }
   }
 }

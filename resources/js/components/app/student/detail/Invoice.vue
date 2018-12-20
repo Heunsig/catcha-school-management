@@ -1,200 +1,142 @@
 <template>
   <v-card>
     <v-card-title>
-      <div class="ca-title-4">Invoice</div>
+      <div class="ca-typo-title-2">Invoice</div>
       <v-spacer></v-spacer>
-      <v-btn depressed color="primary">Add</v-btn>
+      <v-btn depressed color="primary" @click="open_dialog_invoice_addition()">Issue Receipt</v-btn>
     </v-card-title>
     <v-card-text>
+      <div class="ca-filter-box">
+        <v-checkbox v-model="filtered_by" color="green lighten-1" class="__check-box" hide-details label="Paid" value="Paid"></v-checkbox>
+        <v-checkbox v-model="filtered_by" color="amber darken-1" class="__check-box" hide-details label="Waiting" value="Waiting"></v-checkbox>
+        <v-checkbox v-model="filtered_by" color="grey darken-1" class="__check-box" hide-details label="Canceled" value="Canceled"></v-checkbox>
+        <!-- <v-checkbox v-model="filtered_by" class="__check-box" hide-details label="Refunded" value="Refunded"></v-checkbox> -->
+        <v-checkbox v-model="filtered_by" class="__check-box" hide-details label="Deleted" value="Deleted"></v-checkbox>
+      </div>
       <v-container grid-list-lg fluid class="pa-0">
         <v-layout wrap>
-          <v-flex xs12>
-            <div class="ca-invoice elevation-4">
-              <div class="ca-invoice-title">
-                <div class="ca-title-4 mr-2">#1</div>
-                <v-chip label color="green lighten-1" text-color="white">
-                  Paid
-                </v-chip>
-                <v-spacer></v-spacer>
-                <v-btn icon>
-                  <v-icon>local_printshop</v-icon>
-                </v-btn>
-                <v-btn icon>
-                  <v-icon>edit</v-icon>
-                </v-btn>
-                <v-btn icon>
-                  <v-icon>remove</v-icon>
-                </v-btn>
-              </div>
-              <div class="ca-invoice-body">
-                <div class="ca-invoice-body-header mb-3">
-                  <strong class="pr-1">Date Issued</strong>
-                  <span>11/26/2018</span>
-                  <v-spacer></v-spacer>
-                  <div class="ca-tracking-box">
-                    <div class="ca-tracking-box-title">Created By</div>
-                    <div class="ca-tracking-box-avatar">
-                      <v-avatar
-                        size="30"
-                        color="grey lighten-4"
-                      >
-                        <img :src="AVATAR_BASE_URL + '/40/Heunsig.png'" alt="avatar">
-                      </v-avatar>
-                    </div>
-                  </div>
-                  <div class="ca-tracking-box">
-                    <div class="ca-tracking-box-title">Updated By</div>
-                    <div class="ca-tracking-box-avatar">
-                      <v-avatar
-                        size="30"
-                        color="grey lighten-4"
-                      >
-                        <img :src="AVATAR_BASE_URL + '/40/Heunsig.png'" alt="avatar">
-                      </v-avatar>
-                    </div>
-                  </div>
-                  <div class="ca-tracking-box">
-                    <div class="ca-tracking-box-title">Deleted By</div>
-                    <div class="ca-tracking-box-avatar">
-                      <v-avatar
-                        size="30"
-                        color="grey lighten-4"
-                      >
-                        <!-- <img :src="AVATAR_BASE_URL + '/40/Heunsig.png'" alt="avatar"> -->
-                      </v-avatar>
-                    </div>
-                  </div>
-                </div>
-                <ul class="ca-invoice-detail">
-                  <li class="ca-item">
-                    <div class="ca-item-name">ESL Program</div>
-                    <v-spacer></v-spacer>
-                    <div class="ca-price">$1,242</div>
-                  </li>
-                </ul>
-                <div>
-                  <strong>Total</strong>
-                  <span>$1,242</span>
-                </div>
-              </div>
-            </div>
+          <v-flex xs12 
+            v-for="invoice in filtered_invoices" 
+            :key="invoice.id"
+          >
+            <invoice
+              :invoice="invoice"
+            ></invoice>
           </v-flex>
         </v-layout>
       </v-container>
     </v-card-text>
+    <new-invoice-addition-dialog
+      :payment_methods="payment_methods"
+      :products="products"
+      @add_invoice="add_invoice($event)"
+    ></new-invoice-addition-dialog>
+    
+    <status-change-dialog
+      @change_status="change_status($event)"
+    >
+    </status-change-dialog>
+
+    <refund-dialog
+      @refund="refund($event)"
+    >
+    </refund-dialog>
+
+    <deletion-dialog
+      @del_invoice="del_invoice($event)"
+    ></deletion-dialog>
+
+    <!-- <hello-world ref="foo"></hello-world> -->
+
   </v-card>
 </template>
 <script>
-  export default {
-    data () {
-      return {
-        headers: [
-          {
-            text: 'Dessert (100g serving)',
-            align: 'left',
-            sortable: false,
-            value: 'name'
-          },
-          { text: 'Calories', value: 'calories' },
-          { text: 'Fat (g)', value: 'fat' },
-          { text: 'Carbs (g)', value: 'carbs' },
-          { text: 'Protein (g)', value: 'protein' },
-          { text: 'Iron (%)', value: 'iron' }
-        ],
-        desserts: [
-          {
-            value: false,
-            name: 'Frozen Yogurt',
-            calories: 159,
-            fat: 6.0,
-            carbs: 24,
-            protein: 4.0,
-            iron: '1%',
-            expanded: false
-          },
-          {
-            value: false,
-            name: 'Ice cream sandwich',
-            calories: 237,
-            fat: 9.0,
-            carbs: 37,
-            protein: 4.3,
-            iron: '1%'
-          },
-          {
-            value: false,
-            name: 'Eclair',
-            calories: 262,
-            fat: 16.0,
-            carbs: 23,
-            protein: 6.0,
-            iron: '7%'
-          },
-          {
-            value: false,
-            name: 'Cupcake',
-            calories: 305,
-            fat: 3.7,
-            carbs: 67,
-            protein: 4.3,
-            iron: '8%'
-          },
-          {
-            value: false,
-            name: 'Gingerbread',
-            calories: 356,
-            fat: 16.0,
-            carbs: 49,
-            protein: 3.9,
-            iron: '16%'
-          },
-          {
-            value: false,
-            name: 'Jelly bean',
-            calories: 375,
-            fat: 0.0,
-            carbs: 94,
-            protein: 0.0,
-            iron: '0%'
-          },
-          {
-            value: false,
-            name: 'Lollipop',
-            calories: 392,
-            fat: 0.2,
-            carbs: 98,
-            protein: 0,
-            iron: '2%'
-          },
-          {
-            value: false,
-            name: 'Honeycomb',
-            calories: 408,
-            fat: 3.2,
-            carbs: 87,
-            protein: 6.5,
-            iron: '45%'
-          },
-          {
-            value: false,
-            name: 'Donut',
-            calories: 452,
-            fat: 25.0,
-            carbs: 51,
-            protein: 4.9,
-            iron: '22%'
-          },
-          {
-            value: false,
-            name: 'KitKat',
-            calories: 518,
-            fat: 26.0,
-            carbs: 65,
-            protein: 7,
-            iron: '6%'
-          }
-        ]
+import Vue from 'vue'
+
+import bus from 'bus'
+import Invoice from './particles/invoice/Invoice'
+import NewInvoiceAdditionDialog from './particles/invoice/NewInvoiceAdditionDialog'
+import StatusChangeDialog from './particles/invoice/StatusChangeDialog'
+import RefundDialog from './particles/invoice/RefundDialog'
+import DeletionDialog from './particles/invoice/DeletionDialog'
+
+// import HelloWorld from '../../../../prints/receipt.js'
+
+// import { Printd } from 'printd'
+
+
+export default {
+  components: {
+    Invoice,
+    NewInvoiceAdditionDialog,
+    StatusChangeDialog,
+    RefundDialog,
+    DeletionDialog
+  },
+  data: () => ({
+    payment_methods: [],
+    products: [],
+    invoices: [],
+    filtered_by: [
+      'Paid',
+      'Waiting',
+      'Canceled'
+    ],
+  }),
+  computed: {
+    filtered_invoices () {
+      let $this = this
+      let filtered_data = []
+      if (this.filtered_by.indexOf('Deleted') > -1 ) { 
+        filtered_data = this.invoices
+      } else {
+        filtered_data = this._.filter(this.invoices, ['deleted_at', null])
       }
+
+      return this._.filter(filtered_data, function(o) {
+        return $this.filtered_by.indexOf(o.status) > -1 ? true : false
+      })
     }
+  },
+  methods: {
+    open_dialog_invoice_addition () {
+      bus.$emit('open_dialog_invoice_addition')
+    },
+    add_invoice (obj) {
+      this.invoices.push(obj)
+    },
+    change_status (obj) {
+      console.log('new', obj.new)
+      let index = this.invoices.indexOf(obj.old)
+      this.$set(this.invoices, index, obj.new)
+    },
+    refund (obj) {
+      let index = this.invoices.indexOf(obj.old)
+      this.$set(this.invoices, index, obj.new)
+    },
+    del_invoice (obj) {
+      let index = this.invoices.indexOf(obj.old)
+      this.$set(this.invoices, index, obj.new)
+    },
+    print () {
+      //  console.log(Vue.compile('<div>Hello world</div>'))
+      // const d = new Printd()
+      // d.print(document.getElementById('test'), this.cssText )
+    }
+  },
+  created () {
+    this.$axios.get(`/payment_method`).then(res => {
+      this.payment_methods = res.data
+    })
+
+    this.$axios.get('/product').then(res => {
+      this.products = res.data
+    })
+
+    this.$axios.get('/invoice').then(res => {
+      this.invoices = res.data
+      // console.log('invoice', res.data)
+    })
   }
+}
 </script>

@@ -12,6 +12,7 @@ import lodash from 'lodash'
 import axios from './helpers/axios'
 import configData from './config'
 import moment from 'moment'
+import account from 'accounting-js'
 
 import router from './router'
 import store from './store/store'
@@ -25,6 +26,7 @@ Vue.prototype.$config = configData
 Vue.prototype.$moment = moment
 Vue.prototype._ = lodash
 Vue.prototype.$axios = axios
+Vue.prototype.$account = account
 
 
 const app = new Vue({

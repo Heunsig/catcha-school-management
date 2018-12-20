@@ -18,8 +18,10 @@ class CreatePaymentProductTable extends Migration
             $table->integer('parent_product_id')->unsigned()->nullable();
             $table->string('name');
             $table->string('description')->nullable();
-            $table->integer('price');
-            $table->integer('quantity');
+            $table->date('start_date')->nullable();
+            $table->date('completion_date')->nullable();
+            $table->integer('price')->nullable();
+            $table->integer('quantity')->nullable();
             $table->datetime('created_at');
             $table->integer('created_by')->unsigned();
             $table->datetime('updated_at');

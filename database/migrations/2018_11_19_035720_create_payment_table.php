@@ -15,7 +15,8 @@ class CreatePaymentTable extends Migration
     {
         Schema::create('payment', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('payment_method_id')->unsigned();
+            $table->integer('student_id')->unsigned();
+            $table->string('payment_method_key', 2);
             $table->string('status', 50);
             $table->boolean('is_refund')->default(false);
             $table->datetime('payment_date');

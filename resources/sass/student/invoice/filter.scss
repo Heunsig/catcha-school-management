@@ -1,0 +1,16 @@
+.#{$prefix}-filter-box {
+  display: flex;
+  justify-content: flex-end;
+  margin: 25px 0;
+
+  .__check-box {
+    flex: none!important;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 0px;
+
+    &:last-child {
+      margin-right: 0px;
+    }
+  }
+}

@@ -1,0 +1,19 @@
+.#{$prefix}-table {
+  width: 100%;
+  border-collapse: collapse;
+  
+  &.#{$prefix}-border {
+    tr td {
+      border: 1px solid #aaaaaa;
+    }
+  }
+
+  thead tr {
+    border-bottom: 1px solid #aaaaaa;
+    height: 35px;
+  }
+
+  td {
+    padding: 10px 0;
+  }
+}

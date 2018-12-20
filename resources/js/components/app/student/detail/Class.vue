@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-card-title>
-      <div class="ca-title-4">Classes</div>
+      <div class="ca-typo-title-2">Classes</div>
       <v-spacer></v-spacer>
       <v-btn
         depressed

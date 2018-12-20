@@ -14,7 +14,7 @@ class CreatePaymentMethodTable extends Migration
     public function up()
     {
         Schema::create('payment_method', function (Blueprint $table) {
-            $table->increments('id');
+            $table->string('key', 2)->primary();
             $table->string('method', 50);
         });
     }

@@ -1,6 +1,11 @@
 export default {
   data: () => ({
-    RPPI: [ 30, 60, 90, { "text": "All", "value": -1 } ]
+    RPPI: [ 30, 60, 90, { "text": "All", "value": -1 } ],
+    STATUS_ITEMS: [
+      'Paid',
+      'Waiting',
+      'Canceled'
+    ]
   }),
   computed: {
     APP_NAME () {
@@ -11,6 +16,17 @@ export default {
     },
     AVATAR_BASE_URL () {
       return this.$config.AVATAR_BASE_URL
+    }
+  },
+  methods: {
+    makeid () {
+      var text = "";
+      var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+      for (var i = 0; i < 5; i++)
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+      return text;
     }
   }
 }

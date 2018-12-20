@@ -17,8 +17,11 @@ class CreateLinkPaymentProductTable extends Migration
             $table->increments('id');
             $table->integer('payment_id')->unsigned();
             $table->integer('product_id')->unsigned();
-            $table->integer('price');
-            $table->integer('quantity');
+            $table->boolean('is_refunded')->nullable();
+            $table->integer('price')->nullable();
+            $table->integer('quantity')->nullable();
+            $table->date('start_date')->nullable();
+            $table->date('completion_date')->nullable();
             $table->string('note')->nullable();
         });
     }

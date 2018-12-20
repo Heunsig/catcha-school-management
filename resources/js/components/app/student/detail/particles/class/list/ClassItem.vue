@@ -35,19 +35,31 @@
           <v-card>
             <v-card-text>
               <div class="ca-menu-action">
-                <v-btn
-                  depressed
-                  @click="open_dialog_class_change(item, group)"
-                  :disabled="is_last() ? false:true"
-                >
-                  Change
-                </v-btn>
-                <v-btn
-                  depressed
-                  @click="open_dialog_deletion(item, group)"
-                >
-                  Delete
-                </v-btn>
+                <ul class="__button-list">
+                  <li class="__button">
+                    <v-btn
+                      depressed
+                      block
+                      color="yellow darken-3"
+                      dark
+                      @click="open_dialog_class_change(item, group)"
+                      v-if="is_last()"
+                    >
+                      Change
+                    </v-btn>
+                  </li>
+                  <li class="__button">
+                    <v-btn
+                      depressed
+                      block
+                      color="red"
+                      dark
+                      @click="open_dialog_deletion(item, group)"
+                    >
+                      Delete
+                    </v-btn>
+                  </li>
+                </ul>
               </div>
               <v-divider></v-divider>
               <tracking-box

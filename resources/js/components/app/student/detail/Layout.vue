@@ -5,7 +5,7 @@
         <v-card class="elevation-0 transparent">
           <v-card-title>
             <div>
-              <h1 class="ca-title-1">{{ full_name }}'s Details</h1>
+              <h1 class="ca-typo-title-1">{{ full_name }}'s Details</h1>
               <v-breadcrumbs :items="breadcrumbs" class="ca-breadcrumbs">
                 <template slot="item" slot-scope="props">
                   <span v-if="props.item.disabled" :class="[props.item.disabled && 'ca-disabled']">{{ props.item.text }}</span>
@@ -23,14 +23,15 @@
               <v-card>
                 <v-img :src="AVATAR_BASE_URL + '/510/'+ full_name +'.png'" aspect-ratio="1.3"></v-img>
                 <v-card-text>
-                  <div class="ca-title-3 mb-2 ca-c-name">
+                  <div class="ca-typo-title-3 mb-2">
                     <span class="flag-icon flag-icon-kr"></span>
-                    {{ full_name }}<small class="ml-1">({{ nickname }})</small>
+                    {{ full_name }}
+                    <small class="ml-1">({{ nickname }})</small>
                   </div>
-                  <div class="ca-title-5">
+                  <div class="ca-typo-style-meta-medium">
                     {{ email }}
                   </div>
-                  <div class="ca-title-5">
+                  <div class="ca-typo-style-meta-medium">
                     217-760-1587
                   </div>
                 </v-card-text>
@@ -39,81 +40,10 @@
             <v-flex xs12>
               <v-card>
                 <v-card-title>
-                  <div class="ca-title-4">Latest activity</div>
+                  <div class="ca-typo-title-4">Latest activity</div>
                 </v-card-title>
                 <v-card-text>
-                  <ul class="ca-list">
-                    <li class="ca-list-item">
-                      <div class="ca-list-item-avatar">
-                        <v-avatar
-                          size="30"
-                          color="grey lighten-4"
-                        >
-                          <img :src="AVATAR_BASE_URL + '/50/Heunsig.png'" alt="avatar">
-                        </v-avatar>
-                      </div>
-                      <div class="ca-list-item-content">
-                        <div class=""><strong>Heunsig</strong> Created this stduent's profile</div>
-                        <div class="ca-typo-meta">11/25/2018</div>
-                      </div>
-                    </li>
-                    <li class="ca-list-item">
-                      <div class="ca-list-item-avatar">
-                        <v-avatar
-                          size="30"
-                          color="grey lighten-4"
-                        >
-                          <img :src="AVATAR_BASE_URL + '/50/Heunsig.png'" alt="avatar">
-                        </v-avatar>
-                      </div>
-                      <div class="ca-list-item-content">
-                        <div class=""><strong>Heunsig</strong> Created this stduent's profile</div>
-                        <div class="ca-typo-meta">11/25/2018</div>
-                      </div>
-                    </li>
-                    <li class="ca-list-item">
-                      <div class="ca-list-item-avatar">
-                        <v-avatar
-                          size="30"
-                          color="grey lighten-4"
-                        >
-                          <img :src="AVATAR_BASE_URL + '/50/Heunsig.png'" alt="avatar">
-                        </v-avatar>
-                      </div>
-                      <div class="ca-list-item-content">
-                        <div class=""><strong>Heunsig</strong> Created this stduent's profile</div>
-                        <div class="ca-typo-meta">11/25/2018</div>
-                      </div>
-                    </li>
-                    <li class="ca-list-item">
-                      <div class="ca-list-item-avatar">
-                        <v-avatar
-                          size="30"
-                          color="grey lighten-4"
-                        >
-                          <img :src="AVATAR_BASE_URL + '/50/Heunsig.png'" alt="avatar">
-                        </v-avatar>
-                      </div>
-                      <div class="ca-list-item-content">
-                        <div class=""><strong>Heunsig</strong> Created this stduent's profile</div>
-                        <div class="ca-typo-meta">11/25/2018</div>
-                      </div>
-                    </li>
-                    <li class="ca-list-item">
-                      <div class="ca-list-item-avatar">
-                        <v-avatar
-                          size="30"
-                          color="grey lighten-4"
-                        >
-                          <img :src="AVATAR_BASE_URL + '/50/Heunsig.png'" alt="avatar">
-                        </v-avatar>
-                      </div>
-                      <div class="ca-list-item-content">
-                        <div class=""><strong>Heunsig</strong> Created this stduent's profile</div>
-                        <div class="ca-typo-meta">11/25/2018</div>
-                      </div>
-                    </li>
-                  </ul>
+                  <latest-activity-list></latest-activity-list>
                 </v-card-text>
                 <v-card-actions>
                   <v-btn depressed small block color="transparent" class="blue--text">More</v-btn>
@@ -145,7 +75,11 @@
   </v-container>
 </template>
 <script>
+import LatestActivityList from './particles/latest_activity/List'
 export default {
+  components: {
+    LatestActivityList
+  },
   data: () => ({
     breadcrumbs: [
       {

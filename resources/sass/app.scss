@@ -14,66 +14,17 @@ Lacacy of bootstrap
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
 */
+@import './reset.scss';
 @import './variables.scss';
 @import './typography.scss';
+@import './breadcrumbs.scss';
+@import './list.scss';
+@import './table.scss';
 @import './student/class/index.scss';
-
-@mixin title-basic-set {
-  color: #4d4d4d;
-}
-
-@mixin list-style-reset {
-  padding: 0;
-  margin: 0;
-  list-style: none;
-}
-
-%colored-indicator {
-  border-left-style: solid;
-  border-left-width: 4px;
-}
+@import './student/invoice/index.scss';
+@import './etc.scss';
 
 .#{$prefix} {
-  &title- {
-    &1 {
-      @include title-basic-set;
-      font-size: 2.5em;
-    }
-    &2 {
-      @include title-basic-set;
-      font-size: 2.14em;
-    }
-    &3 { 
-      @include title-basic-set;
-      font-size: 1.79em;
-    }
-    &4 {
-      @include title-basic-set;
-      font-size: 1.43em;
-    }
-    &5 {
-      @include title-basic-set;
-      font-size: 1.07em; 
-    }
-    &6 { 
-    }
-  }
-
-  /*&typo- {
-    &meta {
-      color: #656565;
-      font-size: 0.92em;
-    }
-
-    &stress {
-      font-size: 1.14em;
-    }
-  }*/
-
-  &breadcrumbs {
-    padding: 0 0 0 3px!important;
-    margin: 0!important;
-  }
 
   &disabled {
     color: #a5a5a5;
@@ -89,31 +40,6 @@ Lacacy of bootstrap
     }
   }
 
-  &list {
-    @include list-style-reset;
-    /*padding: 0;
-    margin: 0;
-    list-style: none;*/
-
-    &-{
-      &item {
-        display: flex;
-        padding-bottom: 7px;
-        margin-bottom: 7px;
-        border-bottom: 1px solid #dcdcdc;
-
-        &-avatar {
-          display: flex;
-          min-width: 40px;
-          align-items: center;
-        }
-      }
-
-      &item:last-child {
-        border-bottom: none;
-      }
-    }
-  }
 
   &label {
     display: flex;
@@ -136,9 +62,6 @@ Lacacy of bootstrap
 
   &tab {
     @include list-style-reset;
-    /*padding: 0;
-    margin: 0;
-    list-style: none;*/
     display: flex;
     justify-content: flex-start;
 
@@ -152,76 +75,16 @@ Lacacy of bootstrap
     &-item:hover{
       background: #3f51b5;
       color: #fff;
-      /*padding: 10px;
-      font-size: 1.14em;
-      font-weight: bold;*/
     }
 
     &-item.ca-active{
       background: #3f51b5;
       color: #fff;
-      /*padding: 10px;
-      font-size: 1.14em;
-      font-weight: bold;*/
     }
   }
 
-  /*&class-group {
-    margin-bottom: 70px;
-
-    &-header {
-      display: flex;
-      align-items: center;
-    }
-  }
-
-  &class-group:last-child {
-    margin-bottom: 0;
-  }*/
-
-  /*&class {
-    padding: 10px;
-    margin-top: 15px;
-    margin-bottom: 15px;
-    &-header {
-      display: flex;
-      align-items: center;
-      margin-bottom: 7px;
-
-      &-name {
-        font-size: 1.29em;
-      }
-    }
-
-    &-footer {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-    }
-  }*/
-
-
-  /*&class.#{$prefix}done {
-    @extend %colored-indicator;
-    border-left-color: #828282;
-  }
-
-  &class.#{$prefix}ready {
-    @extend %colored-indicator;
-    border-left-color: #fff33f;
-  }
-
-  &class.#{$prefix}working {
-    @extend %colored-indicator;
-    border-left-color: #63d063;
-  }
-
-  &class.#{$prefix}deleted {
-    @extend %colored-indicator;
-    border-left-color: #ed3c3c;
-  }*/
   
-  /*&tracking-container{
+  &tracking-container{
     margin-top: 10px;
     display: flex;
     justify-content: center;
@@ -244,62 +107,8 @@ Lacacy of bootstrap
   &tracking-box:last-child {
     margin-left: 0px;
     margin-right: 0px;
-  }*/
-
-  /*
-   * "c" means "component" this indicator is for a component
-   */
-  &c- {
-    &name {
-      word-wrap: break-word;
-      overflow-wrap: break-word;
-    }
-  }
-}
-
-/*.#{$prefix}button-box {
-  display: flex;
-  justify-content: center;
-}*/
-
-.#{$prefix}invoice {
-  .#{$prefix}invoice-title {
-    display: flex;
-    align-items: center;
-    padding: 7px 14px; 
-    background: #f1f1f1;
-    border-bottom: 1px solid #d8d8d8;
   }
 
-  .#{$prefix}invoice-body {
-    padding: 14px;
-
-    &-header {
-      display: flex;
-      align-items: center;
-      margin-bottom: 8px;
-    }
-  }
-
-  .#{$prefix}invoice-detail {
-    @include list-style-reset;
-    padding-bottom: 15px!important;
-    margin-bottom: 15px!important;
-    border-bottom: 1px dashed #aaaaaa;
-
-    .#{$prefix}item {
-      display: flex;
-      align-items: center;
-
-      .#{$prefix}item-name {
-        font-size: 1.21em;
-      }
-
-      .#{$prefix}price {
-        font-size: 1.21em;
-      }
-    }
-  }
 }
 
 
