@@ -52,6 +52,7 @@ Route::middleware('auth:api')->prefix('invoice')->group(function(){
     Route::delete('{invoice_id}', 'InvoiceController@delete');
     Route::post('{invoice_id}/change_status', 'InvoiceController@change_status');
     Route::post('{invoice_id}/refund', 'InvoiceController@refund');
+
 });
 
 
@@ -59,6 +60,8 @@ Route::post('/refresh', 'AuthController@refresh');
 Route::post('/login', 'AuthController@login');
 
 
+
 Route::get('/test', function(){
     // return TestCollection::collection(User::all());
 });
+
