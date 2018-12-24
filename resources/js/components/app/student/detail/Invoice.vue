@@ -13,7 +13,7 @@
         <!-- <v-checkbox v-model="filtered_by" class="__check-box" hide-details label="Refunded" value="Refunded"></v-checkbox> -->
         <v-checkbox v-model="filtered_by" class="__check-box" hide-details label="Deleted" value="Deleted"></v-checkbox>
       </div>
-      <v-container grid-list-lg fluid class="pa-0">
+      <v-container fluid class="pa-0">
         <v-layout wrap>
           <v-flex xs12 
             v-for="invoice in filtered_invoices" 
@@ -46,8 +46,6 @@
       @del_invoice="del_invoice($event)"
     ></deletion-dialog>
 
-    <!-- <hello-world ref="foo"></hello-world> -->
-
   </v-card>
 </template>
 <script>
@@ -59,10 +57,6 @@ import NewInvoiceAdditionDialog from './particles/invoice/NewInvoiceAdditionDial
 import StatusChangeDialog from './particles/invoice/StatusChangeDialog'
 import RefundDialog from './particles/invoice/RefundDialog'
 import DeletionDialog from './particles/invoice/DeletionDialog'
-
-// import HelloWorld from '../../../../prints/receipt.js'
-
-// import { Printd } from 'printd'
 
 
 export default {
@@ -117,11 +111,6 @@ export default {
     del_invoice (obj) {
       let index = this.invoices.indexOf(obj.old)
       this.$set(this.invoices, index, obj.new)
-    },
-    print () {
-      //  console.log(Vue.compile('<div>Hello world</div>'))
-      // const d = new Printd()
-      // d.print(document.getElementById('test'), this.cssText )
     }
   },
   created () {
@@ -131,6 +120,7 @@ export default {
 
     this.$axios.get('/product').then(res => {
       this.products = res.data
+      console.log('products', res.data)
     })
 
     this.$axios.get('/invoice').then(res => {

@@ -1,0 +1,10 @@
+.#{$prefix}-block {
+  width: 100%!important;
+}
+
+.#{$prefix}-label {
+  label {
+    line-height: 25px!important;
+    padding-bottom: 3px!important;
+  }
+}

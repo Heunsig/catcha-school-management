@@ -1,0 +1,126 @@
+@mixin grid-list-all($value){ padding: $value; }
+
+@mixin grid-list-x($value){ padding-left: $value; padding-right: $value;}
+
+@mixin grid-list-y($value){ padding-top: $value; padding-bottom: $value; }
+
+@mixin grid-list-t($value){ padding-top: $value;}
+
+@mixin grid-list-r($value){ padding-right: $value;}
+
+@mixin grid-list-b($value){ padding-bottom: $value;}
+
+@mixin grid-list-l($value){ padding-left: $value;}
+
+
+.#{$prefix}-grid-list-1 {
+  &> .layout > .flex{ @include grid-list-all(3px); }
+
+  &-x > .layout > .flex{
+    @include grid-list-x(3px);
+  }
+
+  &-y > .layout > .flex{
+    @include grid-list-y(3px);
+  }
+
+  &-t > .layout > .flex{
+    @include grid-list-t(3px);
+  }
+
+  &-r > .layout > .flex{
+    @include grid-list-r(3px);
+  }
+
+  &-b > .layout > .flex{
+    @include grid-list-b(3px);
+  }
+
+  &-l > .layout > .flex{
+    @include grid-list-l(3px);
+  }
+}
+
+.#{$prefix}-grid-list-2 {
+  &> .layout > .flex{ @include grid-list-all(6px); }
+
+  &-x > .layout > .flex{
+    @include grid-list-all(6px);
+  }
+
+  &-y > .layout > .flex{
+    @include grid-list-y(6px);
+  }
+
+  &-t > .layout > .flex{
+    @include grid-list-t(6px);
+  }
+
+  &-r > .layout > .flex{
+    @include grid-list-r(6px);
+  }
+
+  &-b > .layout > .flex{
+    @include grid-list-b(6px);
+  }
+
+  &-l > .layout > .flex{
+    @include grid-list-l(6px);
+  }
+}
+
+.#{$prefix}-grid-list-3 {
+  &> .layout > .flex{ @include grid-list-all(9px); }
+
+  &-x > .layout > .flex{
+    @include grid-list-x(9px);
+  }
+
+  &-y > .layout > .flex{
+    @include grid-list-y(9px); 
+  }
+
+  &-t > .layout > .flex{
+    @include grid-list-t(9px);
+  }
+
+  &-r > .layout > .flex{
+    @include grid-list-r(9px);
+  }
+
+  &-b > .layout > .flex{
+    @include grid-list-b(9px);
+  }
+
+  &-l > .layout > .flex{
+    @include grid-list-l(9px);
+  }
+}
+
+.#{$prefix}-grid-list-4 {
+  &> .layout > .flex{ @include grid-list-all(12px); }
+
+  &-x > .layout > .flex{
+    @include grid-list-x(12px);
+  }
+
+  &-y > .layout > .flex{
+    @include grid-list-y(12px); 
+  }
+
+  &-t > .layout > .flex{
+    @include grid-list-t(12px);
+  }
+
+  &-r > .layout > .flex{
+    @include grid-list-r(12px);
+  }
+
+  &-b > .layout > .flex{
+    @include grid-list-b(12px);
+  }
+
+  &-l > .layout > .flex{
+    @include grid-list-l(12px);
+  }
+}

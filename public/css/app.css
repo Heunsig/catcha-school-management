@@ -354,6 +354,134 @@ Lacacy of bootstrap
   margin-right: 0px;
 }
 
+.ca-grid-list-1 > .layout > .flex {
+  padding: 3px;
+}
+
+.ca-grid-list-1-x > .layout > .flex {
+  padding-left: 3px;
+  padding-right: 3px;
+}
+
+.ca-grid-list-1-y > .layout > .flex {
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+
+.ca-grid-list-1-t > .layout > .flex {
+  padding-top: 3px;
+}
+
+.ca-grid-list-1-r > .layout > .flex {
+  padding-right: 3px;
+}
+
+.ca-grid-list-1-b > .layout > .flex {
+  padding-bottom: 3px;
+}
+
+.ca-grid-list-1-l > .layout > .flex {
+  padding-left: 3px;
+}
+
+.ca-grid-list-2 > .layout > .flex {
+  padding: 6px;
+}
+
+.ca-grid-list-2-x > .layout > .flex {
+  padding: 6px;
+}
+
+.ca-grid-list-2-y > .layout > .flex {
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+.ca-grid-list-2-t > .layout > .flex {
+  padding-top: 6px;
+}
+
+.ca-grid-list-2-r > .layout > .flex {
+  padding-right: 6px;
+}
+
+.ca-grid-list-2-b > .layout > .flex {
+  padding-bottom: 6px;
+}
+
+.ca-grid-list-2-l > .layout > .flex {
+  padding-left: 6px;
+}
+
+.ca-grid-list-3 > .layout > .flex {
+  padding: 9px;
+}
+
+.ca-grid-list-3-x > .layout > .flex {
+  padding-left: 9px;
+  padding-right: 9px;
+}
+
+.ca-grid-list-3-y > .layout > .flex {
+  padding-top: 9px;
+  padding-bottom: 9px;
+}
+
+.ca-grid-list-3-t > .layout > .flex {
+  padding-top: 9px;
+}
+
+.ca-grid-list-3-r > .layout > .flex {
+  padding-right: 9px;
+}
+
+.ca-grid-list-3-b > .layout > .flex {
+  padding-bottom: 9px;
+}
+
+.ca-grid-list-3-l > .layout > .flex {
+  padding-left: 9px;
+}
+
+.ca-grid-list-4 > .layout > .flex {
+  padding: 12px;
+}
+
+.ca-grid-list-4-x > .layout > .flex {
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+.ca-grid-list-4-y > .layout > .flex {
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.ca-grid-list-4-t > .layout > .flex {
+  padding-top: 12px;
+}
+
+.ca-grid-list-4-r > .layout > .flex {
+  padding-right: 12px;
+}
+
+.ca-grid-list-4-b > .layout > .flex {
+  padding-bottom: 12px;
+}
+
+.ca-grid-list-4-l > .layout > .flex {
+  padding-left: 12px;
+}
+
+.ca-block {
+  width: 100% !important;
+}
+
+.ca-label label {
+  line-height: 25px !important;
+  padding-bottom: 3px !important;
+}
+
 .cadisabled {
   color: #a5a5a5;
 }

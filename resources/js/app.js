@@ -3,6 +3,7 @@ import Vue from 'vue'
 import App from './components/App'
 import Vuetify from 'vuetify'
 import VeeValidate from 'vee-validate'
+import VueTheMask from 'vue-the-mask'
 import 'vuetify/dist/vuetify.min.css'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import 'flag-icon-css/css/flag-icon.min.css'
@@ -18,8 +19,19 @@ import router from './router'
 import store from './store/store'
 import globalMixin from './mixins/global'
 
+import { 
+  Input, 
+  InputNumber, 
+  Select,
+  Option,
+  Cascader,
+  Form, 
+  FormItem
+} from 'element-ui'
+
 Vue.use(Vuetify)
-Vue.use(VeeValidate)
+Vue.use(VueTheMask)
+Vue.use(VeeValidate, {fieldsBagName: 'vee-fields'})
 Vue.mixin(globalMixin)
 
 Vue.prototype.$config = configData
@@ -27,6 +39,14 @@ Vue.prototype.$moment = moment
 Vue.prototype._ = lodash
 Vue.prototype.$axios = axios
 Vue.prototype.$account = account
+
+Vue.use(Input)
+Vue.use(InputNumber)
+Vue.use(Select)
+Vue.use(Option)
+Vue.use(Cascader)
+Vue.use(Form)
+Vue.use(FormItem)
 
 
 const app = new Vue({

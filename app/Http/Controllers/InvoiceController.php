@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Payment;
 use Carbon;
 use PDF;
+use App;
 use App\Http\Resources\InvoiceResource;
 class InvoiceController extends Controller
 {
@@ -117,14 +118,19 @@ class InvoiceController extends Controller
         return response()->json(new InvoiceResource($payment));
     }
 
-    public function pdf_test()
+    public function pdf_test($invoice_id)
     {
-        // Fetch all customers from database
-        // Send data to the view using loadView function of PDF facade
-        $pdf = PDF::loadView('pdf');
-        // If you want to store the generated pdf to the server then you can use the store function
-        // $pdf->save(storage_path().'_filename.pdf');
-        // Finally, you can download the file using download function
-        return $pdf->stream();
+        $payment = Payment::where('id', $invoice_id)->first();
+        $test = new InvoiceResource($payment);
+        // $a = [
+        //     'invoice' => $test
+        // ];
+        // return view('pdf.receipt', )
+        // $pdf = PDF::loadView('pdf.receipt', ['invoice'=>$payment]);
+        // return response($pdf->inline(), 200)->withHeaders([
+        //     'Content-Type' => 'application/pdf'
+        // ]);
+        // return response($test);
+        return view('test', compact("test"));
     }
 }

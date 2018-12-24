@@ -25,7 +25,7 @@
         >
           <v-icon color="blue darken-2">local_printshop</v-icon>
         </v-btn>
-        <v-card>
+        <v-card>  
           <v-card-text>
             <div class="ca-menu-action">
               <ul class="__button-list">
@@ -35,10 +35,11 @@
                     block
                     color="red"
                     dark
-                    @click="print()"
+                    @click="print(invoice.id)"
                   >
                     Print Receipt
                   </v-btn>
+                </li>
                 </li>
               </ul>
             </div>
@@ -203,10 +204,6 @@ import bus from 'bus'
 import InvoiceItem from './InvoiceItem'
 import TrackingBox from '../class/list/TrackingBox'
 
-// import { Printd } from 'printd'
-import jsPDF from 'jsPDF'
-// import receipt from '../../../../../../prints/receipt'
-
 export default {
   components: {
     InvoiceItem,
@@ -286,8 +283,8 @@ export default {
     format_money (money) {
       return this.$account.formatMoney(money)
     },
-    print () {
-
+    print (id) {
+      window.open(`${this.$config.BASE_URL}/pdf/${id}`, '_blank');
     }
   }
 }

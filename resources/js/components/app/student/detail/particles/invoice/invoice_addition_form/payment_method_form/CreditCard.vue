@@ -1,64 +1,65 @@
 <template>
-  <v-container fluid class="pa-0">
-    <v-layout wrap>
-      <v-flex xs12>
-        <v-text-field
-          :value="digits"
-          @input="$emit('update:digits', $event)"
-          label="Last 4 card digits"
-        >
-        </v-text-field>
-      </v-flex>
-      <v-flex xs12>
-        <v-text-field
-          :value="name"
-          @input="$emit('update:name', $event)"
-          label="Name on card"
-        >
-        </v-text-field>
-      </v-flex>
-      <v-flex xs6>
-        <v-text-field
-          :value="month"
-          @input="$emit('update:month', $event)"
-          label="Expiration Month"
-        >
-        </v-text-field>
-      </v-flex>
-      <v-flex xs6>
-        <v-text-field
-          :value="year"
-          @input="$emit('update:year', $event)"
-          label="Expiration Year"
-        >
-        </v-text-field>
-      </v-flex>
-    </v-layout>
-  </v-container>
+  <el-form ref="form" :model="form" :rules="rules" label-position="top">
+    <v-container fluid class="pa-0">
+      <v-layout wrap>
+        <v-flex xs12>
+          <el-form-item label="The last 4 digits" class="ca-label" prop="digits">
+            <el-input 
+              placeholder="Please input the last 4 digits" 
+              v-model="form.digits"
+              maxlength="4"
+            ></el-input>
+          </el-form-item>
+        </v-flex>
+        <v-flex xs12>
+          <el-form-item label="Name on card" class="ca-label" prop="name">
+            <el-input placeholder="Please input name on the card" v-model="form.name"></el-input>
+          </el-form-item>
+        </v-flex>
+        <v-flex xs12>
+          <el-form-item label="Expiration Date(MM/YY)" class="ca-label" prop="date">
+            <el-input 
+              v-model="form.date"
+              placeholder="Month/Year"
+              v-mask="'##/##'"
+            ></el-input>
+          </el-form-item>
+        </v-flex>
+      </v-layout>
+    </v-container>
+  </el-form>
 </template>
 <script>
 export default {
-  props: [
-    'digits',
-    'name',
-    'month',
-    'year'
-  ],
-  // data: () => ({
-  //   form: {
-  //     digits: '',
-  //     name: '',
-  //     month: '',
-  //     year: ''
-  //   }
-  // }),
-  // watch: {
-  //   form: {
-  //     handler: function (new_val) {
-  //       this.$store.commit('invoice/set_payment_method_detail', new_val)
-  //     },
-  //     deep: true
-  //   }
-  // }
+  data: () => ({
+    form: {
+      digits: '',
+      name: '',
+      date: ''
+    },
+    rules: {
+      digits: [
+        { 
+          required: true, 
+          message: 'Please input the last 4 digits on the card.',
+          trigger: 'blur'
+        }
+      ],
+      name: [
+        {
+          required: true, 
+          message: 'Please input the name on the card.',
+          trigger: 'blur'
+        }
+      ],
+      date: [
+        {
+          required: true, 
+          message: 'Please input the expiration date on the card.',
+          trigger: 'blur'
+        }
+      ]
+    }
+  })
 }
 </script>

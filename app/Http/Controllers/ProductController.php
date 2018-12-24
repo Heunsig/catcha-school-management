@@ -32,7 +32,7 @@ class ProductController extends Controller
         }
 
         for ($j = 0 ; $j < count($result) ; $j++) {
-            $hey = $this->nested_products($temp, $result[$j]['id']);
+            $hey = $this->nested_products($temp, $result[$j]['value']);
             if ($hey) {
                 $result[$j]['children'] = $hey;
             }

@@ -34,4 +34,14 @@ class Payment extends Model
     {
         return $this->hasMany('App\CreditCardInformation', 'payment_id');
     }
+
+    public function student()
+    {
+        return $this->belongsTo('App\Student', 'student_id');
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo('App\User', 'created_by');
+    }
 }

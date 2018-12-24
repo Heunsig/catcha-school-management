@@ -4,13 +4,20 @@
       <v-card-title class="primary white--text ca-typo-title-4">
         Issue New Receipt
         <v-spacer></v-spacer>
-        <div>
+        <!-- <div>
           <strong>Total:</strong>
           <span>{{ $account.formatMoney(total) }}</span>
-        </div>
+        </div> -->
+        <v-btn 
+          color="primary"
+          depressed
+          @click="add_product()"
+        >
+          Add Product
+        </v-btn>
       </v-card-title>
       <v-card-text class="grey lighten-4">
-        <v-container fluid grid-list-lg class="pa-0">
+        <v-container fluid class="pa-0 ca-grid-list-2">
           <v-layout wrap row>
             <v-flex xs5>
               <v-container fluid class="pa-0">
@@ -21,27 +28,25 @@
                         <div class="ca-typo-title-5">Payment Information</div>
                       </v-card-title>
                       <v-card-text>
-                        <!-- Payment Status Component-->
-                        <payment-status-form
+                        <PaymentInformationForm
+                          :payment_methods="payment_methods"
+                          :status.sync="status"
+                        ></PaymentInformationForm>
+                        <!-- <payment-status-form
                           :status.sync="status"
                         >
                         </payment-status-form>
-                        <!-- END Payment Status Component-->
                         
-                        <!-- Payment Method Component-->
                         <payment-method-form
                           :payment_methods="payment_methods"
                           :method_key.sync="payment_method.method_key"
                           :detail.sync="payment_method.detail"
                         ></payment-method-form>
-                        <!-- END Payment Method Component-->
                         
-                        <!-- Payment Note Component-->
                         <payment-note-form
                           :note.sync="note"
                         >
-                        </payment-note-form>
-                        <!-- END Payment Note Component-->
+                        </payment-note-form> -->
                       </v-card-text>
                     </v-card>
                   </v-flex>
@@ -49,13 +54,15 @@
               </v-container>
             </v-flex>
             <v-flex xs7>
-              <v-container fluid class="pa-0">
+              <v-container fluid class="pa-0 ca-grid-list-4-b">
                 <v-layout wrap>
-                  <v-flex xs12 
-                    v-for="(invoice_item, i) in invoice_items"
-                    :key="'in_'+i"
-                  >
+                  <v-flex xs12 v-for="invoice_item in invoice_items" :key="invoice_item.GUID">
                     <invoice-item-form
+                      :products="products"
+                      @remove="remove(invoice_item)"
+                    ></invoice-item-form>
+                    <!-- <invoice-item-form
+                      :key="invoice_item.GUID"
                       :products="products"
                       :product.sync="invoice_item.product_id"
                       :start_date.sync="invoice_item.start_date"
@@ -64,16 +71,7 @@
                       :quantity.sync="invoice_item.quantity"
                       :note.sync="invoice_item.note"
                       @remove="remove(invoice_item)"
-                    ></invoice-item-form>
-                  </v-flex>
-                  <v-flex xs12>
-                    <v-btn 
-                      color="primary"
-                      block
-                      @click="add_item()"
-                    >
-                      Add Item
-                    </v-btn>
+                    ></invoice-item-form> -->
                   </v-flex>
                 </v-layout>
               </v-container>
@@ -92,6 +90,7 @@
 <script>
 import bus from 'bus'
 
+import PaymentInformationForm from './invoice_addition_form/PaymentInformationForm'
 import PaymentMethodForm from './invoice_addition_form/PaymentMethodForm'
 import PaymentStatusForm from './invoice_addition_form/PaymentStatusForm'
 import PaymentNoteForm from './invoice_addition_form/PaymentNoteForm'
@@ -106,7 +105,8 @@ export default {
     PaymentMethodForm,
     PaymentStatusForm,
     PaymentNoteForm,
-    InvoiceItemForm
+    InvoiceItemForm,
+    PaymentInformationForm
   },
   data: () => ({
     is_active: false,
@@ -133,15 +133,19 @@ export default {
         console.log('res', res)
       })
     },
-    add_item () {
+    add_product () {
       this.invoice_items.push({
-        product_id: null,
-        start_date: '',
-        completion_date: '',
-        price: '',
-        quantity: '',
-        note: ''
+        GUID: this.guid()
       })
+      // this.invoice_items.push({
+      //   GUID: this.guid(),
+      //   product_id: null,
+      //   start_date: '',
+      //   completion_date: '',
+      //   price: '',
+      //   quantity: '',
+      //   note: ''
+      // })
     },
     remove (item) {
       let index = this.invoice_items.indexOf(item)
