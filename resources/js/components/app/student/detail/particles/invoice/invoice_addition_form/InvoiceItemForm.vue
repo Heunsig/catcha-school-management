@@ -1,39 +1,31 @@
 <template>
   <v-card>
-    <v-card-title class="py-1">
-      <div class="ca-typo-title-5">#</div>
+    <v-card-title class="py-1 grey lighten-2">
+      <div class="ca-typo-title-5"># {{ index }}</div>
       <v-spacer></v-spacer>
       <v-btn icon @click="remove()">
         <v-icon>clear</v-icon>
       </v-btn>
     </v-card-title>
     <v-card-text>
-      <el-form ref="form" :model="form" label-position="top">
+      <el-form ref="form" :model="form" :rules="rules" label-position="top">
         <v-container fluid class="pa-0 ca-grid-list-1">
           <v-layout wrap>
             <v-flex xs12>
-              <el-form-item label="Product" class="ca-label">
+              <el-form-item label="Product" class="ca-label" prop="product_id">
                 <el-cascader
                   v-model="form.product_id"
                   :options="products"
                   placeholder="Please select product"
+                  clearable
                   class="ca-block"
                 >
                 </el-cascader>
               </el-form-item>
-              <!-- <treeselect
-                :value="product"
-                @input="$emit('update:product', $event)"
-                :options="products"
-                :disable-branch-nodes="true"
-                :show-count="true"
-                placeholder="Where are you from?"
-              >
-              </treeselect> -->
             </v-flex>
             <template>
               <v-flex xs6>
-                <el-form-item label="Start Date" class="ca-label">
+                <el-form-item label="Start Date" class="ca-label" prop="start_date">
                   <v-menu
                     :close-on-content-click="false"
                     v-model="start_date_picker"
@@ -50,13 +42,6 @@
                       placeholder="Please input" 
                       readonly
                     ></el-input>
-                    <!-- <v-text-field
-                      slot="activator"
-                      :value="format_date(form.start_date)"
-                      label="Start Date"
-                      prepend-icon="event"
-                      readonly
-                    ></v-text-field> -->
                     <v-date-picker v-model="form.start_date" @input="start_date_picker = false"></v-date-picker>
                   </v-menu>
                 </el-form-item>
@@ -83,57 +68,23 @@
                       v-model="form.completion_date"
                       @input="completion_date_picker = false"
                     ></v-date-picker>
-                    <!-- <v-text-field
-                      slot="activator"
-                      :value="format_date(completion_date)"
-                      label="Completion Date"
-                      prepend-icon="event"
-                      readonly
-                    ></v-text-field> -->
-                    <!-- <v-date-picker
-                      :value="completion_date"
-                      @input="update_completion_date($event)"
-                    ></v-date-picker> -->
                   </v-menu>
                 </el-form-item>
               </v-flex>
               <v-flex xs12>
                 <el-form-item label="Price" class="ca-label">
-                <!-- <v-text-field
-                  :value="price"
-                  @input="$emit('update:price', $event)"
-                  label="Price"
-                >
-                </v-text-field> -->
                   <el-input 
                     v-model="form.price"
                     placeholder="Please input price" 
-                    readonly
                   ></el-input>
                 </el-form-item>
               </v-flex>
               <v-flex xs12>
-                <!-- <el-form ref="form1" :model="form" label-width="120px">
-                  <el-form-item label="Activity name">
-                    <el-input v-model="test"></el-input>
-                  </el-form-item>
-                </el-form> -->
-                <!-- <v-text-field
-                  :value="quantity"
-                  @input="$emit('update:quantity', $event)"
-                  label="Quantity"
-                >
-                </v-text-field> -->
                 <el-form-item label="Quantity" class="ca-label">
                   <el-input-number 
                     v-model="form.quantity"
                     class="ca-block"
                   ></el-input-number>
-                  <!-- <el-input 
-                    v-model="form.quantity"
-                    placeholder="Please input quantity" 
-                    readonly
-                  ></el-input> -->
                 </el-form-item>
               </v-flex>
               <v-flex xs12>
@@ -145,12 +96,6 @@
                     v-model="form.note">
                   </el-input>
                 </el-form-item>
-                <!-- <v-textarea
-                  :value="note"
-                  @input="$emit('update:note', $event)"
-                  label="Note"
-                >
-                </v-textarea> -->
               </v-flex>
             </template>
           </v-layout>
@@ -161,23 +106,9 @@
 </template>
 <script>
 
-// import Treeselect from '@riophae/vue-treeselect'
-// import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 export default {
-  // components: {
-  //   Treeselect
-  // },
-  // props: [
-  //   'index',
-  //   'products',
-  //   'product',
-  //   'start_date',
-  //   'completion_date',
-  //   'price',
-  //   'quantity',
-  //   'note',
-  // ],
   props: {
+    index: Number,
     products: Array
   },
   data: () => ({
@@ -189,9 +120,13 @@ export default {
       quantity: null,
       note: null
     },
-    // test: '',
     start_date_picker: false,
     completion_date_picker: false,
+    rules: {
+      product_id: [
+        { required: true, message: 'Please select product', trigger: 'change' }
+      ]
+    }
     // options: [
     //   {
     //     id: 1,
@@ -224,6 +159,19 @@ export default {
     // ],
   }),
   methods: {
+    validate () {
+      let $this = this
+      let result
+      this.$refs['form'].validate((valid) => {
+        if (valid) {
+          result = $this.form
+        } else {
+          result = false
+        }
+      })
+
+      return result
+    },
     // update_start_date (val) {
     //   this.$emit('update:start_date', val)
     //   this.start_date_picker = false
@@ -238,9 +186,6 @@ export default {
     remove () {
       this.$emit('remove')
     },
-    // handleChange (value) {
-    //   console.log('va', value)
-    // }
   }
 }
 </script>

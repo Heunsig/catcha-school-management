@@ -60,6 +60,21 @@ export default {
         }
       ]
     }
-  })
+  }),
+  methods: {
+    validate() {
+      let $this = this
+      let result = false
+      this.$refs['form'].validate((valid) => {
+        if (valid) {
+          result = $this.form
+        } else {
+          result = false
+        }
+      })
+
+      return result
+    }
+  }
 }
 </script>

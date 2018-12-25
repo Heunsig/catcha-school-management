@@ -40,11 +40,14 @@ class InvoiceController extends Controller
             $payment->save();
 
             if ($request->payment_method['method_key'] === 'CC') {
+                $expiration_date = $request->payment_method['detail']['date'];
+                $splited_date = explode('/', $expiration_date);
+
                 $payment->credit_card_information()->create([
                     'card_numbers' => $request->payment_method['detail']['digits'],
                     'name_on_card' => $request->payment_method['detail']['name'],
-                    'expiration_month' => $request->payment_method['detail']['month'],
-                    'expiration_year' => $request->payment_method['detail']['year']
+                    'expiration_month' => $splited_date[0],
+                    'expiration_year' => $splited_date[1]
                 ]);
             }
 

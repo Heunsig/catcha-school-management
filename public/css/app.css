@@ -389,7 +389,8 @@ Lacacy of bootstrap
 }
 
 .ca-grid-list-2-x > .layout > .flex {
-  padding: 6px;
+  padding-left: 6px;
+  padding-right: 6px;
 }
 
 .ca-grid-list-2-y > .layout > .flex {
@@ -471,6 +472,66 @@ Lacacy of bootstrap
 
 .ca-grid-list-4-l > .layout > .flex {
   padding-left: 12px;
+}
+
+.ca-grid-list-5 > .layout > .flex {
+  padding: 15px;
+}
+
+.ca-grid-list-5-x > .layout > .flex {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.ca-grid-list-5-y > .layout > .flex {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.ca-grid-list-5-t > .layout > .flex {
+  padding-top: 15px;
+}
+
+.ca-grid-list-5-r > .layout > .flex {
+  padding-right: 15px;
+}
+
+.ca-grid-list-5-b > .layout > .flex {
+  padding-bottom: 15px;
+}
+
+.ca-grid-list-5-l > .layout > .flex {
+  padding-left: 15px;
+}
+
+.ca-grid-list-6 > .layout > .flex {
+  padding: 18px;
+}
+
+.ca-grid-list-6-x > .layout > .flex {
+  padding-left: 18px;
+  padding-right: 18px;
+}
+
+.ca-grid-list-6-y > .layout > .flex {
+  padding-top: 18px;
+  padding-bottom: 18px;
+}
+
+.ca-grid-list-6-t > .layout > .flex {
+  padding-top: 18px;
+}
+
+.ca-grid-list-6-r > .layout > .flex {
+  padding-right: 18px;
+}
+
+.ca-grid-list-6-b > .layout > .flex {
+  padding-bottom: 18px;
+}
+
+.ca-grid-list-6-l > .layout > .flex {
+  padding-left: 18px;
 }
 
 .ca-block {

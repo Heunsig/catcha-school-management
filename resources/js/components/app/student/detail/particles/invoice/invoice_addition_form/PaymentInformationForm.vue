@@ -38,7 +38,9 @@
             </el-select>
           </el-form-item>
           <template v-if="form.method_key === 'CC'">
-            <CreditCard></CreditCard>
+            <CreditCard
+              ref="credit_card"
+            ></CreditCard>
           </template>
         </v-flex>
         <v-flex xs12>
@@ -62,10 +64,9 @@ export default {
   components: {
     CreditCard
   },
-  props: [
-    // 'status',
-    'payment_methods'
-  ],
+  props: {
+    payment_methods: Array
+  },
   data: () => ({
     form: {
       status: '',
@@ -78,9 +79,37 @@ export default {
       ],
       method_key: [
         { required: true, message: 'Please select method', trigger: 'change' }
-      ] 
+      ]
     }
   }),
+  methods: {
+    validate() {
+      let $this = this
+      let result = false
+      this.$refs['form'].validate((valid) => {
+        if (valid) {
+          if (this.form.method_key === 'CC') {
+            if (this.$refs['credit_card'].validate()) {
+              result = {
+                information: $this.form,
+                detail: this.$refs['credit_card'].validate()
+              }
+            } else {
+              result = false
+            }
+          } else {
+            result = {
+              information: $this.form
+            }
+          }
+        } else {
+          result = false
+        }
+      })
+
+      return result
+    }
+  },
   created () {
     console.log('payment method', this.payment_methods)
   }

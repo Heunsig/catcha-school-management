@@ -100955,14 +100955,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_bus__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__invoice_addition_form_PaymentInformationForm__ = __webpack_require__(981);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__invoice_addition_form_PaymentInformationForm___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__invoice_addition_form_PaymentInformationForm__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__invoice_addition_form_PaymentMethodForm__ = __webpack_require__(807);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__invoice_addition_form_PaymentMethodForm___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__invoice_addition_form_PaymentMethodForm__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__invoice_addition_form_PaymentStatusForm__ = __webpack_require__(813);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__invoice_addition_form_PaymentStatusForm___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__invoice_addition_form_PaymentStatusForm__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__invoice_addition_form_PaymentNoteForm__ = __webpack_require__(816);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__invoice_addition_form_PaymentNoteForm___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__invoice_addition_form_PaymentNoteForm__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__invoice_addition_form_InvoiceItemForm__ = __webpack_require__(819);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__invoice_addition_form_InvoiceItemForm___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__invoice_addition_form_InvoiceItemForm__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__invoice_addition_form_InvoiceItemForm__ = __webpack_require__(819);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__invoice_addition_form_InvoiceItemForm___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__invoice_addition_form_InvoiceItemForm__);
+//
+//
 //
 //
 //
@@ -101056,9 +101052,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-
-
-
+// import PaymentMethodForm from './invoice_addition_form/PaymentMethodForm'
+// import PaymentStatusForm from './invoice_addition_form/PaymentStatusForm'
+// import PaymentNoteForm from './invoice_addition_form/PaymentNoteForm'
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -101067,38 +101063,78 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     products: Array
   },
   components: {
-    PaymentMethodForm: __WEBPACK_IMPORTED_MODULE_2__invoice_addition_form_PaymentMethodForm___default.a,
-    PaymentStatusForm: __WEBPACK_IMPORTED_MODULE_3__invoice_addition_form_PaymentStatusForm___default.a,
-    PaymentNoteForm: __WEBPACK_IMPORTED_MODULE_4__invoice_addition_form_PaymentNoteForm___default.a,
-    InvoiceItemForm: __WEBPACK_IMPORTED_MODULE_5__invoice_addition_form_InvoiceItemForm___default.a,
+    // PaymentMethodForm,
+    // PaymentStatusForm,
+    // PaymentNoteForm,
+    InvoiceItemForm: __WEBPACK_IMPORTED_MODULE_2__invoice_addition_form_InvoiceItemForm___default.a,
     PaymentInformationForm: __WEBPACK_IMPORTED_MODULE_1__invoice_addition_form_PaymentInformationForm___default.a
   },
   data: function data() {
     return {
       is_active: false,
       total: 0,
-      status: '',
-      note: '',
-      payment_date: '',
-      payment_method: {
-        method_key: null,
-        detail: {}
-      },
+      // status: '',
+      // note: '',
+      // payment_date: '',
+      // payment_method: {
+      //   method_key: null,
+      //   detail: {}
+      // },
       invoice_items: []
     };
   },
+  computed: {
+    reversed_invoice_items: function reversed_invoice_items() {
+      var reversed_invoice_items = _.reverse(_.clone(this.invoice_items));
+      return reversed_invoice_items;
+    }
+  },
   methods: {
+    validate_all: function validate_all() {
+      var error = 0;
+      var result = {
+        payment: {},
+        invoice_items: []
+      };
+
+      if (this.$refs['payment_information_form'].validate()) {
+        result.payment = this.$refs['payment_information_form'].validate();
+      } else {
+        error += 1;
+      }
+
+      for (var i = 0; i < this.$refs['invoice'].length; i++) {
+        if (this.$refs['invoice'][i].validate()) {
+          result.invoice_items.push(this.$refs['invoice'][i].validate());
+        } else {
+          error += 1;
+        }
+      }
+
+      if (error > 0) {
+        return false;
+      } else {
+        return result;
+      }
+    },
     submit: function submit() {
-      console.log('pament_method', this.payment_method);
-      this.$axios.post('/invoice', {
-        student_id: this.$route.params.student_id,
-        status: this.status,
-        note: this.note,
-        payment_method: this.payment_method,
-        invoice_items: this.invoice_items
-      }).then(function (res) {
-        console.log('res', res);
-      });
+      // console.log('v', this.validate_all())
+      var data = this.validate_all();
+
+      if (data) {
+        this.$axios.post('/invoice', {
+          student_id: this.$route.params.student_id,
+          status: data.payment.information.status,
+          note: data.payment.information.note,
+          payment_method: {
+            method_key: data.payment.information.method_key,
+            detail: data.payment.detail
+          },
+          invoice_items: data.invoice_items
+        }).then(function (res) {
+          console.log('res', res);
+        });
+      }
     },
     add_product: function add_product() {
       this.invoice_items.push({
@@ -101129,129 +101165,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 807 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = __webpack_require__(808)
-/* template */
-var __vue_template__ = __webpack_require__(812)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/js/components/app/student/detail/particles/invoice/invoice_addition_form/PaymentMethodForm.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-7c3d09c8", Component.options)
-  } else {
-    hotAPI.reload("data-v-7c3d09c8", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 808 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__payment_method_form_CreditCard__ = __webpack_require__(809);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__payment_method_form_CreditCard___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__payment_method_form_CreditCard__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  components: {
-    CreditCard: __WEBPACK_IMPORTED_MODULE_0__payment_method_form_CreditCard___default.a
-  },
-  props: {
-    payment_methods: Array,
-    method_key: String,
-    detail: Object
-  },
-  data: function data() {
-    return {
-      // selected_payment_method: {},
-      // detail: {}  
-    };
-  },
-  computed: {
-    // payment_method_form () {
-    //   if (this.selected_payment_method === 'CC') {
-    //     return 'CreditCard'
-    //   }
-    // }
-  },
-  watch: {
-    method_key: function method_key(nv) {
-      console.log('nve', nv);
-    }
-  }
-  // watch: {
-  //   selected_payment_method (new_val) {
-  //     this.$store.commit('invoice/set_payment_method_key', {
-  //       payment_method_key: new_val
-  //     })
-
-  //     console.log(this.$store.getters['invoice/payment_method_key'])
-  //   }
-  // }
-});
-
-/***/ }),
+/* 807 */,
+/* 808 */,
 /* 809 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -101362,6 +101277,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }]
       }
     };
+  },
+  methods: {
+    validate: function validate() {
+      var $this = this;
+      var result = false;
+      this.$refs['form'].validate(function (valid) {
+        if (valid) {
+          result = $this.form;
+        } else {
+          result = false;
+        }
+      });
+
+      return result;
+    }
   }
 });
 
@@ -101503,394 +101433,13 @@ if (false) {
 }
 
 /***/ }),
-/* 812 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _c(
-        "v-container",
-        { staticClass: "pa-0", attrs: { fluid: "" } },
-        [
-          _c(
-            "v-layout",
-            { attrs: { wrap: "" } },
-            [
-              _c(
-                "v-flex",
-                { attrs: { xs12: "" } },
-                [
-                  _c("v-select", {
-                    attrs: {
-                      value: _vm.method_key,
-                      items: _vm.payment_methods,
-                      label: "Payment Method",
-                      "item-text": "method",
-                      "item-value": "key"
-                    },
-                    on: {
-                      input: function($event) {
-                        _vm.$emit("update:method_key", $event)
-                      }
-                    }
-                  })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _vm.method_key === "CC"
-                ? _c(
-                    "v-flex",
-                    { attrs: { xs12: "" } },
-                    [
-                      _c("credit-card", {
-                        attrs: {
-                          digits: _vm.detail.digits,
-                          name: _vm.detail.name,
-                          month: _vm.detail.month,
-                          year: _vm.detail.year
-                        },
-                        on: {
-                          "update:digits": function($event) {
-                            _vm.$set(_vm.detail, "digits", $event)
-                          },
-                          "update:name": function($event) {
-                            _vm.$set(_vm.detail, "name", $event)
-                          },
-                          "update:month": function($event) {
-                            _vm.$set(_vm.detail, "month", $event)
-                          },
-                          "update:year": function($event) {
-                            _vm.$set(_vm.detail, "year", $event)
-                          }
-                        }
-                      })
-                    ],
-                    1
-                  )
-                : _vm._e()
-            ],
-            1
-          )
-        ],
-        1
-      )
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-7c3d09c8", module.exports)
-  }
-}
-
-/***/ }),
-/* 813 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = __webpack_require__(814)
-/* template */
-var __vue_template__ = __webpack_require__(815)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/js/components/app/student/detail/particles/invoice/invoice_addition_form/PaymentStatusForm.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-4df44da6", Component.options)
-  } else {
-    hotAPI.reload("data-v-4df44da6", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 814 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['status']
-});
-
-/***/ }),
-/* 815 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _c(
-        "v-container",
-        { staticClass: "pa-0", attrs: { "grid-list-xs": "", fluid: "" } },
-        [
-          _c(
-            "v-layout",
-            { attrs: { wrap: "" } },
-            [
-              _c(
-                "v-flex",
-                { attrs: { xs12: "" } },
-                [
-                  _c(
-                    "el-select",
-                    {
-                      attrs: {
-                        value: _vm.status,
-                        clearable: "",
-                        placeholder: "Select"
-                      },
-                      on: {
-                        input: function($event) {
-                          _vm.$emit("update:status", $event)
-                        }
-                      }
-                    },
-                    _vm._l(_vm.STATUS_ITEMS, function(item) {
-                      return _c("el-option", {
-                        key: item,
-                        attrs: { label: item, value: item }
-                      })
-                    })
-                  )
-                ],
-                1
-              )
-            ],
-            1
-          )
-        ],
-        1
-      )
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-4df44da6", module.exports)
-  }
-}
-
-/***/ }),
-/* 816 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = __webpack_require__(817)
-/* template */
-var __vue_template__ = __webpack_require__(818)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/js/components/app/student/detail/particles/invoice/invoice_addition_form/PaymentNoteForm.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-29ad1ced", Component.options)
-  } else {
-    hotAPI.reload("data-v-29ad1ced", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 817 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['note']
-  // data: () => ({
-  //   note: ''
-  // }),
-  // watch: {
-  //   note (new_val) {
-  //     this.$store.commit('invoice/set_note', {
-  //       note: new_val
-  //     })
-  //   }
-  // }
-});
-
-/***/ }),
-/* 818 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _c(
-        "v-container",
-        { staticClass: "pa-0", attrs: { fluid: "" } },
-        [
-          _c(
-            "v-layout",
-            { attrs: { wrap: "" } },
-            [
-              _c(
-                "v-flex",
-                { attrs: { xs12: "" } },
-                [
-                  _c("v-textarea", {
-                    attrs: { value: _vm.note, label: "Note" },
-                    on: {
-                      input: function($event) {
-                        _vm.$emit("update:note", $event)
-                      }
-                    }
-                  })
-                ],
-                1
-              )
-            ],
-            1
-          )
-        ],
-        1
-      )
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-29ad1ced", module.exports)
-  }
-}
-
-/***/ }),
+/* 812 */,
+/* 813 */,
+/* 814 */,
+/* 815 */,
+/* 816 */,
+/* 817 */,
+/* 818 */,
 /* 819 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -102049,80 +101598,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
-// import Treeselect from '@riophae/vue-treeselect'
-// import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 /* harmony default export */ __webpack_exports__["default"] = ({
-  // components: {
-  //   Treeselect
-  // },
-  // props: [
-  //   'index',
-  //   'products',
-  //   'product',
-  //   'start_date',
-  //   'completion_date',
-  //   'price',
-  //   'quantity',
-  //   'note',
-  // ],
   props: {
+    index: Number,
     products: Array
   },
   data: function data() {
@@ -102135,42 +101615,57 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         quantity: null,
         note: null
       },
-      // test: '',
       start_date_picker: false,
-      completion_date_picker: false
-      // options: [
-      //   {
-      //     id: 1,
-      //     label: 'a',
-      //     children: [
-      //       {
-      //         id: 'aa',
-      //         label: 'asdfasdf',
-      //       }, 
-      //       {
-      //         id: 'ab',
-      //         label: '123123',
-      //         children: [
-      //           {
-      //             id: 'cccc',
-      //             label: '123123'
-      //           }
-      //         ]
-      //       } 
-      //     ],
-      //   }, 
-      //   {
-      //     id: 'b',
-      //     label: '123123',
-      //   }, 
-      //   {
-      //     id: 'c',
-      //     label: '123123',
-      //   } 
-      // ],
-    };
+      completion_date_picker: false,
+      rules: {
+        product_id: [{ required: true, message: 'Please select product', trigger: 'change' }]
+        // options: [
+        //   {
+        //     id: 1,
+        //     label: 'a',
+        //     children: [
+        //       {
+        //         id: 'aa',
+        //         label: 'asdfasdf',
+        //       }, 
+        //       {
+        //         id: 'ab',
+        //         label: '123123',
+        //         children: [
+        //           {
+        //             id: 'cccc',
+        //             label: '123123'
+        //           }
+        //         ]
+        //       } 
+        //     ],
+        //   }, 
+        //   {
+        //     id: 'b',
+        //     label: '123123',
+        //   }, 
+        //   {
+        //     id: 'c',
+        //     label: '123123',
+        //   } 
+        // ],
+      } };
   },
   methods: {
+    validate: function validate() {
+      var $this = this;
+      var result = void 0;
+      this.$refs['form'].validate(function (valid) {
+        if (valid) {
+          result = $this.form;
+        } else {
+          result = false;
+        }
+      });
+
+      return result;
+    },
+
     // update_start_date (val) {
     //   this.$emit('update:start_date', val)
     //   this.start_date_picker = false
@@ -102289,9 +101784,11 @@ var render = function() {
     [
       _c(
         "v-card-title",
-        { staticClass: "py-1" },
+        { staticClass: "py-1 grey lighten-2" },
         [
-          _c("div", { staticClass: "ca-typo-title-5" }, [_vm._v("#")]),
+          _c("div", { staticClass: "ca-typo-title-5" }, [
+            _vm._v("# " + _vm._s(_vm.index))
+          ]),
           _vm._v(" "),
           _c("v-spacer"),
           _vm._v(" "),
@@ -102319,7 +101816,11 @@ var render = function() {
             "el-form",
             {
               ref: "form",
-              attrs: { model: _vm.form, "label-position": "top" }
+              attrs: {
+                model: _vm.form,
+                rules: _vm.rules,
+                "label-position": "top"
+              }
             },
             [
               _c(
@@ -102338,14 +101839,15 @@ var render = function() {
                             "el-form-item",
                             {
                               staticClass: "ca-label",
-                              attrs: { label: "Product" }
+                              attrs: { label: "Product", prop: "product_id" }
                             },
                             [
                               _c("el-cascader", {
                                 staticClass: "ca-block",
                                 attrs: {
                                   options: _vm.products,
-                                  placeholder: "Please select product"
+                                  placeholder: "Please select product",
+                                  clearable: ""
                                 },
                                 model: {
                                   value: _vm.form.product_id,
@@ -102371,7 +101873,10 @@ var render = function() {
                               "el-form-item",
                               {
                                 staticClass: "ca-label",
-                                attrs: { label: "Start Date" }
+                                attrs: {
+                                  label: "Start Date",
+                                  prop: "start_date"
+                                }
                               },
                               [
                                 _c(
@@ -102515,10 +102020,7 @@ var render = function() {
                               },
                               [
                                 _c("el-input", {
-                                  attrs: {
-                                    placeholder: "Please input price",
-                                    readonly: ""
-                                  },
+                                  attrs: { placeholder: "Please input price" },
                                   model: {
                                     value: _vm.form.price,
                                     callback: function($$v) {
@@ -102712,17 +102214,10 @@ var render = function() {
                                             "v-card-text",
                                             [
                                               _c("PaymentInformationForm", {
+                                                ref: "payment_information_form",
                                                 attrs: {
                                                   payment_methods:
-                                                    _vm.payment_methods,
-                                                  status: _vm.status
-                                                },
-                                                on: {
-                                                  "update:status": function(
-                                                    $event
-                                                  ) {
-                                                    _vm.status = $event
-                                                  }
+                                                    _vm.payment_methods
                                                 }
                                               })
                                             ],
@@ -102751,15 +102246,16 @@ var render = function() {
                           _c(
                             "v-container",
                             {
-                              staticClass: "pa-0 ca-grid-list-4-b",
+                              staticClass: "pa-0 ca-grid-list-6-b",
                               attrs: { fluid: "" }
                             },
                             [
                               _c(
                                 "v-layout",
                                 { attrs: { wrap: "" } },
-                                _vm._l(_vm.invoice_items, function(
-                                  invoice_item
+                                _vm._l(_vm.reversed_invoice_items, function(
+                                  invoice_item,
+                                  i
                                 ) {
                                   return _c(
                                     "v-flex",
@@ -102769,7 +102265,14 @@ var render = function() {
                                     },
                                     [
                                       _c("invoice-item-form", {
-                                        attrs: { products: _vm.products },
+                                        ref: "invoice",
+                                        refInFor: true,
+                                        attrs: {
+                                          index:
+                                            _vm.reversed_invoice_items.length -
+                                            i,
+                                          products: _vm.products
+                                        },
                                         on: {
                                           remove: function($event) {
                                             _vm.remove(invoice_item)
@@ -108675,6 +108178,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 
@@ -108682,9 +108187,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   components: {
     CreditCard: __WEBPACK_IMPORTED_MODULE_0__payment_method_form_CreditCard___default.a
   },
-  props: [
-  // 'status',
-  'payment_methods'],
+  props: {
+    payment_methods: Array
+  },
   data: function data() {
     return {
       form: {
@@ -108697,6 +108202,36 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         method_key: [{ required: true, message: 'Please select method', trigger: 'change' }]
       }
     };
+  },
+  methods: {
+    validate: function validate() {
+      var _this = this;
+
+      var $this = this;
+      var result = false;
+      this.$refs['form'].validate(function (valid) {
+        if (valid) {
+          if (_this.form.method_key === 'CC') {
+            if (_this.$refs['credit_card'].validate()) {
+              result = {
+                information: $this.form,
+                detail: _this.$refs['credit_card'].validate()
+              };
+            } else {
+              result = false;
+            }
+          } else {
+            result = {
+              information: $this.form
+            };
+          }
+        } else {
+          result = false;
+        }
+      });
+
+      return result;
+    }
   },
   created: function created() {
     console.log('payment method', this.payment_methods);
@@ -108805,7 +108340,9 @@ var render = function() {
                     1
                   ),
                   _vm._v(" "),
-                  _vm.form.method_key === "CC" ? [_c("CreditCard")] : _vm._e()
+                  _vm.form.method_key === "CC"
+                    ? [_c("CreditCard", { ref: "credit_card" })]
+                    : _vm._e()
                 ],
                 2
               ),

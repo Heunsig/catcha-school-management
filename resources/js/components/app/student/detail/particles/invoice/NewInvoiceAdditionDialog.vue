@@ -30,7 +30,7 @@
                       <v-card-text>
                         <PaymentInformationForm
                           :payment_methods="payment_methods"
-                          :status.sync="status"
+                          ref="payment_information_form"
                         ></PaymentInformationForm>
                         <!-- <payment-status-form
                           :status.sync="status"
@@ -54,10 +54,12 @@
               </v-container>
             </v-flex>
             <v-flex xs7>
-              <v-container fluid class="pa-0 ca-grid-list-4-b">
+              <v-container fluid class="pa-0 ca-grid-list-6-b">
                 <v-layout wrap>
-                  <v-flex xs12 v-for="invoice_item in invoice_items" :key="invoice_item.GUID">
+                  <v-flex xs12 v-for="(invoice_item, i) in reversed_invoice_items" :key="invoice_item.GUID">
                     <invoice-item-form
+                      ref="invoice"
+                      :index="reversed_invoice_items.length - i"
                       :products="products"
                       @remove="remove(invoice_item)"
                     ></invoice-item-form>
@@ -91,9 +93,9 @@
 import bus from 'bus'
 
 import PaymentInformationForm from './invoice_addition_form/PaymentInformationForm'
-import PaymentMethodForm from './invoice_addition_form/PaymentMethodForm'
-import PaymentStatusForm from './invoice_addition_form/PaymentStatusForm'
-import PaymentNoteForm from './invoice_addition_form/PaymentNoteForm'
+// import PaymentMethodForm from './invoice_addition_form/PaymentMethodForm'
+// import PaymentStatusForm from './invoice_addition_form/PaymentStatusForm'
+// import PaymentNoteForm from './invoice_addition_form/PaymentNoteForm'
 import InvoiceItemForm from './invoice_addition_form/InvoiceItemForm'
 
 export default {
@@ -102,36 +104,77 @@ export default {
     products: Array
   },
   components: {
-    PaymentMethodForm,
-    PaymentStatusForm,
-    PaymentNoteForm,
+    // PaymentMethodForm,
+    // PaymentStatusForm,
+    // PaymentNoteForm,
     InvoiceItemForm,
     PaymentInformationForm
   },
   data: () => ({
     is_active: false,
     total: 0,
-    status: '',
-    note: '',
-    payment_date: '',
-    payment_method: {
-      method_key: null,
-      detail: {}
-    },
+    // status: '',
+    // note: '',
+    // payment_date: '',
+    // payment_method: {
+    //   method_key: null,
+    //   detail: {}
+    // },
     invoice_items: []
   }),
+  computed: {
+    reversed_invoice_items () {
+      let reversed_invoice_items = _.reverse(_.clone(this.invoice_items))
+      return reversed_invoice_items
+    }
+  },
   methods: {
+    validate_all () {
+      let error = 0
+      let result = {
+        payment: {},
+        invoice_items: []
+      }
+
+
+      if (this.$refs['payment_information_form'].validate()) {
+        result.payment = this.$refs['payment_information_form'].validate()
+      } else {
+        error += 1
+      }
+      
+      for (let i = 0 ; i < this.$refs['invoice'].length ; i++) {
+        if (this.$refs['invoice'][i].validate()) {
+          result.invoice_items.push(this.$refs['invoice'][i].validate())
+        } else {
+          error += 1
+        }
+      }
+
+      if (error > 0) {
+        return false
+      } else {
+        return result  
+      }
+    },
     submit () {
-      console.log('pament_method', this.payment_method)
-      this.$axios.post(`/invoice`, {
-        student_id: this.$route.params.student_id,
-        status: this.status,
-        note: this.note,
-        payment_method: this.payment_method,
-        invoice_items: this.invoice_items
-      }).then(res => {
-        console.log('res', res)
-      })
+      // console.log('v', this.validate_all())
+      let data = this.validate_all()
+
+      if (data) {
+        this.$axios.post(`/invoice`, {
+          student_id: this.$route.params.student_id,
+          status: data.payment.information.status,
+          note: data.payment.information.note,
+          payment_method: {
+            method_key: data.payment.information.method_key,
+            detail: data.payment.detail
+          },
+          invoice_items: data.invoice_items
+        }).then(res => {
+          console.log('res', res)
+        })
+      }
     },
     add_product () {
       this.invoice_items.push({
