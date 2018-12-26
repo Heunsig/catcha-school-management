@@ -74,6 +74,11 @@ export default {
       })
 
       return result
+    },
+    reset () {
+      this.form.digits = ''
+      this.form.name = ''
+      this.form.date = ''
     }
   }
 }

@@ -51,29 +51,14 @@ export default {
       if (this.verify_deletion()) {
         this.wating_result = true
 
-        // let id = payload.invoice_id
-        // return new Promise((resolve, reject) => {
-          this.$axios.delete(`/invoice/${this.invoice.id}`).then(res => {
-            this.$emit('del_invoice', {
-              new: res,
-              old: this.invoice
-            })
-            this.wating_result = false
-            this.is_active = false
-            // console.log('res', res)
-            // resolve(res.data)
+        this.$axios.delete(`/invoice/${this.invoice.id}`).then(res => {
+          this.$emit('del_invoice', {
+            new: res,
+            old: this.invoice
           })
-        // })
-        // this.$store.dispatch('invoice/del_invoice', {
-        //   invoice_id: this.invoice.id
-        // }).then(res => {
-        //   this.$emit('del_invoice', {
-        //     new: res,
-        //     old: this.invoice
-        //   })
-        //   this.wating_result = false
-        //   this.is_active = false
-        // })
+          this.wating_result = false
+          this.is_active = false
+        })
       } else {
         this.verification_error = 'Please wrtie down the above bold word'
       }

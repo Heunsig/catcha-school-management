@@ -52,7 +52,7 @@ class InvoiceController extends Controller
             }
 
             for($i = 0 ; $i < count($request->invoice_items) ; $i++) {
-                $payment->product()->attach($request->invoice_items[$i]['product_id'], [
+                $payment->product()->attach($request->invoice_items[0]['product_id'][count($request->invoice_items[0]['product_id']) - 1], [
                     'price' => $request->invoice_items[$i]['price'],
                     'quantity' => $request->invoice_items[$i]['quantity'],
                     'start_date' => $request->invoice_items[$i]['start_date'],
@@ -124,16 +124,10 @@ class InvoiceController extends Controller
     public function pdf_test($invoice_id)
     {
         $payment = Payment::where('id', $invoice_id)->first();
-        $test = new InvoiceResource($payment);
-        // $a = [
-        //     'invoice' => $test
-        // ];
-        // return view('pdf.receipt', )
-        // $pdf = PDF::loadView('pdf.receipt', ['invoice'=>$payment]);
-        // return response($pdf->inline(), 200)->withHeaders([
-        //     'Content-Type' => 'application/pdf'
-        // ]);
-        // return response($test);
-        return view('test', compact("test"));
+        
+        $pdf = PDF::loadView('pdf.receipt', ['invoice'=>$payment]);
+        return response($pdf->inline(), 200)->withHeaders([
+            'Content-Type' => 'application/pdf'
+        ]);
     }
 }

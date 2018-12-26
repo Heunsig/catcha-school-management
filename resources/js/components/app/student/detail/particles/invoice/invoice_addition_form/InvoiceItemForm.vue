@@ -3,7 +3,7 @@
     <v-card-title class="py-1 grey lighten-2">
       <div class="ca-typo-title-5"># {{ index }}</div>
       <v-spacer></v-spacer>
-      <v-btn icon @click="remove()">
+      <v-btn icon @click="remove()" :disabled="GUID === 'first'">
         <v-icon>clear</v-icon>
       </v-btn>
     </v-card-title>
@@ -71,7 +71,7 @@
                   </v-menu>
                 </el-form-item>
               </v-flex>
-              <v-flex xs12>
+              <v-flex xs9>
                 <el-form-item label="Price" class="ca-label">
                   <el-input 
                     v-model="form.price"
@@ -79,7 +79,7 @@
                   ></el-input>
                 </el-form-item>
               </v-flex>
-              <v-flex xs12>
+              <v-flex xs3>
                 <el-form-item label="Quantity" class="ca-label">
                   <el-input-number 
                     v-model="form.quantity"
@@ -108,6 +108,7 @@
 
 export default {
   props: {
+    GUID: String,
     index: Number,
     products: Array
   },
@@ -117,7 +118,7 @@ export default {
       start_date: null,
       completion_date: null,
       price: null,
-      quantity: null,
+      quantity: 1,
       note: null
     },
     start_date_picker: false,
@@ -127,36 +128,6 @@ export default {
         { required: true, message: 'Please select product', trigger: 'change' }
       ]
     }
-    // options: [
-    //   {
-    //     id: 1,
-    //     label: 'a',
-    //     children: [
-    //       {
-    //         id: 'aa',
-    //         label: 'asdfasdf',
-    //       }, 
-    //       {
-    //         id: 'ab',
-    //         label: '123123',
-    //         children: [
-    //           {
-    //             id: 'cccc',
-    //             label: '123123'
-    //           }
-    //         ]
-    //       } 
-    //     ],
-    //   }, 
-    //   {
-    //     id: 'b',
-    //     label: '123123',
-    //   }, 
-    //   {
-    //     id: 'c',
-    //     label: '123123',
-    //   } 
-    // ],
   }),
   methods: {
     validate () {
@@ -172,20 +143,15 @@ export default {
 
       return result
     },
-    // update_start_date (val) {
-    //   this.$emit('update:start_date', val)
-    //   this.start_date_picker = false
-    // },
-    // update_completion_date (val) {
-    //   this.$emit('update:completion_date', val)
-    //   this.completion_date_picker = false
-    // },
     format_date (date) {
       return date ? this.$moment(date).format('MM/DD/YYYY') : ''
     },
     remove () {
       this.$emit('remove')
     },
+    reset () {
+      this.$refs['form'].resetFields()
+    }
   }
 }
 </script>

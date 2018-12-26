@@ -80,12 +80,16 @@ export default {
   computed: {
     filtered_invoices () {
       let $this = this
-      let filtered_data = []
-      if (this.filtered_by.indexOf('Deleted') > -1 ) { 
-        filtered_data = this.invoices
-      } else {
-        filtered_data = this._.filter(this.invoices, ['deleted_at', null])
+      let filtered_data = this._.reverse(this._.clone(this.invoices))
+
+      if (this.filtered_by.indexOf('Deleted') < 0 ) { 
+        filtered_data = this._.filter(filtered_data, ['deleted_at', null])
       }
+      // if (this.filtered_by.indexOf('Deleted') > -1 ) { 
+      //   filtered_data = this.invoices
+      // } else {
+      //   filtered_data = this._.filter(this.invoices, ['deleted_at', null])
+      // }
 
       return this._.filter(filtered_data, function(o) {
         return $this.filtered_by.indexOf(o.status) > -1 ? true : false

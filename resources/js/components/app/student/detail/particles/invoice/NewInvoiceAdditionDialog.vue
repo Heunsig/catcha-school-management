@@ -10,10 +10,15 @@
         </div> -->
         <v-btn 
           color="primary"
-          depressed
-          @click="add_product()"
+          @click="reset()"
         >
-          Add Product
+          Clear
+        </v-btn>
+        <v-btn 
+          color="primary"
+          @click="add_item()"
+        >
+          Add New Item
         </v-btn>
       </v-card-title>
       <v-card-text class="grey lighten-4">
@@ -32,21 +37,6 @@
                           :payment_methods="payment_methods"
                           ref="payment_information_form"
                         ></PaymentInformationForm>
-                        <!-- <payment-status-form
-                          :status.sync="status"
-                        >
-                        </payment-status-form>
-                        
-                        <payment-method-form
-                          :payment_methods="payment_methods"
-                          :method_key.sync="payment_method.method_key"
-                          :detail.sync="payment_method.detail"
-                        ></payment-method-form>
-                        
-                        <payment-note-form
-                          :note.sync="note"
-                        >
-                        </payment-note-form> -->
                       </v-card-text>
                     </v-card>
                   </v-flex>
@@ -56,25 +46,31 @@
             <v-flex xs7>
               <v-container fluid class="pa-0 ca-grid-list-6-b">
                 <v-layout wrap>
-                  <v-flex xs12 v-for="(invoice_item, i) in reversed_invoice_items" :key="invoice_item.GUID">
-                    <invoice-item-form
-                      ref="invoice"
-                      :index="reversed_invoice_items.length - i"
-                      :products="products"
-                      @remove="remove(invoice_item)"
-                    ></invoice-item-form>
-                    <!-- <invoice-item-form
-                      :key="invoice_item.GUID"
-                      :products="products"
-                      :product.sync="invoice_item.product_id"
-                      :start_date.sync="invoice_item.start_date"
-                      :completion_date.sync="invoice_item.completion_date"
-                      :price.sync="invoice_item.price"
-                      :quantity.sync="invoice_item.quantity"
-                      :note.sync="invoice_item.note"
-                      @remove="remove(invoice_item)"
-                    ></invoice-item-form> -->
+                  <v-flex xs12>
+                    <v-card>
+                      <v-card-title>
+                        <div class="ca-typo-title-5">Invoice Details</div>
+                      </v-card-title>
+                    </v-card>
                   </v-flex>
+                  <template v-if="reversed_invoice_items.length">
+                    <v-flex xs12 v-for="(invoice_item, i) in reversed_invoice_items" :key="invoice_item.GUID">
+                      <invoice-item-form
+                        ref="invoice"
+                        :GUID="invoice_item.GUID"
+                        :index="reversed_invoice_items.length - i"
+                        :products="products"
+                        @remove="remove(invoice_item)"
+                      ></invoice-item-form>
+                    </v-flex>
+                  </template>
+                  <template v-else>
+                    <v-flex xs12>
+                      <div class="ca-typo-title-5 text-xs-center">
+                        Please add new item.
+                      </div>
+                    </v-flex>
+                  </template>
                 </v-layout>
               </v-container>
             </v-flex>
@@ -84,7 +80,12 @@
       <v-card-actions class="primary">
         <v-spacer></v-spacer>
         <v-btn color="white" flat @click="is_active = false">Disagree</v-btn>
-        <v-btn color="white" flat @click="submit()">Agree</v-btn>
+        <v-btn 
+          color="white" 
+          flat 
+          @click="submit()"
+          :loading="wating_result"
+        >Agree</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -93,9 +94,6 @@
 import bus from 'bus'
 
 import PaymentInformationForm from './invoice_addition_form/PaymentInformationForm'
-// import PaymentMethodForm from './invoice_addition_form/PaymentMethodForm'
-// import PaymentStatusForm from './invoice_addition_form/PaymentStatusForm'
-// import PaymentNoteForm from './invoice_addition_form/PaymentNoteForm'
 import InvoiceItemForm from './invoice_addition_form/InvoiceItemForm'
 
 export default {
@@ -104,23 +102,16 @@ export default {
     products: Array
   },
   components: {
-    // PaymentMethodForm,
-    // PaymentStatusForm,
-    // PaymentNoteForm,
     InvoiceItemForm,
     PaymentInformationForm
   },
   data: () => ({
     is_active: false,
-    total: 0,
-    // status: '',
-    // note: '',
-    // payment_date: '',
-    // payment_method: {
-    //   method_key: null,
-    //   detail: {}
-    // },
-    invoice_items: []
+    // total: 0,
+    invoice_items: [
+      { GUID: 'first' }
+    ],
+    wating_result: false
   }),
   computed: {
     reversed_invoice_items () {
@@ -142,7 +133,7 @@ export default {
       } else {
         error += 1
       }
-      
+
       for (let i = 0 ; i < this.$refs['invoice'].length ; i++) {
         if (this.$refs['invoice'][i].validate()) {
           result.invoice_items.push(this.$refs['invoice'][i].validate())
@@ -151,6 +142,7 @@ export default {
         }
       }
 
+
       if (error > 0) {
         return false
       } else {
@@ -158,10 +150,10 @@ export default {
       }
     },
     submit () {
-      // console.log('v', this.validate_all())
       let data = this.validate_all()
 
       if (data) {
+        this.wating_result = true
         this.$axios.post(`/invoice`, {
           student_id: this.$route.params.student_id,
           status: data.payment.information.status,
@@ -172,27 +164,30 @@ export default {
           },
           invoice_items: data.invoice_items
         }).then(res => {
-          console.log('res', res)
+          this.$emit('add_invoice', res.data)
+          this.is_active = false
+          this.wating_result = false
+          this.reset()
         })
       }
     },
-    add_product () {
+    add_item () {
       this.invoice_items.push({
-        GUID: this.guid()
+        GUID: this.generate_guid()
       })
-      // this.invoice_items.push({
-      //   GUID: this.guid(),
-      //   product_id: null,
-      //   start_date: '',
-      //   completion_date: '',
-      //   price: '',
-      //   quantity: '',
-      //   note: ''
-      // })
     },
     remove (item) {
       let index = this.invoice_items.indexOf(item)
       this.invoice_items.splice(index, 1)
+    },
+    reset () {
+      this.$refs['invoice'].forEach(item => {
+        item.reset()
+      })
+      this.$refs['payment_information_form'].reset()
+      this.invoice_items = [
+        { GUID : 'first' }
+      ]
     }
   },
   created () {

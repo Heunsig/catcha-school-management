@@ -108,10 +108,13 @@ export default {
       })
 
       return result
+    },
+    reset () {
+      // this.form.status = ''
+      // this.form.method_key = ''
+      // this.form.note = ''
+      this.$refs['form'].resetFields()
     }
-  },
-  created () {
-    console.log('payment method', this.payment_methods)
   }
 }
 </script>

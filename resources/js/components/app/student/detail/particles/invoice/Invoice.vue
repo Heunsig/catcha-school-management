@@ -161,11 +161,11 @@
         <table class="ca-table">
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Date</th>
-              <th>Qauntity</th>
-              <th>Price</th>
-              <th>Total</th>
+              <th class="text-xs-left">Name</th>
+              <th class="text-xs-center">Date</th>
+              <th class="text-xs-center">Qauntity</th>
+              <th class="text-xs-right">Price</th>
+              <th class="text-xs-right">Total</th>
             </tr>
           </thead>
           <tbody>
