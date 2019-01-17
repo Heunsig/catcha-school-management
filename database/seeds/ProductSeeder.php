@@ -15,6 +15,7 @@ class ProductSeeder extends Seeder
         DB::table('product')->insert([
             [
                 'name' => 'ESL program',
+                'category' => 'program',
                 'price' => 0,
                 'quantity' => -1,
                 'created_at' => Carbon::now(),
@@ -24,6 +25,7 @@ class ProductSeeder extends Seeder
             ],
             [
                 'name' => 'Conversation program',
+                'category' => 'program',
                 'price' => 0,
                 'quantity' => -1,
                 'created_at' => Carbon::now(),
@@ -33,6 +35,7 @@ class ProductSeeder extends Seeder
             ],
             [
                 'name' => 'TOFLE program',
+                'category' => 'program',
                 'price' => 0,
                 'quantity' => -1,
                 'created_at' => Carbon::now(),
@@ -42,6 +45,7 @@ class ProductSeeder extends Seeder
             ],
             [
                 'name' => 'TOEIC program',
+                'category' => 'program',
                 'price' => 0,
                 'quantity' => -1,
                 'created_at' => Carbon::now(),

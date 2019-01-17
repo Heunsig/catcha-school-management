@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-card-title>
-      <div class="ca-typo-title-2">Invoice</div>
+      <div class="ca-typo-title-4">Invoice</div>
       <v-spacer></v-spacer>
       <v-btn depressed color="primary" @click="open_dialog_invoice_addition()">Issue Receipt</v-btn>
     </v-card-title>
@@ -13,18 +13,25 @@
         <!-- <v-checkbox v-model="filtered_by" class="__check-box" hide-details label="Refunded" value="Refunded"></v-checkbox> -->
         <v-checkbox v-model="filtered_by" class="__check-box" hide-details label="Deleted" value="Deleted"></v-checkbox>
       </div>
-      <v-container fluid class="pa-0">
-        <v-layout wrap>
-          <v-flex xs12 
-            v-for="invoice in filtered_invoices" 
-            :key="invoice.id"
-          >
-            <invoice
-              :invoice="invoice"
-            ></invoice>
-          </v-flex>
-        </v-layout>
-      </v-container>
+      <template v-if="!_.isEmpty(filtered_invoices)">
+        <v-container fluid class="pa-0">
+          <v-layout wrap>
+            <v-flex xs12 
+              v-for="invoice in filtered_invoices" 
+              :key="invoice.id"
+            >
+              <invoice
+                :invoice="invoice"
+              ></invoice>
+            </v-flex>
+          </v-layout>
+        </v-container>
+      </template>
+      <template v-else>
+        <div class="text-xs-center ca-typo-5 ca-typo-style-blank">
+          There are no invoices
+        </div>
+      </template>
     </v-card-text>
     <new-invoice-addition-dialog
       :payment_methods="payment_methods"

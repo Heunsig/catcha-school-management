@@ -1,7 +1,9 @@
 <template>
   <v-dialog v-model="is_active" persistent max-width="400">
     <v-card>
-      <v-card-title class="ca-title-4">Do you want to delete {{ selected_class_item.name }}?</v-card-title>
+      <v-card-title class="primary white--text ca-typo-title-4">
+        Delete Class
+      </v-card-title>
       <v-card-text>
         
       </v-card-text>
@@ -18,22 +20,21 @@ import bus from 'bus'
 export default {
   data: () => ({
     is_active: false,
-    selected_class_item: {},
-    selected_group: []
+    selected_student_class: {},
   }),
   methods: {
     submit () {
-      this.$emit('submit', {
-        selected_class_item: this.selected_class_item,
-        selected_group: this.selected_group
+      this.$store.dispatch('class/del_class', {
+        student_id: this.$route.params.student_id,
+        pivot_id: this.selected_student_class.id
+      }).then(res => {
+        this.is_active = false
       })
-      this.is_active = false
     }
   },
   created () {
     bus.$on('open_dialog_deletion', (payload) => {
-      this.selected_class_item = payload.selected_class_item
-      this.selected_group = payload.selected_group
+      this.selected_student_class = payload.student_class
       this.is_active = true
     })
   }

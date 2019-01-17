@@ -48,7 +48,6 @@ Vue.use(Cascader)
 Vue.use(Form)
 Vue.use(FormItem)
 
-
 const app = new Vue({
   el: '#app',
   template: '<app></app>',

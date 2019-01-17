@@ -14,7 +14,13 @@
               </v-breadcrumbs>
             </div>
             <v-spacer></v-spacer>
-              <v-btn color="primary">Register New Student</v-btn>
+              <v-btn 
+                color="primary" 
+                depressed
+                @click="$router.push({name: 'student.registration'})"
+              >
+                Register New Student
+              </v-btn>
           </v-card-title>
         </v-card>
       </v-flex>
@@ -35,21 +41,39 @@
             :items="students"
             :search="search"
             :rows-per-page-items="RPPI"
+            :pagination.sync="pagination"
           >
             <template slot="items" slot-scope="props">
               <td>
-                <v-avatar
-                  :size="45"
-                  color="grey lighten-4"
+                <v-btn 
+                  fab 
+                  icon
+                  @click="open_big_img(AVATAR_BASE_URL+'/400/'+props.item.full_name)"
                 >
-                  <img :src="AVATAR_BASE_URL+'/50/Heunsig.png'" alt="avatar"/>
-                </v-avatar>
+                  <v-avatar
+                    size="45"
+                    color="grey lighten-4"
+                  >
+                    <img :src="AVATAR_BASE_URL+'/50/'+props.item.full_name" :alt="props.item.full_name"/>
+                  </v-avatar>
+                </v-btn>
               </td>
-              <td>{{ props.item.user.full_name }}</td>
-              <td>{{ props.item.user.email }}</td>
-              <td>{{ props.item.status }}</td>
+              <td>{{ props.item.type }}</td>
+              <td>{{ props.item.full_name }}</td>
+              <td>{{ props.item.email }}</td>
+              <td>{{ props.item.status.name }}</td>
+              <td>{{ props.item.birth_day }}</td>
+              <td>{{ props.item.created_at }}</td>
               <td>
-                <v-btn icon>
+                <v-btn 
+                  icon
+                  @click="$router.push({
+                    name: 'student.basic_information',
+                    params: {
+                      student_id: props.item.id
+                    }
+                  })"
+                >
                   <v-icon color="primary">visibility</v-icon>
                 </v-btn>
               </td>
@@ -61,6 +85,9 @@
         </v-card>
       </v-flex>
     </v-layout>
+    <v-dialog v-model="big_image_dialog" max-width="400">
+      <img :src="image_src" alt="avatar"/>
+    </v-dialog>
   </v-container>
 </template>
 <script>
@@ -77,30 +104,56 @@ export default {
       }
     ],
     search: '',
+    pagination: {
+      descending: true,
+      sortBy: 'hidden_created_at'
+    },
     headers: [
       {
         text: '',
         sortable: false,
       },
       {
+        text: 'Type',
+        value: 'type'
+      },
+      {
         text: 'Name',
-        value: 'user.full_name'
+        value: 'full_name'
       },
       {
         text: 'Email',
-        value: 'user.email'
+        value: 'email'
+      },
+      {
+        text: 'Status',
+        value: 'status.name'
       },
       {
         text: 'Birth Day',
         value: 'birth_day'
       },
       {
+        text: 'Created At',
+        value: 'hidden_created_at'
+      },
+      {
         text: 'Actions',
         sortable: false
       }
     ],
-    students: []
+    students: [],
+    big_image_dialog: false,
+    image_src: ''
   }),
+  methods: {
+    open_big_img (src) {
+      console.log('src', src)
+      this.big_image_dialog = true
+      this.image_src = src
+      // console.log('Hello World')
+    }
+  },
   created () {
     this.$axios.get('/student').then(res => {
       console.log('res', res)

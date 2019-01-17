@@ -1,47 +1,87 @@
 <template>
-  <v-dialog v-model="is_active" persistent max-width="400">
+  <v-dialog v-model="is_active" persistent max-width="500">
     <v-card>
-      <v-card-title class="ca-title-4">Add New Class</v-card-title>
+      <v-card-title class="primary white--text ca-typo-title-4">
+        Add New Class
+      </v-card-title>
       <v-card-text>
-        <v-container fluid class="pa-0">
-          <v-layout wrap>
-            <v-flex xs12>
-              <v-select
-                v-model="selected_class_id"
-                :items="classes"
-                item-text="name"
-                item-value="id"
-                label="Choose Class"
-              ></v-select>
-            </v-flex>
-            <v-flex xs12>
-              <v-menu
-                :close-on-content-click="false"
-                v-model="date_picker"
-                :nudge-right="40"
-                lazy
-                transition="scale-transition"
-                offset-y
-                full-width
-                min-width="290px"
-              >
-                <v-text-field
-                  slot="activator"
-                  v-model="date_formatted"
-                  label="When does this student begin the class?"
-                  prepend-icon="event"
-                  readonly
-                ></v-text-field>
-                <v-date-picker v-model="start_date" @input="date_picker = false"></v-date-picker>
-              </v-menu>
-            </v-flex>
-          </v-layout>
-        </v-container>
+        <el-form ref="form" :model="form" label-position="top">
+          <v-container fluid class="pa-0">
+            <v-layout wrap>
+              <v-flex xs12>
+                <el-form-item label="Program" class="ca-label">
+                  <el-select 
+                    v-model="form.program_id" 
+                    placeholder="Select"
+                    class="ca-block"
+                  >
+                    <el-option
+                      v-for="item in programs_taken"
+                      :key="item.id"
+                      :label="item.name + ' (' + item.start_date + '~' + item.completion_date +')'"
+                      :value="item.id"
+                    >
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+              </v-flex>
+              <v-flex xs12>
+                <el-form-item label="Class" class="ca-label">
+                  <el-select 
+                    v-model="form.classinfo_id" 
+                    placeholder="Select"
+                    class="ca-block"
+                  >
+                    <el-option
+                      v-for="item in class_options"
+                      :key="item.id"
+                      :label="item.name"
+                      :value="item.id"
+                    >
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+              </v-flex>
+              <v-flex xs12>
+                <el-form-item label="Start Date" class="ca-label">
+                  <v-menu
+                    :close-on-content-click="false"
+                    v-model="date_picker"
+                    :nudge-right="40"
+                    lazy
+                    transition="scale-transition"
+                    offset-y
+                    full-width
+                    min-width="290px"
+                  >
+                    <el-input 
+                      slot="activator"
+                      :value="format_date(form.start_date)"
+                      placeholder="Please input" 
+                      readonly
+                    ></el-input>
+                    <v-date-picker
+                      v-model="form.start_date"
+                      @input="date_picker = false"
+                    ></v-date-picker>
+                  </v-menu>
+                </el-form-item>
+              </v-flex>
+            </v-layout>
+          </v-container>
+        </el-form>
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="green darken-1" flat @click="is_active = false">Disagree</v-btn>
-        <v-btn color="green darken-1" flat @click="submit()">Agree</v-btn>
+        <v-btn 
+          color="green darken-1" 
+          flat 
+          @click="submit()"
+          :loading="wating_result"
+        >
+          Agree
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -50,32 +90,41 @@
 import bus from 'bus'
 
 export default {
-  props: [
-    'classes'
-  ],
   data: () => ({
     is_active: false,
+    wating_result: false,
     date_picker: false,
-    start_date: '',
-    selected_class_id: null,
-    // classes: []
+    form: {
+      program_id: null,
+      classinfo_id: null,
+      start_date: ''
+    }
   }),
   computed: {
-    date_formatted () {
-      return this.$moment(this.start_date).format('MM/DD/YYYY')
+    class_options () {
+      return this.$store.getters['class/class_options']
+    },
+    programs_taken () {
+      return this.$store.getters['class/programs_taken']
     }
   },
   methods: {
     submit () {
-      this.$emit('submit', {
-        classinfo_id: this.selected_class_id,
-        start_date: this.start_date
+      this.wating_result = true
+      this.$store.dispatch('class/add_class', {
+        student_id: this.$route.params.student_id, 
+        form: this.form
+      }).then(res => {
+        this.wating_result = false
+        this.is_active = false
       })
-      this.is_active = false
+    },
+    format_date (date) {
+      return date ? this.$moment(date).format('MM/DD/YYYY') : ''
     },
   },
   created () {
-    this.start_date = this.$moment().format("YYYY-MM-DD")
+    this.form.start_date = this.$moment().format('YYYY-MM-DD')
     bus.$on('open_dialog_class_addition', (payload) => {
       this.is_active = true
     })

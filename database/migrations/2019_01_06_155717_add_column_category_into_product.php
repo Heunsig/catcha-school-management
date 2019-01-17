@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateStudentTable extends Migration
+class AddColumnCategoryIntoProduct extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,8 @@ class CreateStudentTable extends Migration
      */
     public function up()
     {
-        Schema::create('student', function (Blueprint $table) {
-            $table->integer('id')->unsigned()->primary();
-            $table->integer('status_id')->unsigned();
+        Schema::table('product', function (Blueprint $table) {
+            $table->string('category', 30)->nullable()->after('id');
         });
     }
 
@@ -26,6 +25,8 @@ class CreateStudentTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('student');
+        Schema::table('product', function (Blueprint $table) {
+            $table->dropColumn('category');
+        });
     }
 }

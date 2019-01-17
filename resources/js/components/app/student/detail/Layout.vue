@@ -1,5 +1,5 @@
 <template>
-  <v-container grid-list-lg fluid class="pa-0">
+  <v-container fluid class="pa-0 ca-grid-list-3">
     <v-layout wrap>
       <v-flex xs12>
         <v-card class="elevation-0 transparent">
@@ -17,7 +17,7 @@
         </v-card>
       </v-flex>
       <v-flex xs3>
-        <v-container fluid class="pa-0">
+        <v-container fluid class="pa-0 ca-grid-list-3-y">
           <v-layout wrap>
             <v-flex xs12>
               <v-card>
@@ -26,7 +26,7 @@
                   <div class="ca-typo-title-3 mb-2">
                     <span class="flag-icon flag-icon-kr"></span>
                     {{ full_name }}
-                    <small class="ml-1">({{ nickname }})</small>
+                    <small class="ml-1" v-if="nickname">({{ nickname }})</small>
                   </div>
                   <div class="ca-typo-style-meta-medium">
                     {{ email }}
@@ -54,14 +54,14 @@
         </v-container>
       </v-flex>
       <v-flex xs9>
-        <v-container fluid class="pa-0">
+        <v-container fluid class="pa-0 ca-grid-list-3-y">
           <v-layout wrap>
             <v-flex xs12>
               <v-card>
                 <ul class="ca-tab">
-                  <li class="ca-tab-item ca-active">Basic Information</li>
-                  <li class="ca-tab-item">Class</li>
-                  <li class="ca-tab-item">Invoice</li>
+                  <li class="ca-tab-item" :class="{'ca-active':is_active('')}" @click="$router.push({name: 'student.basic_information', params:{student_id: $route.params.student_id}})">Basic Information</li>
+                  <li class="ca-tab-item" :class="{'ca-active':is_active('class')}" @click="$router.push({name: 'student.class', params:{student_id: $route.params.student_id}})">Class</li>
+                  <li class="ca-tab-item" :class="{'ca-active':is_active('invoice')}" @click="$router.push({name: 'student.invoice', params:{student_id: $route.params.student_id}})">Payment</li>
                 </ul>
               </v-card>
             </v-flex>
@@ -87,12 +87,8 @@ export default {
         disabled: false
       },
       {
-        text: 'student',
+        text: 'Student',
         disabled: false
-      },
-      {
-        text: 'Heunsig',
-        disabled: true
       }
     ]
   }),
@@ -107,9 +103,23 @@ export default {
       return this.$store.getters['student/basic_information'].email
     }
   },
+  methods: {
+    is_active (name) {
+      let parent_path = this.$route.fullPath.split('/')[3]
+      if(parent_path === name) {
+        return true  
+      } 
+      return false
+    }
+  },
   created () {
     this.$store.dispatch('student/get_student', {
       student_id: this.$route.params.student_id
+    }).then(res => {
+      this.breadcrumbs.push({
+        text: this.full_name,
+        disabled: true
+      })
     })
   }
 }

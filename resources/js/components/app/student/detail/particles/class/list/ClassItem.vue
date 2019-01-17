@@ -135,14 +135,14 @@ export default {
     },
     open_dialog_class_change (item, group) {
       bus.$emit('open_dialog_class_change', {
-        selected_class_item: item,
-        selected_group: group
+        student_class: item,
+        // selected_group: group
       })
     },
     open_dialog_deletion (item, group) {
       bus.$emit('open_dialog_deletion', {
-        selected_class_item: item,
-        selected_group: group
+        student_class: item,
+        // selected_group: group
       })
     }
   }

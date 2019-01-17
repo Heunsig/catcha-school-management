@@ -4,13 +4,15 @@ import axios from '../helpers/axios'
 
 import studentModule from './student'
 import invoiceModule from './invoice'
+import classModule from './class'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules: {
     student: studentModule,
-    invoice: invoiceModule
+    invoice: invoiceModule,
+    class: classModule
   },
   state: {
     token: localStorage.getItem('access_token') || null

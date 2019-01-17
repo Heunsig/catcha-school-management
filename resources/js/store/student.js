@@ -26,14 +26,18 @@ const student = {
   actions: {
     get_student (context, payload) {
       if (context.getters.student_id !== payload.student_id) {
-        axios.get(`/student/${payload.student_id}/basic_information`).then(res => {
-          console.log('get_student')
-          context.commit('set_basic_information', {
-            basic_information: res.data
-          })
+        return new Promise((resolve, reject) => {
+          axios.get(`/student/${payload.student_id}/basic_information`).then(res => {
+            console.log('get_student')
+            context.commit('set_basic_information', {
+              basic_information: res.data
+            })
 
-          context.commit('set_student_id', {
-            student_id: payload.student_id
+            context.commit('set_student_id', {
+              student_id: payload.student_id
+            })
+
+            resolve()
           })
         })
       }
