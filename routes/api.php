@@ -30,12 +30,30 @@ Route::middleware('auth:api')->group(function () {
 
     Route::get('/student/{student_id}/basic_information', 'StudentController@basic_information');
     Route::get('/student/{student_id}/class', 'StudentController@class');
+    // Route::post('/student/{student_id}/program', 'StudentController@add_program');
     Route::post('/student/{student_id}/class', 'StudentController@add_class');
-    Route::post('/student/{student_id}/class/pivot/{pivot_id}/change_class', 'StudentController@change_class');
-    Route::post('/student/{student_id}/class/pivot/{pivot_id}/edit_date', 'StudentController@edit_date');
-    Route::delete('/student/{student_id}/class/pivot/{pivot_id}', 'StudentController@delete_class');
+    // Route::post('/student/{student_id}/class/pivot/{pivot_id}/change_class', 'StudentController@change_class');
+    // Route::post('/student/{student_id}/class/pivot/{pivot_id}/edit_date', 'StudentController@edit_date');
+    // Route::delete('/student/{student_id}/class/pivot/{pivot_id}', 'StudentController@delete_class');
 
     Route::get('/class', 'ClassinfoController@list');
+});
+
+Route::middleware('auth:api')->prefix('program')->group(function(){
+    Route::get('', 'ProgramController@list');
+    Route::post('', 'ProgramController@store');
+    Route::delete('{program_id}', 'ProgramController@destroy');
+
+    Route::post('class', 'ProgramController@add_class');
+    Route::post('class/{class_in_program_id}', 'ProgramController@change_class');
+    Route::delete('class/{class_in_program_id}', 'ProgramController@destroy_class');
+
+    Route::post('{program_id}/date', 'ProgramController@update_program_date');
+});
+
+Route::middleware('auth:api')->prefix('class_in_program')->group(function(){
+    Route::post('{class_in_program_id}/edit/date', 'ClassInProgramController@edit_date');
+    Route::post('{class_in_program_id}/complete', 'ClassInProgramController@complete_class');
 });
 
 Route::middleware('auth:api')->prefix('payment_method')->group(function(){ 

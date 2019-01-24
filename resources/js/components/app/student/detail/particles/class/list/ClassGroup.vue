@@ -9,13 +9,13 @@
       </div> 
     -->
     <div>
-      <class-item
+      <!-- <class-item
         v-for="item in group"
         :key="item.id"
         :item="item"
         :group="group"
       >
-      </class-item>
+      </class-item> -->
     </div>
   </div>
 </template>

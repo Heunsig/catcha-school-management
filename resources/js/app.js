@@ -19,6 +19,9 @@ import router from './router'
 import store from './store/store'
 import globalMixin from './mixins/global'
 
+import lang from 'element-ui/lib/locale/lang/en'
+import locale from 'element-ui/lib/locale'
+
 import { 
   Input, 
   InputNumber, 
@@ -40,6 +43,7 @@ Vue.prototype._ = lodash
 Vue.prototype.$axios = axios
 Vue.prototype.$account = account
 
+locale.use(lang)
 Vue.use(Input)
 Vue.use(InputNumber)
 Vue.use(Select)

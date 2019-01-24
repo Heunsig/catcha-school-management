@@ -35,6 +35,12 @@ export default {
           .substring(1);
       }
       return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+    },
+    reset_data (init_data) {
+      Object.assign(this.$data, this.$options.data.apply(this))
+      if (!_.isEmpty(init_data)) {
+        Object.assign(this.$data, init_data)
+      }
     }
   }
 }

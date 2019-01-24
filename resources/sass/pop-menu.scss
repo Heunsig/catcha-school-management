@@ -1,0 +1,8 @@
+.#{$prefix}-pop-menu {
+  @include list-style-reset;
+
+  &> li {
+    padding: 7px;
+    font-size: 1.143em;
+  }
+}

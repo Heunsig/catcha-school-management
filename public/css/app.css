@@ -217,6 +217,38 @@ Lacacy of bootstrap
   color: #64d664;
 }
 
+.ca-completed {
+  border-left: 8px solid grey;
+}
+
+.ca-completed .__status {
+  color: grey;
+}
+
+.ca-deleted {
+  border-left: 8px solid red;
+}
+
+.ca-deleted .__status {
+  color: red;
+}
+
+.ca-wating {
+  border-left: 8px solid #e7b021;
+}
+
+.ca-wating .__status {
+  color: #e7b021;
+}
+
+.ca-inprogress {
+  border-left: 8px solid #64d664;
+}
+
+.ca-inprogress .__status {
+  color: #64d664;
+}
+
 .ca-menu-tracker {
   margin-top: 10px;
   display: -webkit-box;
@@ -561,6 +593,17 @@ Lacacy of bootstrap
 .ca-tab-item.ca-active {
   color: #fff;
   background: #3f51b5;
+}
+
+.ca-pop-menu {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.ca-pop-menu > li {
+  padding: 7px;
+  font-size: 1.143em;
 }
 
 .ca-block {

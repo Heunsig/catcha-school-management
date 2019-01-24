@@ -10,6 +10,7 @@ use App\User;
 use App\Category;
 use App\Classinfo;
 use App\Payment;
+use App\Product;
 use App\Http\Resources\StudentResource;
 use App\Http\Resources\StudentBasicInformationResource;
 use App\Http\Resources\StudentClassResource;
@@ -17,6 +18,9 @@ use App\Http\Resources\ProgramTakenResource;
 
 use App\Http\Resources\ClassListResource;
 use App\Http\Resources\ClassBelongingToStudentResource;
+
+use App\Http\Resources\ProgramResource;
+use App\Http\Resources\ProgramListResource;
 
 
 class StudentController extends Controller
@@ -85,8 +89,11 @@ class StudentController extends Controller
     public function class($student_id)
     {
         $student = Student::where('id', $student_id)->first();
-        $classes_belonging_to = $student->classinfo()->get();
-        $class_list = Classinfo::all();
+        $class_selection_options = Classinfo::all();
+        $program_selection_options = Product::where('parent_product_id', 1)->get();
+        // $programs = $student->program
+
+
         // $class_belonging_to = $student->classinfo()->first();
         // $student = Student::where('id', $student_id)->first();
         // $classes = Classinfo::all();
@@ -102,116 +109,125 @@ class StudentController extends Controller
         // $programs_taken = $student->programs_taken();
 
         return response()->json([
-            // 'test' => $class_belonging_to->pivot->start_date,
-            'class_list' => ClassListResource::collection($class_list),
-            'classes_belonging_to' => ClassBelongingToStudentResource::collection($classes_belonging_to),
+            'programs' => ProgramResource::collection($student->program),
+            'class_selection_options' => ClassListResource::collection($class_selection_options),
+            'program_selection_options' => ProgramListResource::collection($program_selection_options),
+            // 'classes_belonging_to' => ClassBelongingToStudentResource::collection($classes_belonging_to),
             // 'programs_taken' => ProgramTakenResource::collection(collect($programs_taken))
         ]);
     }
 
-    public function add_class(Request $request, $student_id)
-    {
-        $student = Student::where('id', $student_id)->first();
-        $student->classinfo()->attach($request->classinfo_id,
-            [
-                'start_date' => $request->start_date,
-                'program_id' => $request->program_id,
-                'created_by' => $request->user()->id,
-                'updated_by' => $request->user()->id,
-            ]
-        );
+    // public function add_program(Request $request, $student_id)
+    // {
+    //     $student = Student::where('id', $student_id)->first();
+    //     $student->
 
-        $new_class = $student->classinfo()->withPivot('id')->orderBy('pivot_created_at', 'desc')->first();
-        return response()->json(new StudentClassResource($new_class));
-        // $class = $student->classinfo()->wherePivot('id', $a)->first();
+    // }
 
-        // $student = Student::where('id', $student_id)->first();
-        // $max_group = $student->classinfo()->max('group');
-        // $student->classinfo()->attach($request->classinfo_id,
-        //     [
-        //         'start_date' => $request->start_date,
-        //         'group' => $max_group ? $max_group + 1 : 1,
-        //         'created_by' => $request->user()->id,
-        //         'updated_by' => $request->user()->id,
-        //     ]
-        // );
+    // public function add_class(Request $request, $student_id)
+    // {
+    //     // $student
+    //     // $student = Student::where('id', $student_id)->first();
+    //     // $student->classinfo()->attach($request->classinfo_id,
+    //     //     [
+    //     //         'start_date' => $request->start_date,
+    //     //         'program_id' => $request->program_id,
+    //     //         'created_by' => $request->user()->id,
+    //     //         'updated_by' => $request->user()->id,
+    //     //     ]
+    //     // );
 
-        // $a = $student->classinfo()->withPivot('id')->orderBy('pivot_created_at', 'desc')->first()->pivot->id;
-        // $class = $student->classinfo()->wherePivot('id', $a)->first();
+    //     // $new_class = $student->classinfo()->withPivot('id')->orderBy('pivot_created_at', 'desc')->first();
+    //     // return response()->json(new StudentClassResource($new_class));
+    //     // $class = $student->classinfo()->wherePivot('id', $a)->first();
 
-        // return response()->json(new StudentClassResource($class));
-    }
+    //     // $student = Student::where('id', $student_id)->first();
+    //     // $max_group = $student->classinfo()->max('group');
+    //     // $student->classinfo()->attach($request->classinfo_id,
+    //     //     [
+    //     //         'start_date' => $request->start_date,
+    //     //         'group' => $max_group ? $max_group + 1 : 1,
+    //     //         'created_by' => $request->user()->id,
+    //     //         'updated_by' => $request->user()->id,
+    //     //     ]
+    //     // );
 
-    public function change_class(Request $request, $student_id, $pivot_id)
-    {
+    //     // $a = $student->classinfo()->withPivot('id')->orderBy('pivot_created_at', 'desc')->first()->pivot->id;
+    //     // $class = $student->classinfo()->wherePivot('id', $a)->first();
 
-        DB::beginTransaction();
+    //     // return response()->json(new StudentClassResource($class));
+    // }
 
-        try {
-            $student = Student::where('id', $student_id)->first();
+    // public function change_class(Request $request, $student_id, $pivot_id)
+    // {
 
-            // Complete the previous class
-            $student->classinfo()->newPivotStatement()
-                                 ->where('id', $pivot_id)
-                                 ->update([
-                                    'completion_date' => Carbon::now()->format('Y-m-d'),
-                                    'updated_at' => Carbon::now(),
-                                    'updated_by' => $request->user()->id,
-                                 ]);
+    //     DB::beginTransaction();
 
-            // Open new class
-            $student->classinfo()->attach($request->form['classinfo_id'], [
-                'start_date' => $request->form['start_date'],
-                'group' => $request->group,
-                'created_by' => $request->user()->id,
-                'updated_by' => $request->user()->id,
-            ]);
+    //     try {
+    //         $student = Student::where('id', $student_id)->first();
 
-            DB::commit();
-        } catch(\Illuminate\Database\QueryException $e) {
-            DB::rollBack();
+    //         // Complete the previous class
+    //         $student->classinfo()->newPivotStatement()
+    //                              ->where('id', $pivot_id)
+    //                              ->update([
+    //                                 'completion_date' => Carbon::now()->format('Y-m-d'),
+    //                                 'updated_at' => Carbon::now(),
+    //                                 'updated_by' => $request->user()->id,
+    //                              ]);
 
-            return response($e);
-        }
+    //         // Open new class
+    //         $student->classinfo()->attach($request->form['classinfo_id'], [
+    //             'start_date' => $request->form['start_date'],
+    //             'group' => $request->group,
+    //             'created_by' => $request->user()->id,
+    //             'updated_by' => $request->user()->id,
+    //         ]);
 
-        $original_class = $student->classinfo()->wherePivot('id', $pivot_id)->first();
-        $new_class = $student->classinfo()->withPivot('id')->orderBy('pivot_created_at', 'desc')->first();
+    //         DB::commit();
+    //     } catch(\Illuminate\Database\QueryException $e) {
+    //         DB::rollBack();
 
-        return response()->json([
-            'original_class' => new StudentClassResource($original_class),
-            'new_class' => new StudentClassResource($new_class)
-        ]);
-    }
+    //         return response($e);
+    //     }
 
-    public function edit_date(Request $request, $student_id, $pivot_id)
-    {
-        $student = Student::where('id', $student_id)->first();
-        $student->classinfo()->newPivotStatement()
-                             ->where('id', $pivot_id)
-                             ->update([
-                                'start_date' => $request->start_date,
-                                'completion_date' => $request->completion_date,
-                                'updated_at' => Carbon::now(),
-                                'updated_by' => $request->user()->id,
-                             ]);
+    //     $original_class = $student->classinfo()->wherePivot('id', $pivot_id)->first();
+    //     $new_class = $student->classinfo()->withPivot('id')->orderBy('pivot_created_at', 'desc')->first();
 
-        $class = $student->classinfo()->wherePivot('id', $pivot_id)->first();
+    //     return response()->json([
+    //         'original_class' => new StudentClassResource($original_class),
+    //         'new_class' => new StudentClassResource($new_class)
+    //     ]);
+    // }
 
-        return response()->json(new StudentClassResource($class));
-    }
+    // public function edit_date(Request $request, $student_id, $pivot_id)
+    // {
+    //     $student = Student::where('id', $student_id)->first();
+    //     $student->classinfo()->newPivotStatement()
+    //                          ->where('id', $pivot_id)
+    //                          ->update([
+    //                             'start_date' => $request->start_date,
+    //                             'completion_date' => $request->completion_date,
+    //                             'updated_at' => Carbon::now(),
+    //                             'updated_by' => $request->user()->id,
+    //                          ]);
 
-    public function delete_class(Request $request, $student_id, $pivot_id)
-    {
-        $student = Student::where('id', $student_id)->first();
-        $student->classinfo()->newPivotStatement()
-                             ->where('id', $pivot_id)
-                             ->update([
-                                'deleted_at' => Carbon::now(),
-                                'deleted_by' => $request->user()->id
-                             ]);
+    //     $class = $student->classinfo()->wherePivot('id', $pivot_id)->first();
 
-        $class = $student->classinfo()->wherePivot('id', $pivot_id)->first(); 
+    //     return response()->json(new StudentClassResource($class));
+    // }
 
-        return response()->json(new StudentClassResource($class));
-    }
+    // public function delete_class(Request $request, $student_id, $pivot_id)
+    // {
+    //     $student = Student::where('id', $student_id)->first();
+    //     $student->classinfo()->newPivotStatement()
+    //                          ->where('id', $pivot_id)
+    //                          ->update([
+    //                             'deleted_at' => Carbon::now(),
+    //                             'deleted_by' => $request->user()->id
+    //                          ]);
+
+    //     $class = $student->classinfo()->wherePivot('id', $pivot_id)->first(); 
+
+    //     return response()->json(new StudentClassResource($class));
+    // }
 }

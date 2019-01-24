@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateLinkClassStudentTable extends Migration
+class CreateProgramDateTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,12 @@ class CreateLinkClassStudentTable extends Migration
      */
     public function up()
     {
-        Schema::create('link_class_student', function (Blueprint $table) {
+        Schema::create('program_date', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('classinfo_id')->unsigned();
-            $table->integer('student_id')->unsigned();
             $table->integer('program_id')->unsigned();
-            $table->date('start_date');
+            $table->date('start_date')->nullable();
             $table->date('completion_date')->nullable();
+            $table->string('reason')->nullable();
             $table->datetime('created_at');
             $table->integer('created_by')->unsigned();
             $table->datetime('updated_at');
@@ -36,6 +35,6 @@ class CreateLinkClassStudentTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('link_class_student');
+        Schema::dropIfExists('program_date');
     }
 }

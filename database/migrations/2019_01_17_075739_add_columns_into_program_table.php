@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddColumnCategoryIntoProduct extends Migration
+class AddColumnsIntoProgramTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddColumnCategoryIntoProduct extends Migration
      */
     public function up()
     {
-        Schema::table('product', function (Blueprint $table) {
-            $table->string('category', 30)->nullable()->after('id');
+        Schema::table('program', function (Blueprint $table) {
+            $table->integer('student_id')->unsigned()->after('id');
         });
     }
 
@@ -25,8 +25,8 @@ class AddColumnCategoryIntoProduct extends Migration
      */
     public function down()
     {
-        Schema::table('product', function (Blueprint $table) {
-            $table->dropColumn('category');
+        Schema::table('program', function (Blueprint $table) {
+            $table->dropColumn('student_id');
         });
     }
 }

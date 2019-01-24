@@ -1,150 +1,130 @@
 <template>
-  <div class="ca-student-class-item" :class="get_status_style(item)">
-    <div class="__header">
-      <div class="__title-box">
-        <div class="__status">
-          {{ get_status(item) }}
-        </div>
-        <div class="__title ca-typo-title-4">{{ item.name }}</div>
-        <div class="__date-box">
-          <div class="__date ca-typo-meta mr-2">
-            {{ item.start_date }} - {{ item.completion_date || 'Today' }} ({{ days(item.start_date, item.completion_date) }} days)
-          </div>
-          <div class="__action">
-            <v-btn class="ma-0" icon @click="open_dialog_date_edition(item.start_date, item.completion_date, item, group)">
-              <v-icon small>edit</v-icon>
-            </v-btn>
-          </div>
-        </div>
+  <div class="insty-class" :class="get_status_style">
+    <div class="insty-class-name">
+      <div>
+        <span class="__status">{{ get_status }}</span>
       </div>
-      <v-spacer></v-spacer>
-      <div class="__action-box">
-        <v-menu
-          v-model="menu"
-          :close-on-content-click="false"
-          offset-y
-          top
-          z-index="2"
-        >
+      <div>
+        <span>{{ class_item.name }}</span>
+      </div>
+    </div>
+    <v-spacer></v-spacer>
+    <div class="insty-right">
+      <div class="insty-date">
+        <span>{{ class_item.start_date }}</span>
+        <template v-if="class_item.completion_date">
+          <span>-</span> <span>{{ class_item.completion_date }}</span>
+        </template>
+      </div>
+      <div class="insty-actions">
+        <v-menu bottom left>
           <v-btn
             slot="activator"
             icon
+            small
+            @click=""
           >
-            <v-icon color="blue darken-2">build</v-icon>
+            <v-icon small>more_vert</v-icon>
           </v-btn>
-          <v-card>
-            <v-card-text>
-              <div class="ca-menu-action">
-                <ul class="__button-list">
-                  <li class="__button">
-                    <v-btn
-                      depressed
-                      block
-                      color="yellow darken-3"
-                      dark
-                      @click="open_dialog_class_change(item, group)"
-                      v-if="is_last()"
-                    >
-                      Change
-                    </v-btn>
-                  </li>
-                  <li class="__button">
-                    <v-btn
-                      depressed
-                      block
-                      color="red"
-                      dark
-                      @click="open_dialog_deletion(item, group)"
-                    >
-                      Delete
-                    </v-btn>
-                  </li>
-                </ul>
-              </div>
-              <v-divider></v-divider>
-              <tracking-box
-                :item="item"
-              ></tracking-box>
-            </v-card-text>
-          </v-card>
-        </v-menu>        
+          <v-list dense>
+            <v-list-tile @click="open_dialog_class_change()" v-if="is_last">
+              <v-list-tile-title>Change Class</v-list-tile-title>
+            </v-list-tile>
+            <v-list-tile @click="open_dialog_class_completion()" v-if="!is_completed">
+                <v-list-tile-title>Complete Class</v-list-tile-title>
+              </v-list-tile>
+            <v-list-tile @click="open_dialog_date_edit()">
+              <v-list-tile-title>Edit dates</v-list-tile-title>
+            </v-list-tile>
+            <v-list-tile @click="del()">
+              <v-list-tile-title>Remove</v-list-tile-title>
+            </v-list-tile>
+          </v-list>
+        </v-menu>
       </div>
     </div>
   </div>
 </template>
 <script>
 import bus from 'bus'
-import TrackingBox from './TrackingBox'
-
 export default {
-  components: {
-    TrackingBox
-  },
   props: {
-    item: Object,
-    group: Array
+    program: Object,
+    class_item: Object
   },
-  data: () => ({
-    menu: false
-  }),
-  methods: {
-    days (start_date, completion_date) {
-      var a = this.$moment(start_date);
-      var b = completion_date ? this.$moment(completion_date) : this.$moment();
-      return b.diff(a, 'days') + 1
+  computed: {
+    available_classes () {
+      return this.$store.getters['class/available_classes'](this.program)
     },
-    is_last () {
-      for (let i in this.group) {
-        if (this.$moment(this.group[i].created_at.date).diff(this.item.created_at.date) > 0) {
-          return false
-        } else if (this.group[i].deleted_at) {
-          return false
-        }
-      }
-      return true
-    },
-    get_status (item) {
-      if (item.deleted_at) {
+    get_status () {
+      if (this.class_item.deleted_at) {
         return 'Deleted'
-      } else if (item.completion_date) {
+      } else if (this.class_item.completion_date) {
         return 'Completed'
-      } else if (this.$moment().isBefore(item.start_date)) {
+      } else if (this.$moment().isBefore(this.class_item.start_date)) {
         return 'Waiting'
       } else {
         return 'In progress'
       }
     },
-    get_status_style (item) {
-      if (item.deleted_at) {
-        return '_deleted'
-      } else if (item.completion_date) {
-        return '_completed'
-      } else if (this.$moment().isBefore(item.start_date)) {
-        return '_wating'
+    get_status_style () {
+      if (this.class_item.deleted_at) {
+        return 'ca-deleted'
+      } else if (this.class_item.completion_date) {
+        return 'ca-completed'
+      } else if (this.$moment().isBefore(this.class_item.start_date)) {
+        return 'ca-wating'
       } else {
-        return '_inprogress'
+        return 'ca-inprogress'
       }
     },
-    open_dialog_date_edition (start_date, completion_date, item, group) {
-      bus.$emit('open_dialog_date_edition', {
-        start_date: start_date,
-        completion_date: completion_date,
-        item: item,
-        group: group
-      })
+    is_last () {
+      return this.available_classes.length === this.available_classes.indexOf(this.class_item) + 1
     },
-    open_dialog_class_change (item, group) {
-      bus.$emit('open_dialog_class_change', {
-        student_class: item,
-        // selected_group: group
-      })
-    },
-    open_dialog_deletion (item, group) {
-      bus.$emit('open_dialog_deletion', {
-        student_class: item,
-        // selected_group: group
-      })
+    is_completed () {
+      return this.class_item.completion_date !== null
     }
+  },
+  methods: {
+    open_dialog_class_change () {
+      bus.$emit('open_dialog_class_change', {
+        program: this.program,
+        class_item: this.class_item
+      })
+    },
+    open_dialog_date_edit () {
+      bus.$emit('open_dialog_date_edit', {
+        start_date: this.class_item.start_date,
+        completion_date: this.class_item.completion_date,
+        class_item: this.class_item
+      })
+    },
+    open_dialog_class_completion () {
+      bus.$emit('open_dialog_class_completion', {
+        class_item: this.class_item
+      })
+    },
+    del () {
+      this.$store.dispatch('class/del_class', {
+        class_in_program_id: this.class_item.id
+      })
+    },
   }
-}
+}  
 </script>
+<style scoped>
+  .insty-class {
+    display: flex;
+    padding: 15px;
+    margin: 8px 0;
+    box-shadow: 0px 1px 1px 0px #d2d2d2;
+    border-right: 1px solid #bcbcbc;
+    border-bottom: 1px solid #bcbcbc;
+    align-items: center;
+  }
+
+  .insty-right {
+    display: flex;
+    align-items: center;
+  }
+</style>

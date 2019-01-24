@@ -1,30 +1,22 @@
 <template>
-  <v-dialog v-model="is_active" persistent max-width="400">
+  <v-dialog v-model="is_active" persistent max-width="500">
     <v-card>
       <v-card-title class="primary white--text ca-typo-title-4">
-        Change Class
+        Add New Program
       </v-card-title>
       <v-card-text>
         <el-form ref="form" :model="form" label-position="top">
-          <v-container fluid class="pa-0">
+          <v-container fluid class="pa-0 ca-grid-list-1">
             <v-layout wrap>
               <v-flex xs12>
                 <el-form-item label="Program" class="ca-label">
-                  <el-input 
-                    :value="program.name"
-                    :disabled="true"
-                  ></el-input>
-                </el-form-item>
-              </v-flex>
-              <v-flex xs12>
-                <el-form-item label="Class" class="ca-label">
                   <el-select 
-                    v-model="form.classinfo_id" 
+                    v-model="form.product_id" 
                     placeholder="Select"
                     class="ca-block"
                   >
                     <el-option
-                      v-for="option in class_selection_options"
+                      v-for="option in program_selection_options"
                       :key="option.id"
                       :label="option.name"
                       :value="option.id"
@@ -33,11 +25,11 @@
                   </el-select>
                 </el-form-item>
               </v-flex>
-              <v-flex xs12>
+              <v-flex xs6>
                 <el-form-item label="Start Date" class="ca-label">
                   <v-menu
                     :close-on-content-click="false"
-                    v-model="date_picker"
+                    v-model="start_date_picker"
                     :nudge-right="40"
                     lazy
                     transition="scale-transition"
@@ -53,7 +45,32 @@
                     ></el-input>
                     <v-date-picker
                       v-model="form.start_date"
-                      @input="date_picker = false"
+                      @input="start_date_picker = false"
+                    ></v-date-picker>
+                  </v-menu>
+                </el-form-item>
+              </v-flex>
+              <v-flex xs6>
+                <el-form-item label="Completion Date" class="ca-label">
+                  <v-menu
+                    :close-on-content-click="false"
+                    v-model="completion_date_picker"
+                    :nudge-right="40"
+                    lazy
+                    transition="scale-transition"
+                    offset-y
+                    full-width
+                    min-width="290px"
+                  >
+                    <el-input 
+                      slot="activator"
+                      :value="format_date(form.completion_date)"
+                      placeholder="Please input" 
+                      readonly
+                    ></el-input>
+                    <v-date-picker
+                      v-model="form.completion_date"
+                      @input="completion_date_picker = false"
                     ></v-date-picker>
                   </v-menu>
                 </el-form-item>
@@ -70,77 +87,53 @@
           flat 
           @click="submit()"
           :loading="wating_result"
-        >Agree</v-btn>
+        >
+          Agree
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 <script>
 import bus from 'bus'
+
 export default {
   data: () => ({
     is_active: false,
     wating_result: false,
-    date_picker: false,
+    start_date_picker: false,
+    completion_date_picker: false,
     form: {
-      program_id: null,
-      classinfo_id: null,
-      student_id: null,
-      start_date: ''
-    },
-    program: {},
-    class_item: {}
+      product_id: null,
+      start_date: '',
+      completion_date: ''
+    }
   }),
   computed: {
-    class_selection_options () {
-      return this.$store.getters['class/class_selection_options']
-    }
-  },
-  watch: {
-    is_active (new_v) {
-      if (!new_v) {
-        this.reset_data({
-          form: {
-            start_date: this.$moment().format("YYYY-MM-DD")
-          }
-        })
-      }
+    program_selection_options () {
+      return this.$store.getters['class/program_selection_options']
     }
   },
   methods: {
     submit () {
-      this.form.program_id = this.program.id
-      this.form.student_id = this.$route.params.student_id
-
       this.wating_result = true
-      this.$store.dispatch('class/change_class', {
-        class_in_program_id: this.class_item.id,
+      this.form.student_id = this.$route.params.student_id
+      this.$store.dispatch('class/add_program', {
         form: this.form
       }).then(res => {
         this.wating_result = false
         this.is_active = false
       })
-      
-      // this.$store.dispatch('class/change_class', {
-      //   student_id: this.$route.params.student_id,
-      //   pivot_id: this.selected_class_item.id,
-      //   group: this.selected_class_item.group,
-      //   form: this.form
-      // }).then(res => {
-      //   this.is_active = false
-      // })
     },
     format_date (date) {
       return date ? this.$moment(date).format('MM/DD/YYYY') : ''
     },
   },
   created () {
-    this.form.start_date = this.$moment().format("YYYY-MM-DD")
-    bus.$on('open_dialog_class_change', (payload) => {
-      this.program = payload.program
-      this.class_item = payload.class_item
+    this.form.start_date = this.$moment().format('YYYY-MM-DD')
+    bus.$on('open_dialog_program_addition', (payload) => {
       this.is_active = true
     })
-  }
+  },
 }
 </script>

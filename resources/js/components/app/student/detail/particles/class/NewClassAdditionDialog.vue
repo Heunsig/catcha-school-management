@@ -10,19 +10,10 @@
             <v-layout wrap>
               <v-flex xs12>
                 <el-form-item label="Program" class="ca-label">
-                  <el-select 
-                    v-model="form.program_id" 
-                    placeholder="Select"
-                    class="ca-block"
-                  >
-                    <el-option
-                      v-for="item in programs_taken"
-                      :key="item.id"
-                      :label="item.name + ' (' + item.start_date + '~' + item.completion_date +')'"
-                      :value="item.id"
-                    >
-                    </el-option>
-                  </el-select>
+                  <el-input 
+                    :value="program.name"
+                    :disabled="true"
+                  ></el-input>
                 </el-form-item>
               </v-flex>
               <v-flex xs12>
@@ -33,10 +24,10 @@
                     class="ca-block"
                   >
                     <el-option
-                      v-for="item in class_options"
-                      :key="item.id"
-                      :label="item.name"
-                      :value="item.id"
+                      v-for="option in class_selection_options"
+                      :key="option.id"
+                      :label="option.name"
+                      :value="option.id"
                     >
                     </el-option>
                   </el-select>
@@ -89,30 +80,60 @@
 <script>
 import bus from 'bus'
 
+// function initial_data () {
+//   return {
+//     program: {},
+//     is_active: false,
+//     wating_result: false,
+//     date_picker: false,
+//     form: {
+//       program_id: null,
+//       classinfo_id: null,
+//       student_id: null,
+//       start_date: ''
+//     }
+//   }
+// }
+
 export default {
   data: () => ({
+    program: {},
     is_active: false,
     wating_result: false,
     date_picker: false,
     form: {
       program_id: null,
       classinfo_id: null,
+      student_id: null,
       start_date: ''
     }
   }),
   computed: {
-    class_options () {
-      return this.$store.getters['class/class_options']
+    class_selection_options () {
+      return this.$store.getters['class/class_selection_options']
     },
-    programs_taken () {
-      return this.$store.getters['class/programs_taken']
+    // program_selection_options () {
+    //   return this.$store.getters['class/program_selection_options']
+    // }
+  },
+  watch: {
+    is_active (new_v) {
+      if (!new_v) {
+        this.reset_data({
+          form: {
+            start_date: this.$moment().format('YYYY-MM-DD')  
+          }
+        })
+      }
     }
   },
   methods: {
     submit () {
+      this.form.program_id = this.program.id
+      this.form.student_id = this.$route.params.student_id
+      
       this.wating_result = true
       this.$store.dispatch('class/add_class', {
-        student_id: this.$route.params.student_id, 
         form: this.form
       }).then(res => {
         this.wating_result = false
@@ -127,7 +148,8 @@ export default {
     this.form.start_date = this.$moment().format('YYYY-MM-DD')
     bus.$on('open_dialog_class_addition', (payload) => {
       this.is_active = true
+      this.program = payload.program
     })
-  },
+  }
 }
 </script>

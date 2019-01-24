@@ -58,3 +58,31 @@
   }
 
 }
+
+.#{$prefix}-completed {
+  border-left: 8px solid grey;
+  .__status {
+    color: grey;
+  }
+}
+
+.#{$prefix}-deleted {
+  border-left: 8px solid red;
+  .__status {
+    color: red;
+  }
+}
+
+.#{$prefix}-wating {
+  border-left: 8px solid #e7b021;
+  .__status {
+    color: #e7b021;
+  }
+}
+
+.#{$prefix}-inprogress {
+  border-left: 8px solid #64d664;
+  .__status {
+    color: #64d664;
+  }
+}

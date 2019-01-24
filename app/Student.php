@@ -55,24 +55,30 @@ class Student extends Model
         return $this->hasMany('App\Payment');
     }
 
-    public function programs_taken()
+    public function program()
     {
-
-        $payments = $this->hasMany('App\Payment')->get();
-        $programs_taken = [];
-        foreach($payments as $payment) {
-            if($payment->status === 'Waiting' || $payment->status === 'Paid') {
-                $items_in_payment = $payment->product()->get();
-                $filtered = $items_in_payment->filter(function ($value, $key) {
-                    if (!$value->pivot->is_refunded) {
-                        return $value->category === 'program';
-                    }
-                });
-
-                $programs_taken = array_merge($programs_taken, $filtered->all());    
-            }
-        }
-
-        return $programs_taken;
+        return $this->hasMany('App\Program');
     }
+
+    // public function programs_taken()
+    // {
+
+    //     $payments = $this->hasMany('App\Payment')->get();
+    //     $programs_taken = [];
+    //     foreach($payments as $payment) {
+    //         if($payment->status === 'Waiting' || $payment->status === 'Paid') {
+    //             $items_in_payment = $payment->product()->get();
+    //             $filtered = $items_in_payment->filter(function ($value, $key) {
+    //                 if (!$value->pivot->is_refunded) {
+    //                     return $value->category === 'program';
+    //                 }
+    //             });
+
+    //             $programs_taken = array_merge($programs_taken, $filtered->all());    
+    //         }
+    //     }
+
+    //     return $programs_taken;
+    // }
+
 }
