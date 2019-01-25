@@ -5,6 +5,8 @@ import axios from '../helpers/axios'
 import studentModule from './student'
 import invoiceModule from './invoice'
 import classModule from './class'
+import paymentModule from './payment'
+import productModule from './product'
 
 Vue.use(Vuex)
 
@@ -12,7 +14,9 @@ export default new Vuex.Store({
   modules: {
     student: studentModule,
     invoice: invoiceModule,
-    class: classModule
+    class: classModule,
+    payment: paymentModule,
+    product: productModule
   },
   state: {
     token: localStorage.getItem('access_token') || null

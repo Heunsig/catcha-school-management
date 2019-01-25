@@ -30,6 +30,7 @@ Route::middleware('auth:api')->group(function () {
 
     Route::get('/student/{student_id}/basic_information', 'StudentController@basic_information');
     Route::get('/student/{student_id}/class', 'StudentController@class');
+    Route::get('/student/{student_id}/payment', 'StudentController@payment');
     // Route::post('/student/{student_id}/program', 'StudentController@add_program');
     Route::post('/student/{student_id}/class', 'StudentController@add_class');
     // Route::post('/student/{student_id}/class/pivot/{pivot_id}/change_class', 'StudentController@change_class');
@@ -69,9 +70,15 @@ Route::middleware('auth:api')->prefix('invoice')->group(function(){
     Route::get('', 'InvoiceController@list');
     Route::post('', 'InvoiceController@add');
     Route::delete('{invoice_id}', 'InvoiceController@delete');
-    Route::post('{invoice_id}/change_status', 'InvoiceController@change_status');
+    // Route::post('{invoice_id}/change_status', 'InvoiceController@change_status');
     Route::post('{invoice_id}/refund', 'InvoiceController@refund');
+});
 
+Route::middleware('auth:api')->prefix('payment')->group(function(){
+    Route::get('', 'PaymentController@list');
+    Route::post('', 'PaymentController@store');
+    Route::delete('{payment_id}', 'PaymentController@destroy');
+    Route::post('{payment_id}/change_status', 'PaymentController@change_status');
 });
 
 

@@ -15,15 +15,24 @@ class InvoiceItemResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->pivot->id,
-            'product_name' => $this->name,
-            'product_id' => $this->id,
-            'is_refunded' => $this->pivot->is_refunded,
-            'start_date' => $this->pivot->start_date,
-            'completion_date' => $this->pivot->completion_date,
-            'price' => $this->pivot->price,
-            'quantity' => $this->pivot->quantity,
-            'note' => $this->pivot->note
+            'id' => $this->id,
+            'name' => $this->product->name,
+            'week' => $this->week,
+            'price' => $this->price,
+            'quantity' => $this->quantity,
+            'note' => $this->note,
+            'is_refunded' => $this->is_refunded
         ];
+        // return [
+        //     'id' => $this->pivot->id,
+        //     'product_name' => $this->name,
+        //     'product_id' => $this->id,
+        //     'is_refunded' => $this->pivot->is_refunded,
+        //     'start_date' => $this->pivot->start_date,
+        //     'completion_date' => $this->pivot->completion_date,
+        //     'price' => $this->pivot->price,
+        //     'quantity' => $this->pivot->quantity,
+        //     'note' => $this->pivot->note
+        // ];
     }
 }

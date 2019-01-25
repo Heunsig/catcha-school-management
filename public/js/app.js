@@ -49011,6 +49011,10 @@ module.exports = function(module) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__student__ = __webpack_require__(853);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__invoice__ = __webpack_require__(854);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__class__ = __webpack_require__(855);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__payment__ = __webpack_require__(963);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__product__ = __webpack_require__(964);
+
+
 
 
 
@@ -49025,7 +49029,9 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
   modules: {
     student: __WEBPACK_IMPORTED_MODULE_3__student__["a" /* default */],
     invoice: __WEBPACK_IMPORTED_MODULE_4__invoice__["a" /* default */],
-    class: __WEBPACK_IMPORTED_MODULE_5__class__["a" /* default */]
+    class: __WEBPACK_IMPORTED_MODULE_5__class__["a" /* default */],
+    payment: __WEBPACK_IMPORTED_MODULE_6__payment__["a" /* default */],
+    product: __WEBPACK_IMPORTED_MODULE_7__product__["a" /* default */]
   },
   state: {
     token: localStorage.getItem('access_token') || null
@@ -49155,6 +49161,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_32_element_ui_lib_locale_lang_en___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_32_element_ui_lib_locale_lang_en__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_33_element_ui_lib_locale__ = __webpack_require__(34);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_33_element_ui_lib_locale___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_33_element_ui_lib_locale__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_34_element_ui_lib_theme_chalk_reset_css__ = __webpack_require__(976);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_34_element_ui_lib_theme_chalk_reset_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_34_element_ui_lib_theme_chalk_reset_css__);
 
 
 
@@ -49188,6 +49196,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 // import axios from 'axios'
+
 
 
 
@@ -108851,10 +108860,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_bus__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__particles_invoice_Invoice__ = __webpack_require__(922);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__particles_invoice_Invoice___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__particles_invoice_Invoice__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__particles_invoice_NewInvoiceAdditionDialog__ = __webpack_require__(933);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__particles_invoice_NewInvoiceAdditionDialog___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__particles_invoice_NewInvoiceAdditionDialog__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__particles_invoice_Payment__ = __webpack_require__(965);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__particles_invoice_Payment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__particles_invoice_Payment__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__particles_invoice_NewPaymentAdditionDialog__ = __webpack_require__(968);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__particles_invoice_NewPaymentAdditionDialog___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__particles_invoice_NewPaymentAdditionDialog__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__particles_invoice_StatusChangeDialog__ = __webpack_require__(945);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__particles_invoice_StatusChangeDialog___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__particles_invoice_StatusChangeDialog__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__particles_invoice_RefundDialog__ = __webpack_require__(948);
@@ -108918,6 +108927,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -108930,33 +108940,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    Invoice: __WEBPACK_IMPORTED_MODULE_2__particles_invoice_Invoice___default.a,
-    NewInvoiceAdditionDialog: __WEBPACK_IMPORTED_MODULE_3__particles_invoice_NewInvoiceAdditionDialog___default.a,
+    Payment: __WEBPACK_IMPORTED_MODULE_2__particles_invoice_Payment___default.a,
+    NewPaymentAdditionDialog: __WEBPACK_IMPORTED_MODULE_3__particles_invoice_NewPaymentAdditionDialog___default.a,
     StatusChangeDialog: __WEBPACK_IMPORTED_MODULE_4__particles_invoice_StatusChangeDialog___default.a,
     RefundDialog: __WEBPACK_IMPORTED_MODULE_5__particles_invoice_RefundDialog___default.a,
     DeletionDialog: __WEBPACK_IMPORTED_MODULE_6__particles_invoice_DeletionDialog___default.a
   },
   data: function data() {
     return {
-      payment_methods: [],
-      products: [],
-      invoices: [],
       filtered_by: ['Paid', 'Waiting', 'Canceled']
     };
   },
   computed: {
-    filtered_invoices: function filtered_invoices() {
+    payments: function payments() {
+      return this.$store.getters['payment/payments'];
+    },
+    filtered_payments: function filtered_payments() {
       var $this = this;
-      var filtered_data = this._.reverse(this._.clone(this.invoices));
+      var filtered_data = this._.reverse(this._.clone(this.payments));
 
       if (this.filtered_by.indexOf('Deleted') < 0) {
-        filtered_data = this._.filter(filtered_data, ['deleted_at', null]);
+        filtered_data = this._.filter(filtered_data, function (o) {
+          return o.administration.deleted_at === null;
+        });
       }
-      // if (this.filtered_by.indexOf('Deleted') > -1 ) { 
-      //   filtered_data = this.invoices
-      // } else {
-      //   filtered_data = this._.filter(this.invoices, ['deleted_at', null])
-      // }
 
       return this._.filter(filtered_data, function (o) {
         return $this.filtered_by.indexOf(o.status) > -1 ? true : false;
@@ -108964,1525 +108971,43 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     }
   },
   methods: {
-    open_dialog_invoice_addition: function open_dialog_invoice_addition() {
-      __WEBPACK_IMPORTED_MODULE_1_bus__["a" /* default */].$emit('open_dialog_invoice_addition');
-    },
-    add_invoice: function add_invoice(obj) {
-      this.invoices.push(obj);
+    open_dialog_payment_addition: function open_dialog_payment_addition() {
+      __WEBPACK_IMPORTED_MODULE_1_bus__["a" /* default */].$emit('open_dialog_payment_addition');
     },
     change_status: function change_status(obj) {
       console.log('new', obj.new);
-      var index = this.invoices.indexOf(obj.old);
-      this.$set(this.invoices, index, obj.new);
+      var index = this.payments.indexOf(obj.old);
+      this.$set(this.payments, index, obj.new);
     },
     refund: function refund(obj) {
-      var index = this.invoices.indexOf(obj.old);
-      this.$set(this.invoices, index, obj.new);
+      var index = this.payments.indexOf(obj.old);
+      this.$set(this.payments, index, obj.new);
     },
-    del_invoice: function del_invoice(obj) {
-      var index = this.invoices.indexOf(obj.old);
-      this.$set(this.invoices, index, obj.new);
+    del_payment: function del_payment(obj) {
+      var index = this.payments.indexOf(obj.old);
+      this.$set(this.payments, index, obj.new);
     }
   },
   created: function created() {
-    var _this = this;
-
-    this.$axios.get('/payment_method').then(function (res) {
-      _this.payment_methods = res.data;
-    });
-
-    this.$axios.get('/product').then(function (res) {
-      _this.products = res.data;
-      console.log('products', res.data);
-    });
-
-    this.$axios.get('/invoice').then(function (res) {
-      _this.invoices = res.data;
-      // console.log('invoice', res.data)
-    });
+    this.$store.dispatch('product/get_products');
+    this.$store.dispatch('payment/init_data', this.$route.params.student_id);
   }
 });
 
 /***/ }),
-/* 922 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = __webpack_require__(923)
-/* template */
-var __vue_template__ = __webpack_require__(932)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/js/components/app/student/detail/particles/invoice/Invoice.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-777f7958", Component.options)
-  } else {
-    hotAPI.reload("data-v-777f7958", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 923 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_bus__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__InvoiceItem__ = __webpack_require__(924);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__InvoiceItem___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__InvoiceItem__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__class_list_TrackingBox__ = __webpack_require__(929);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__class_list_TrackingBox___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__class_list_TrackingBox__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  components: {
-    InvoiceItem: __WEBPACK_IMPORTED_MODULE_1__InvoiceItem___default.a,
-    TrackingBox: __WEBPACK_IMPORTED_MODULE_2__class_list_TrackingBox___default.a
-  },
-  props: {
-    invoice: Object
-  },
-  data: function data() {
-    return {
-      menu: false,
-      credit_card_menu: false,
-      print_menu: false
-    };
-  },
-  computed: {
-    invoice_code: function invoice_code() {
-      return 'Receipt #' + this.invoice.id;
-    },
-    date_issued: function date_issued() {
-      return this.$moment(this.invoice.payment_date).format('MM/DD/YYYY');
-    },
-    total_refund: function total_refund() {
-      var result = 0;
-      for (var i in this.invoice.invoice_items) {
-        if (this.invoice.invoice_items[i].is_refunded) {
-          result += this.invoice.invoice_items[i].price;
-        }
-      }
-
-      return result;
-    },
-    sub_total: function sub_total() {
-      var result = 0;
-      for (var i in this.invoice.invoice_items) {
-        result += this.invoice.invoice_items[i].price;
-      }
-
-      return result;
-    },
-    total: function total() {
-      return this.sub_total - this.total_refund;
-    },
-    status_color: function status_color() {
-      if (this.invoice.status === 'Paid') {
-        return 'green lighten-1';
-      } else if (this.invoice.status === 'Waiting') {
-        return 'amber darken-1';
-      } else if (this.invoice.status === 'Canceled') {
-        return 'grey darken-1';
-      }
-    },
-    is_paid: function is_paid() {
-      return this.invoice.status === 'Paid';
-    },
-    is_refunded: function is_refunded() {
-      return this._.filter(this.invoice.invoice_items, 'is_refunded').length > 0 ? true : false;
-    },
-    is_deleted: function is_deleted() {
-      return this.invoice.deleted_at;
-    }
-  },
-  methods: {
-    open_dialog_status_change: function open_dialog_status_change() {
-      __WEBPACK_IMPORTED_MODULE_0_bus__["a" /* default */].$emit('open_dialog_status_change', {
-        invoice: this.invoice
-      });
-    },
-    open_dialog_deletion: function open_dialog_deletion() {
-      __WEBPACK_IMPORTED_MODULE_0_bus__["a" /* default */].$emit('open_dialog_deletion', {
-        invoice: this.invoice
-      });
-    },
-    open_dialog_refund: function open_dialog_refund() {
-      __WEBPACK_IMPORTED_MODULE_0_bus__["a" /* default */].$emit('open_dialog_refund', {
-        invoice: this.invoice
-      });
-    },
-    format_money: function format_money(money) {
-      return this.$account.formatMoney(money);
-    },
-    print: function print(id) {
-      window.open(this.$config.BASE_URL + '/pdf/' + id, '_blank');
-    }
-  }
-});
-
-/***/ }),
-/* 924 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(925)
-}
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = __webpack_require__(927)
-/* template */
-var __vue_template__ = __webpack_require__(928)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = "data-v-83bf91ea"
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/js/components/app/student/detail/particles/invoice/InvoiceItem.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-83bf91ea", Component.options)
-  } else {
-    hotAPI.reload("data-v-83bf91ea", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 925 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(926);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(25)("21f0d3b5", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../../../../node_modules/css-loader/index.js!../../../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-83bf91ea\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./InvoiceItem.vue", function() {
-     var newContent = require("!!../../../../../../../../node_modules/css-loader/index.js!../../../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-83bf91ea\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./InvoiceItem.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 926 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(4)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n.test[data-v-83bf91ea] {\n  text-decoration: line-through;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 927 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  props: {
-    invoice: Object
-  },
-  computed: {
-    item_id: function item_id() {
-      return 'ITEM-' + this.invoice.id;
-    },
-    is_refunded: function is_refunded() {
-      return this.invoice.is_refunded;
-    },
-    name: function name() {
-      return this.invoice.product_name;
-    },
-    start_date: function start_date() {
-      return this.invoice.start_date ? this.$moment(this.invoice.start_date).format('MM/DD/YYYY') : null;
-    },
-    completion_date: function completion_date() {
-      return this.invoice.completion_date ? this.$moment(this.invoice.completion_date).format('MM/DD/YYYY') : null;
-    },
-
-    // formatted_price () {
-    //   return this.$account.formatMoney(this.invoice.price)
-    // },
-    term: function term() {
-      if (this.start_date && this.completion_date) {
-        return this.start_date + ' - ' + this.completion_date;
-      } else if (this.start_date) {
-        return this.start_date + ' - Not Decided';
-      } else if (this.completion) {
-        return 'Not Decided - ' + this.completion_date;
-      } else {
-        return null;
-      }
-    },
-    quantity: function quantity() {
-      return this.invoice.quantity ? this.invoice.quantity : null;
-    },
-    price: function price() {
-      return this.invoice.price ? this.invoice.price : null;
-    },
-    total: function total() {
-      return this.invoice.quantity * this.invoice.price;
-    }
-  }
-});
-
-/***/ }),
-/* 928 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("tr", [
-    _c("td", { staticClass: "text-xs-left __item-name" }, [
-      _c("strong", { class: { test: _vm.is_refunded } }, [
-        _vm._v(_vm._s(_vm.name))
-      ])
-    ]),
-    _vm._v(" "),
-    _c("td", { staticClass: "text-xs-center __item-term" }, [
-      _vm._v(_vm._s(_vm.term))
-    ]),
-    _vm._v(" "),
-    _c("td", { staticClass: "text-xs-right __item-quantity" }, [
-      _vm._v(_vm._s(_vm.quantity))
-    ]),
-    _vm._v(" "),
-    _c("td", { staticClass: "text-xs-right __item-price" }, [
-      _vm._v(_vm._s(_vm.$account.formatMoney(_vm.price)))
-    ]),
-    _vm._v(" "),
-    _c("td", { staticClass: "text-xs-right __item-total" }, [
-      _vm._v(_vm._s(_vm.$account.formatMoney(_vm.total)))
-    ])
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-83bf91ea", module.exports)
-  }
-}
-
-/***/ }),
-/* 929 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = __webpack_require__(930)
-/* template */
-var __vue_template__ = __webpack_require__(931)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/js/components/app/student/detail/particles/class/list/TrackingBox.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-736bc51d", Component.options)
-  } else {
-    hotAPI.reload("data-v-736bc51d", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 930 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['item']
-});
-
-/***/ }),
-/* 931 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "ca-menu-tracker" }, [
-    _c("div", { staticClass: "__work" }, [
-      _c("div", { staticClass: "__title ca-typo-title-6" }, [
-        _vm._v("Created By")
-      ]),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "__avatar" },
-        [
-          _c(
-            "v-tooltip",
-            { attrs: { bottom: "" } },
-            [
-              _c(
-                "v-avatar",
-                {
-                  attrs: {
-                    slot: "activator",
-                    size: "25",
-                    color: "grey lighten-4"
-                  },
-                  slot: "activator"
-                },
-                [
-                  _c("img", {
-                    attrs: {
-                      src:
-                        _vm.AVATAR_BASE_URL +
-                        "/40/" +
-                        _vm.item.created_by.full_name,
-                      alt: "avatar"
-                    }
-                  })
-                ]
-              ),
-              _vm._v(" "),
-              _c("span", [_vm._v(_vm._s(_vm.item.created_by.full_name))])
-            ],
-            1
-          )
-        ],
-        1
-      )
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "__work" }, [
-      _c("div", { staticClass: "__title ca-typo-title-6" }, [
-        _vm._v("Updated By")
-      ]),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "__avatar" },
-        [
-          _c(
-            "v-tooltip",
-            { attrs: { bottom: "" } },
-            [
-              _c(
-                "v-avatar",
-                {
-                  attrs: {
-                    slot: "activator",
-                    size: "25",
-                    color: "grey lighten-4"
-                  },
-                  slot: "activator"
-                },
-                [
-                  _c("img", {
-                    attrs: {
-                      src:
-                        _vm.AVATAR_BASE_URL +
-                        "/40/" +
-                        _vm.item.updated_by.full_name,
-                      alt: "avatar"
-                    }
-                  })
-                ]
-              ),
-              _vm._v(" "),
-              _c("span", [_vm._v(_vm._s(_vm.item.updated_by.full_name))])
-            ],
-            1
-          )
-        ],
-        1
-      )
-    ]),
-    _vm._v(" "),
-    _vm.item.deleted_by
-      ? _c("div", { staticClass: "__work" }, [
-          _c("div", { staticClass: "__title ca-typo-title-6" }, [
-            _vm._v("Deleted By")
-          ]),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "__avatar" },
-            [
-              _c(
-                "v-tooltip",
-                { attrs: { bottom: "" } },
-                [
-                  _c(
-                    "v-avatar",
-                    {
-                      attrs: {
-                        slot: "activator",
-                        size: "25",
-                        color: "grey lighten-4"
-                      },
-                      slot: "activator"
-                    },
-                    [
-                      _c("img", {
-                        attrs: {
-                          src:
-                            _vm.AVATAR_BASE_URL +
-                            "/40/" +
-                            _vm.item.deleted_by.full_name,
-                          alt: "avatar"
-                        }
-                      })
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c("span", [_vm._v(_vm._s(_vm.item.deleted_by.full_name))])
-                ],
-                1
-              )
-            ],
-            1
-          )
-        ])
-      : _vm._e()
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-736bc51d", module.exports)
-  }
-}
-
-/***/ }),
-/* 932 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "ca-invoice-item" }, [
-    _c(
-      "div",
-      { staticClass: "__title" },
-      [
-        _c("div", { staticClass: "ca-typo-title-4 mr-2" }, [
-          _vm._v(_vm._s(_vm.invoice_code))
-        ]),
-        _vm._v(" "),
-        _c(
-          "v-chip",
-          {
-            attrs: { label: "", color: _vm.status_color, "text-color": "white" }
-          },
-          [_vm._v("\n      " + _vm._s(_vm.invoice.status) + "\n    ")]
-        ),
-        _vm._v(" "),
-        _vm.is_deleted
-          ? _c(
-              "v-chip",
-              { attrs: { label: "", color: "red", "text-color": "white" } },
-              [_vm._v("Deleted")]
-            )
-          : _vm._e(),
-        _vm._v(" "),
-        _c("v-spacer"),
-        _vm._v(" "),
-        _c(
-          "v-menu",
-          {
-            staticClass: "test",
-            attrs: {
-              "close-on-content-click": false,
-              "offset-y": "",
-              top: "",
-              "z-index": "2"
-            },
-            model: {
-              value: _vm.print_menu,
-              callback: function($$v) {
-                _vm.print_menu = $$v
-              },
-              expression: "print_menu"
-            }
-          },
-          [
-            _c(
-              "v-btn",
-              { attrs: { slot: "activator", icon: "" }, slot: "activator" },
-              [
-                _c("v-icon", { attrs: { color: "blue darken-2" } }, [
-                  _vm._v("local_printshop")
-                ])
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c(
-              "v-card",
-              [
-                _c("v-card-text", [
-                  _c("div", { staticClass: "ca-menu-action" }, [
-                    _c("ul", { staticClass: "__button-list" }, [
-                      _c(
-                        "li",
-                        { staticClass: "__button" },
-                        [
-                          _c(
-                            "v-btn",
-                            {
-                              attrs: {
-                                depressed: "",
-                                block: "",
-                                color: "red",
-                                dark: ""
-                              },
-                              on: {
-                                click: function($event) {
-                                  _vm.print(_vm.invoice.id)
-                                }
-                              }
-                            },
-                            [
-                              _vm._v(
-                                "\n                  Print Receipt\n                "
-                              )
-                            ]
-                          )
-                        ],
-                        1
-                      )
-                    ])
-                  ])
-                ])
-              ],
-              1
-            )
-          ],
-          1
-        ),
-        _vm._v(" "),
-        _c(
-          "v-menu",
-          {
-            attrs: {
-              "close-on-content-click": false,
-              "offset-y": "",
-              top: "",
-              "z-index": "2"
-            },
-            model: {
-              value: _vm.menu,
-              callback: function($$v) {
-                _vm.menu = $$v
-              },
-              expression: "menu"
-            }
-          },
-          [
-            _c(
-              "v-btn",
-              { attrs: { slot: "activator", icon: "" }, slot: "activator" },
-              [
-                _c("v-icon", { attrs: { color: "blue darken-2" } }, [
-                  _vm._v("build")
-                ])
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c(
-              "v-card",
-              [
-                _c(
-                  "v-card-text",
-                  [
-                    _c("div", { staticClass: "ca-menu-action" }, [
-                      _c("ul", { staticClass: "__button-list" }, [
-                        _c(
-                          "li",
-                          { staticClass: "__button" },
-                          [
-                            _c(
-                              "v-btn",
-                              {
-                                attrs: {
-                                  depressed: "",
-                                  block: "",
-                                  color: "yellow darken-3",
-                                  dark: !_vm.is_paid,
-                                  disabled: _vm.is_paid
-                                },
-                                on: {
-                                  click: function($event) {
-                                    _vm.open_dialog_status_change()
-                                  }
-                                }
-                              },
-                              [
-                                _vm._v(
-                                  "\n                  Change Status\n                "
-                                )
-                              ]
-                            )
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "li",
-                          { staticClass: "__button" },
-                          [
-                            _c(
-                              "v-btn",
-                              {
-                                attrs: {
-                                  depressed: "",
-                                  block: "",
-                                  color: "red",
-                                  dark: _vm.is_paid,
-                                  disabled: !_vm.is_paid
-                                },
-                                on: {
-                                  click: function($event) {
-                                    _vm.open_dialog_refund()
-                                  }
-                                }
-                              },
-                              [
-                                _vm._v(
-                                  "\n                  Refund\n                "
-                                )
-                              ]
-                            )
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "li",
-                          { staticClass: "__button" },
-                          [
-                            _c(
-                              "v-btn",
-                              {
-                                attrs: {
-                                  depressed: "",
-                                  block: "",
-                                  color: "red",
-                                  dark: ""
-                                },
-                                on: {
-                                  click: function($event) {
-                                    _vm.open_dialog_deletion()
-                                  }
-                                }
-                              },
-                              [
-                                _vm._v(
-                                  "\n                  Delete\n                "
-                                )
-                              ]
-                            )
-                          ],
-                          1
-                        )
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("v-divider"),
-                    _vm._v(" "),
-                    _c("tracking-box", { attrs: { item: _vm.invoice } })
-                  ],
-                  1
-                )
-              ],
-              1
-            )
-          ],
-          1
-        )
-      ],
-      1
-    ),
-    _vm._v(" "),
-    _c("div", { staticClass: "__body" }, [
-      _c("div", { staticClass: "__header mb-3" }, [
-        _c("div", [
-          _c("strong", { staticClass: "pr-1" }, [_vm._v("Date Issued")]),
-          _vm._v(" "),
-          _c("span", { staticClass: "ca-typo-style-meta" }, [
-            _vm._v(_vm._s(_vm.date_issued))
-          ]),
-          _vm._v(" "),
-          _c("strong", { staticClass: "ml-2 pr-1" }, [
-            _vm._v("Payment Method")
-          ]),
-          _vm._v(" "),
-          _c(
-            "span",
-            { staticClass: "ca-typo-style-meta" },
-            [
-              _vm._v(
-                "\n          " +
-                  _vm._s(_vm.invoice.payment_method) +
-                  "\n          "
-              ),
-              _vm.invoice.payment_method_key === "CC"
-                ? _c(
-                    "v-menu",
-                    {
-                      attrs: {
-                        "close-on-content-click": false,
-                        "nudge-width": 200,
-                        "offset-x": "",
-                        "z-index": "2"
-                      },
-                      model: {
-                        value: _vm.credit_card_menu,
-                        callback: function($$v) {
-                          _vm.credit_card_menu = $$v
-                        },
-                        expression: "credit_card_menu"
-                      }
-                    },
-                    [
-                      _c(
-                        "v-icon",
-                        {
-                          attrs: { slot: "activator", small: "" },
-                          slot: "activator"
-                        },
-                        [
-                          _vm._v(
-                            "\n                credit_card\n              "
-                          )
-                        ]
-                      )
-                    ],
-                    1
-                  )
-                : _vm._e()
-            ],
-            1
-          )
-        ]),
-        _vm._v(" "),
-        _c("div", [
-          _c("strong", [_vm._v("Note")]),
-          _vm._v(" "),
-          _c("span", [_vm._v(_vm._s(_vm.invoice.note))])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "__detail" }, [
-        _c("table", { staticClass: "ca-table" }, [
-          _vm._m(0),
-          _vm._v(" "),
-          _c(
-            "tbody",
-            _vm._l(_vm.invoice.invoice_items, function(item) {
-              return _c("invoice-item", {
-                key: item.id,
-                attrs: { invoice: item }
-              })
-            })
-          )
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "__result" }, [
-        _c("div", { staticClass: "__result-meta" }, [
-          _c("strong", { staticClass: "ca-typo-title-5" }, [
-            _vm._v("Sub Total")
-          ]),
-          _vm._v(" "),
-          _c("span", [_vm._v(_vm._s(_vm.format_money(_vm.sub_total)))])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "__result-meta" }, [
-          _c("strong", { staticClass: "ca-typo-title-5" }, [_vm._v("Refund")]),
-          _vm._v(" "),
-          _c("span", [_vm._v(_vm._s(_vm.format_money(_vm.total_refund)))])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "__result-meta" }, [
-          _c("strong", { staticClass: "ca-typo-title-4" }, [_vm._v("Total")]),
-          _vm._v(" "),
-          _c("span", { staticClass: "ca-typo-4" }, [
-            _vm._v(_vm._s(_vm.format_money(_vm.total)))
-          ])
-        ])
-      ])
-    ])
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", { staticClass: "text-xs-left" }, [_vm._v("Name")]),
-        _vm._v(" "),
-        _c("th", { staticClass: "text-xs-center" }, [_vm._v("Date")]),
-        _vm._v(" "),
-        _c("th", { staticClass: "text-xs-center" }, [_vm._v("Qauntity")]),
-        _vm._v(" "),
-        _c("th", { staticClass: "text-xs-right" }, [_vm._v("Price")]),
-        _vm._v(" "),
-        _c("th", { staticClass: "text-xs-right" }, [_vm._v("Total")])
-      ])
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-777f7958", module.exports)
-  }
-}
-
-/***/ }),
-/* 933 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = __webpack_require__(934)
-/* template */
-var __vue_template__ = __webpack_require__(944)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/js/components/app/student/detail/particles/invoice/NewInvoiceAdditionDialog.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-30633696", Component.options)
-  } else {
-    hotAPI.reload("data-v-30633696", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 934 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_bus__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__invoice_addition_form_PaymentInformationForm__ = __webpack_require__(935);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__invoice_addition_form_PaymentInformationForm___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__invoice_addition_form_PaymentInformationForm__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__invoice_addition_form_InvoiceItemForm__ = __webpack_require__(941);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__invoice_addition_form_InvoiceItemForm___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__invoice_addition_form_InvoiceItemForm__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  props: {
-    payment_methods: Array,
-    products: Array
-  },
-  components: {
-    InvoiceItemForm: __WEBPACK_IMPORTED_MODULE_2__invoice_addition_form_InvoiceItemForm___default.a,
-    PaymentInformationForm: __WEBPACK_IMPORTED_MODULE_1__invoice_addition_form_PaymentInformationForm___default.a
-  },
-  data: function data() {
-    return {
-      is_active: false,
-      // total: 0,
-      invoice_items: [{ GUID: 'first' }],
-      wating_result: false
-    };
-  },
-  computed: {
-    reversed_invoice_items: function reversed_invoice_items() {
-      var reversed_invoice_items = _.reverse(_.clone(this.invoice_items));
-      return reversed_invoice_items;
-    }
-  },
-  methods: {
-    validate_all: function validate_all() {
-      var error = 0;
-      var result = {
-        payment: {},
-        invoice_items: []
-      };
-
-      if (this.$refs['payment_information_form'].validate()) {
-        result.payment = this.$refs['payment_information_form'].validate();
-      } else {
-        error += 1;
-      }
-
-      for (var i = 0; i < this.$refs['invoice'].length; i++) {
-        if (this.$refs['invoice'][i].validate()) {
-          result.invoice_items.push(this.$refs['invoice'][i].validate());
-        } else {
-          error += 1;
-        }
-      }
-
-      if (error > 0) {
-        return false;
-      } else {
-        return result;
-      }
-    },
-    submit: function submit() {
-      var _this = this;
-
-      var data = this.validate_all();
-
-      if (data) {
-        this.wating_result = true;
-        this.$axios.post('/invoice', {
-          student_id: this.$route.params.student_id,
-          status: data.payment.information.status,
-          note: data.payment.information.note,
-          payment_method: {
-            method_key: data.payment.information.method_key,
-            detail: data.payment.detail
-          },
-          invoice_items: data.invoice_items
-        }).then(function (res) {
-          _this.$emit('add_invoice', res.data);
-          _this.is_active = false;
-          _this.wating_result = false;
-          _this.reset();
-        });
-      }
-    },
-    add_item: function add_item() {
-      this.invoice_items.push({
-        GUID: this.generate_guid()
-      });
-    },
-    remove: function remove(item) {
-      var index = this.invoice_items.indexOf(item);
-      this.invoice_items.splice(index, 1);
-    },
-    reset: function reset() {
-      this.$refs['invoice'].forEach(function (item) {
-        item.reset();
-      });
-      this.$refs['payment_information_form'].reset();
-      this.invoice_items = [{ GUID: 'first' }];
-    }
-  },
-  created: function created() {
-    var _this2 = this;
-
-    __WEBPACK_IMPORTED_MODULE_0_bus__["a" /* default */].$on('open_dialog_invoice_addition', function (payload) {
-      _this2.is_active = true;
-    });
-  }
-});
-
-/***/ }),
+/* 922 */,
+/* 923 */,
+/* 924 */,
+/* 925 */,
+/* 926 */,
+/* 927 */,
+/* 928 */,
+/* 929 */,
+/* 930 */,
+/* 931 */,
+/* 932 */,
+/* 933 */,
+/* 934 */,
 /* 935 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -110603,9 +109128,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   components: {
     CreditCard: __WEBPACK_IMPORTED_MODULE_0__payment_method_form_CreditCard___default.a
   },
-  props: {
-    payment_methods: Array
-  },
+  // props: {
+  //   payment_methods: Array
+  // },
   data: function data() {
     return {
       form: {
@@ -110619,6 +109144,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       }
     };
   },
+  computed: {
+    payment_methods: function payment_methods() {
+      return this.$store.getters['payment/payment_methods'];
+    }
+  },
   methods: {
     validate: function validate() {
       var _this = this;
@@ -110629,17 +109159,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         if (valid) {
           if (_this.form.method_key === 'CC') {
             if (_this.$refs['credit_card'].validate()) {
-              result = {
-                information: $this.form,
-                detail: _this.$refs['credit_card'].validate()
-              };
+              // result = {
+              //   information: $this.form,
+              //   details: this.$refs['credit_card'].validate()
+              // }
+              result = $this.form;
+              result.details = _this.$refs['credit_card'].validate();
             } else {
               result = false;
             }
           } else {
-            result = {
-              information: $this.form
-            };
+            result = $this.form;
+            // result = {
+            //   information: $this.form
+            // }
           }
         } else {
           result = false;
@@ -111244,30 +109777,44 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     GUID: String,
-    index: Number,
-    products: Array
+    index: Number
+    // products: Array
   },
   data: function data() {
     return {
       form: {
         product_id: null,
-        start_date: null,
-        completion_date: null,
+        // start_date: null,
+        // completion_date: null,
+        week: null,
         price: null,
         quantity: 1,
         note: null
       },
-      start_date_picker: false,
-      completion_date_picker: false,
+      // start_date_picker: false,
+      // completion_date_picker: false,
       rules: {
         product_id: [{ required: true, message: 'Please select product', trigger: 'change' }]
       }
     };
+  },
+  computed: {
+    products: function products() {
+      return this.$store.getters['product/products'];
+    }
   },
   methods: {
     validate: function validate() {
@@ -111391,140 +109938,25 @@ var render = function() {
                       [
                         _c(
                           "v-flex",
-                          { attrs: { xs6: "" } },
+                          { attrs: { xs12: "" } },
                           [
                             _c(
                               "el-form-item",
                               {
                                 staticClass: "ca-label",
-                                attrs: {
-                                  label: "Start Date",
-                                  prop: "start_date"
-                                }
+                                attrs: { label: "Week", prop: "week" }
                               },
                               [
-                                _c(
-                                  "v-menu",
-                                  {
-                                    attrs: {
-                                      "close-on-content-click": false,
-                                      "nudge-right": 40,
-                                      lazy: "",
-                                      transition: "scale-transition",
-                                      "offset-y": "",
-                                      "full-width": "",
-                                      "min-width": "290px"
+                                _c("el-input", {
+                                  attrs: { placeholder: "Please input week" },
+                                  model: {
+                                    value: _vm.form.week,
+                                    callback: function($$v) {
+                                      _vm.$set(_vm.form, "week", $$v)
                                     },
-                                    model: {
-                                      value: _vm.start_date_picker,
-                                      callback: function($$v) {
-                                        _vm.start_date_picker = $$v
-                                      },
-                                      expression: "start_date_picker"
-                                    }
-                                  },
-                                  [
-                                    _c("el-input", {
-                                      attrs: {
-                                        slot: "activator",
-                                        value: _vm.format_date(
-                                          _vm.form.start_date
-                                        ),
-                                        placeholder: "Please input",
-                                        readonly: ""
-                                      },
-                                      slot: "activator"
-                                    }),
-                                    _vm._v(" "),
-                                    _c("v-date-picker", {
-                                      on: {
-                                        input: function($event) {
-                                          _vm.start_date_picker = false
-                                        }
-                                      },
-                                      model: {
-                                        value: _vm.form.start_date,
-                                        callback: function($$v) {
-                                          _vm.$set(_vm.form, "start_date", $$v)
-                                        },
-                                        expression: "form.start_date"
-                                      }
-                                    })
-                                  ],
-                                  1
-                                )
-                              ],
-                              1
-                            )
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "v-flex",
-                          { attrs: { xs6: "" } },
-                          [
-                            _c(
-                              "el-form-item",
-                              {
-                                staticClass: "ca-label",
-                                attrs: { label: "Completion Date" }
-                              },
-                              [
-                                _c(
-                                  "v-menu",
-                                  {
-                                    attrs: {
-                                      "close-on-content-click": false,
-                                      "nudge-right": 40,
-                                      lazy: "",
-                                      transition: "scale-transition",
-                                      "offset-y": "",
-                                      "full-width": "",
-                                      "min-width": "290px"
-                                    },
-                                    model: {
-                                      value: _vm.completion_date_picker,
-                                      callback: function($$v) {
-                                        _vm.completion_date_picker = $$v
-                                      },
-                                      expression: "completion_date_picker"
-                                    }
-                                  },
-                                  [
-                                    _c("el-input", {
-                                      attrs: {
-                                        slot: "activator",
-                                        value: _vm.format_date(
-                                          _vm.form.completion_date
-                                        ),
-                                        placeholder: "Please input",
-                                        readonly: ""
-                                      },
-                                      slot: "activator"
-                                    }),
-                                    _vm._v(" "),
-                                    _c("v-date-picker", {
-                                      on: {
-                                        input: function($event) {
-                                          _vm.completion_date_picker = false
-                                        }
-                                      },
-                                      model: {
-                                        value: _vm.form.completion_date,
-                                        callback: function($$v) {
-                                          _vm.$set(
-                                            _vm.form,
-                                            "completion_date",
-                                            $$v
-                                          )
-                                        },
-                                        expression: "form.completion_date"
-                                      }
-                                    })
-                                  ],
-                                  1
-                                )
+                                    expression: "form.week"
+                                  }
+                                })
                               ],
                               1
                             )
@@ -111647,296 +110079,7 @@ if (false) {
 }
 
 /***/ }),
-/* 944 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "v-dialog",
-    {
-      attrs: { persistent: "", scrollable: "", "max-width": "1100" },
-      model: {
-        value: _vm.is_active,
-        callback: function($$v) {
-          _vm.is_active = $$v
-        },
-        expression: "is_active"
-      }
-    },
-    [
-      _c(
-        "v-card",
-        [
-          _c(
-            "v-card-title",
-            { staticClass: "primary white--text ca-typo-title-4" },
-            [
-              _vm._v("\n      Issue New Receipt\n      "),
-              _c("v-spacer"),
-              _vm._v(" "),
-              _c(
-                "v-btn",
-                {
-                  attrs: { color: "primary" },
-                  on: {
-                    click: function($event) {
-                      _vm.reset()
-                    }
-                  }
-                },
-                [_vm._v("\n        Clear\n      ")]
-              ),
-              _vm._v(" "),
-              _c(
-                "v-btn",
-                {
-                  attrs: { color: "primary" },
-                  on: {
-                    click: function($event) {
-                      _vm.add_item()
-                    }
-                  }
-                },
-                [_vm._v("\n        Add New Item\n      ")]
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "v-card-text",
-            { staticClass: "grey lighten-4" },
-            [
-              _c(
-                "v-container",
-                { staticClass: "pa-0 ca-grid-list-2", attrs: { fluid: "" } },
-                [
-                  _c(
-                    "v-layout",
-                    { attrs: { wrap: "", row: "" } },
-                    [
-                      _c(
-                        "v-flex",
-                        { attrs: { xs5: "" } },
-                        [
-                          _c(
-                            "v-container",
-                            { staticClass: "pa-0", attrs: { fluid: "" } },
-                            [
-                              _c(
-                                "v-layout",
-                                { attrs: { wrap: "" } },
-                                [
-                                  _c(
-                                    "v-flex",
-                                    { attrs: { xs12: "" } },
-                                    [
-                                      _c(
-                                        "v-card",
-                                        [
-                                          _c("v-card-title", [
-                                            _c(
-                                              "div",
-                                              {
-                                                staticClass: "ca-typo-title-5"
-                                              },
-                                              [_vm._v("Payment Information")]
-                                            )
-                                          ]),
-                                          _vm._v(" "),
-                                          _c(
-                                            "v-card-text",
-                                            [
-                                              _c("PaymentInformationForm", {
-                                                ref: "payment_information_form",
-                                                attrs: {
-                                                  payment_methods:
-                                                    _vm.payment_methods
-                                                }
-                                              })
-                                            ],
-                                            1
-                                          )
-                                        ],
-                                        1
-                                      )
-                                    ],
-                                    1
-                                  )
-                                ],
-                                1
-                              )
-                            ],
-                            1
-                          )
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "v-flex",
-                        { attrs: { xs7: "" } },
-                        [
-                          _c(
-                            "v-container",
-                            {
-                              staticClass: "pa-0 ca-grid-list-6-b",
-                              attrs: { fluid: "" }
-                            },
-                            [
-                              _c(
-                                "v-layout",
-                                { attrs: { wrap: "" } },
-                                [
-                                  _c(
-                                    "v-flex",
-                                    { attrs: { xs12: "" } },
-                                    [
-                                      _c(
-                                        "v-card",
-                                        [
-                                          _c("v-card-title", [
-                                            _c(
-                                              "div",
-                                              {
-                                                staticClass: "ca-typo-title-5"
-                                              },
-                                              [_vm._v("Invoice Details")]
-                                            )
-                                          ])
-                                        ],
-                                        1
-                                      )
-                                    ],
-                                    1
-                                  ),
-                                  _vm._v(" "),
-                                  _vm.reversed_invoice_items.length
-                                    ? _vm._l(
-                                        _vm.reversed_invoice_items,
-                                        function(invoice_item, i) {
-                                          return _c(
-                                            "v-flex",
-                                            {
-                                              key: invoice_item.GUID,
-                                              attrs: { xs12: "" }
-                                            },
-                                            [
-                                              _c("invoice-item-form", {
-                                                ref: "invoice",
-                                                refInFor: true,
-                                                attrs: {
-                                                  GUID: invoice_item.GUID,
-                                                  index:
-                                                    _vm.reversed_invoice_items
-                                                      .length - i,
-                                                  products: _vm.products
-                                                },
-                                                on: {
-                                                  remove: function($event) {
-                                                    _vm.remove(invoice_item)
-                                                  }
-                                                }
-                                              })
-                                            ],
-                                            1
-                                          )
-                                        }
-                                      )
-                                    : [
-                                        _c("v-flex", { attrs: { xs12: "" } }, [
-                                          _c(
-                                            "div",
-                                            {
-                                              staticClass:
-                                                "ca-typo-title-5 text-xs-center"
-                                            },
-                                            [
-                                              _vm._v(
-                                                "\n                      Please add new item.\n                    "
-                                              )
-                                            ]
-                                          )
-                                        ])
-                                      ]
-                                ],
-                                2
-                              )
-                            ],
-                            1
-                          )
-                        ],
-                        1
-                      )
-                    ],
-                    1
-                  )
-                ],
-                1
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "v-card-actions",
-            { staticClass: "primary" },
-            [
-              _c("v-spacer"),
-              _vm._v(" "),
-              _c(
-                "v-btn",
-                {
-                  attrs: { color: "white", flat: "" },
-                  on: {
-                    click: function($event) {
-                      _vm.is_active = false
-                    }
-                  }
-                },
-                [_vm._v("Disagree")]
-              ),
-              _vm._v(" "),
-              _c(
-                "v-btn",
-                {
-                  attrs: {
-                    color: "white",
-                    flat: "",
-                    loading: _vm.wating_result
-                  },
-                  on: {
-                    click: function($event) {
-                      _vm.submit()
-                    }
-                  }
-                },
-                [_vm._v("Agree")]
-              )
-            ],
-            1
-          )
-        ],
-        1
-      )
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-30633696", module.exports)
-  }
-}
-
-/***/ }),
+/* 944 */,
 /* 945 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -112022,33 +110165,66 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       is_active: false,
-      status: '',
-      invoice: {},
-      wating_result: false
+      wating_result: false,
+      // status: '',
+      payment: {},
+      form: {
+        status: ''
+      }
     };
+  },
+  watch: {
+    is_active: function is_active(new_v) {
+      if (!new_v) {
+        this.reset_data();
+      }
+    }
   },
   methods: {
     submit: function submit() {
       var _this = this;
 
       this.wating_result = true;
-      this.$axios.post('/invoice/' + this.invoice.id + '/change_status', {
-        status: this.status
+      this.$store.dispatch('payment/change_status', {
+        payment_id: this.payment.id,
+        form: this.form
       }).then(function (res) {
-        // console.log('res', res)
-        _this.$emit('change_status', {
-          new: res.data,
-          old: _this.invoice
-        });
-        _this.is_active = false;
+        console.log('aaaa');
         _this.wating_result = false;
+        _this.is_active = false;
       });
+      // this.wating_result = true
+      // this.$axios.post(`/invoice/${this.invoice.id}/change_status`, {
+      //   status: this.status
+      // }).then(res => {
+      //   // console.log('res', res)
+      //   this.$emit('change_status', {
+      //     new: res.data,
+      //     old: this.invoice
+      //   })
+      //   this.is_active = false
+      //   this.wating_result = false
+      // })
 
       // this.$store.dispatch('invoice/change_status',{
       //   invoice_id: this.invoice.id,
@@ -112069,8 +110245,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     __WEBPACK_IMPORTED_MODULE_0_bus__["a" /* default */].$on('open_dialog_status_change', function (payload) {
       _this2.is_active = true;
-      _this2.invoice = payload.invoice;
-      _this2.status = payload.invoice.status;
+      _this2.payment = payload.payment;
+      _this2.form.status = payload.payment.status;
     });
   }
 });
@@ -112099,35 +110275,67 @@ var render = function() {
       _c(
         "v-card",
         [
-          _c("v-card-title", { staticClass: "ca-typo-title-4" }, [
-            _vm._v("Do you want to change status?")
-          ]),
+          _c(
+            "v-card-title",
+            { staticClass: "primary white--text ca-typo-title-4" },
+            [_vm._v("\n      Change Status\n    ")]
+          ),
           _vm._v(" "),
           _c(
             "v-card-text",
             [
               _c(
-                "v-container",
-                { staticClass: "pa-0", attrs: { fluid: "" } },
+                "el-form",
+                {
+                  ref: "form",
+                  attrs: { model: _vm.form, "label-position": "top" }
+                },
                 [
                   _c(
-                    "v-layout",
-                    { attrs: { wrap: "" } },
+                    "v-container",
+                    { staticClass: "pa-0", attrs: { fluid: "" } },
                     [
                       _c(
-                        "v-flex",
-                        { attrs: { xs12: "" } },
+                        "v-layout",
+                        { attrs: { wrap: "" } },
                         [
-                          _c("v-select", {
-                            attrs: { items: _vm.STATUS_ITEMS },
-                            model: {
-                              value: _vm.status,
-                              callback: function($$v) {
-                                _vm.status = $$v
-                              },
-                              expression: "status"
-                            }
-                          })
+                          _c(
+                            "v-flex",
+                            { attrs: { xs12: "" } },
+                            [
+                              _c(
+                                "el-form-item",
+                                {
+                                  staticClass: "ca-label",
+                                  attrs: { label: "Status" }
+                                },
+                                [
+                                  _c(
+                                    "el-select",
+                                    {
+                                      staticClass: "ca-block",
+                                      attrs: { placeholder: "Select" },
+                                      model: {
+                                        value: _vm.form.status,
+                                        callback: function($$v) {
+                                          _vm.$set(_vm.form, "status", $$v)
+                                        },
+                                        expression: "form.status"
+                                      }
+                                    },
+                                    _vm._l(_vm.STATUS_ITEMS, function(item) {
+                                      return _c("el-option", {
+                                        key: item,
+                                        attrs: { label: item, value: item }
+                                      })
+                                    })
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
                         ],
                         1
                       )
@@ -112709,15 +110917,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   data: function data() {
     return {
       is_active: false,
-      invoice: {},
+      wating_result: false,
+      payment: {},
       verification_code: '',
-      verification_error: '',
-      wating_result: false
+      verification_error: ''
     };
+  },
+  watch: {
+    is_active: function is_active(new_v) {
+      if (!new_v) {
+        this.reset_data();
+      }
+    }
   },
   methods: {
     verify_deletion: function verify_deletion() {
-      var verifying_code = 'Receipt #' + this.invoice.id;
+      var verifying_code = 'Receipt #' + this.payment.id;
       if (verifying_code === this.verification_code) {
         return true;
       }
@@ -112730,14 +110945,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       if (this.verify_deletion()) {
         this.wating_result = true;
 
-        this.$axios.delete('/invoice/' + this.invoice.id).then(function (res) {
-          _this.$emit('del_invoice', {
-            new: res,
-            old: _this.invoice
-          });
+        this.$store.dispatch('payment/destory', {
+          payment_id: this.payment.id
+        }).then(function (res) {
           _this.wating_result = false;
           _this.is_active = false;
         });
+
+        // this.$axios.delete(`/invoice/${this.invoice.id}`).then(res => {
+        //   this.$emit('del_invoice', {
+        //     new: res,
+        //     old: this.invoice
+        //   })
+        //   this.wating_result = false
+        //   this.is_active = false
+        // })
       } else {
         this.verification_error = 'Please wrtie down the above bold word';
       }
@@ -112748,7 +110970,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     __WEBPACK_IMPORTED_MODULE_0_bus__["a" /* default */].$on('open_dialog_deletion', function (payload) {
       _this2.is_active = true;
-      _this2.invoice = payload.invoice;
+      _this2.payment = payload.payment;
     });
   }
 });
@@ -112780,7 +111002,7 @@ var render = function() {
           _c("v-card-title", [
             _c("div", { staticClass: "ca-typo-title-4" }, [
               _vm._v(
-                "Do you want to delete Receipt #" + _vm._s(_vm.invoice.id) + "?"
+                "Do you want to delete Receipt #" + _vm._s(_vm.payment.id) + "?"
               )
             ]),
             _vm._v(" "),
@@ -112788,7 +111010,7 @@ var render = function() {
               _vm._v(
                 "In order to verify you delete this receipt, please input "
               ),
-              _c("strong", [_vm._v("Receipt #" + _vm._s(_vm.invoice.id))]),
+              _c("strong", [_vm._v("Receipt #" + _vm._s(_vm.payment.id))]),
               _vm._v(" into the below text field.")
             ])
           ]),
@@ -112892,7 +111114,7 @@ var render = function() {
               attrs: { depressed: "", color: "primary" },
               on: {
                 click: function($event) {
-                  _vm.open_dialog_invoice_addition()
+                  _vm.open_dialog_payment_addition()
                 }
               }
             },
@@ -112958,41 +111180,28 @@ var render = function() {
                   },
                   expression: "filtered_by"
                 }
-              }),
-              _vm._v(" "),
-              _c("v-checkbox", {
-                staticClass: "__check-box",
-                attrs: {
-                  "hide-details": "",
-                  label: "Deleted",
-                  value: "Deleted"
-                },
-                model: {
-                  value: _vm.filtered_by,
-                  callback: function($$v) {
-                    _vm.filtered_by = $$v
-                  },
-                  expression: "filtered_by"
-                }
               })
             ],
             1
           ),
           _vm._v(" "),
-          !_vm._.isEmpty(_vm.filtered_invoices)
+          !_vm._.isEmpty(_vm.filtered_payments)
             ? [
                 _c(
                   "v-container",
-                  { staticClass: "pa-0", attrs: { fluid: "" } },
+                  {
+                    staticClass: "pa-0 ca-grid-list-4-y",
+                    attrs: { fluid: "" }
+                  },
                   [
                     _c(
                       "v-layout",
                       { attrs: { wrap: "" } },
-                      _vm._l(_vm.filtered_invoices, function(invoice) {
+                      _vm._l(_vm.filtered_payments, function(payment) {
                         return _c(
                           "v-flex",
-                          { key: invoice.id, attrs: { xs12: "" } },
-                          [_c("invoice", { attrs: { invoice: invoice } })],
+                          { key: payment.id, attrs: { xs12: "" } },
+                          [_c("payment", { attrs: { payment: payment } })],
                           1
                         )
                       })
@@ -113007,21 +111216,14 @@ var render = function() {
                   {
                     staticClass: "text-xs-center ca-typo-5 ca-typo-style-blank"
                   },
-                  [_vm._v("\n        There are no invoices\n      ")]
+                  [_vm._v("\n        There are no payments\n      ")]
                 )
               ]
         ],
         2
       ),
       _vm._v(" "),
-      _c("new-invoice-addition-dialog", {
-        attrs: { payment_methods: _vm.payment_methods, products: _vm.products },
-        on: {
-          add_invoice: function($event) {
-            _vm.add_invoice($event)
-          }
-        }
-      }),
+      _c("NewPaymentAdditionDialog"),
       _vm._v(" "),
       _c("status-change-dialog", {
         on: {
@@ -113041,8 +111243,8 @@ var render = function() {
       _vm._v(" "),
       _c("deletion-dialog", {
         on: {
-          del_invoice: function($event) {
-            _vm.del_invoice($event)
+          del_payment: function($event) {
+            _vm.del_payment($event)
           }
         }
       })
@@ -113230,6 +111432,1665 @@ exports.default = {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 962 */,
+/* 963 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_axios__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash__);
+
+
+
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+  namespaced: true,
+  state: {
+    payments: [],
+    payment_methods: []
+  },
+  getters: {
+    payment_methods: function payment_methods(state) {
+      return state.payment_methods;
+    },
+    payments: function payments(state) {
+      return state.payments;
+    }
+  },
+  mutations: {
+    set_payments: function set_payments(state, value) {
+      state.payments = value;
+    },
+    set_payment_methods: function set_payment_methods(state, value) {
+      state.payment_methods = value;
+    },
+    update_payment: function update_payment(state, value) {
+      state.payments.some(function (payment, i) {
+        if (payment.id === value.id) {
+          __WEBPACK_IMPORTED_MODULE_0_vue___default.a.set(state.payments, i, value);
+          return true;
+        }
+      });
+    }
+  },
+  actions: {
+    init_data: function init_data(context, payload) {
+      __WEBPACK_IMPORTED_MODULE_1__helpers_axios__["a" /* default */].get('/student/' + payload.student_id + '/payment').then(function (res) {
+        console.log('res', res);
+        context.commit('set_payments', res.data.payments);
+        context.commit('set_payment_methods', res.data.payment_methods);
+      });
+    },
+    store: function store(context, payload) {
+      console.log('payload', payload);
+      new Promise(function (resolve, reject) {
+        __WEBPACK_IMPORTED_MODULE_1__helpers_axios__["a" /* default */].post('/payment', payload.form).then(function (res) {
+          console.log('res', res);
+          resolve();
+        });
+      });
+    },
+    destory: function destory(context, payload) {
+      new Promise(function (resolve, reject) {
+        __WEBPACK_IMPORTED_MODULE_1__helpers_axios__["a" /* default */].delete('/payment/' + payload.payment_id).then(function (res) {
+          console.log('destroy', res);
+          context.commit('update_payment', res.data);
+          resolve();
+        });
+      });
+    },
+    change_status: function change_status(context, payload) {
+      new Promise(function (resolve, reject) {
+        __WEBPACK_IMPORTED_MODULE_1__helpers_axios__["a" /* default */].post('/payment/' + payload.payment_id + '/change_status', payload.form).then(function (res) {
+          console.log('chage status', res);
+          context.commit('update_payment', res.data);
+          resolve();
+        });
+      });
+    }
+  }
+});
+
+/***/ }),
+/* 964 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__helpers_axios__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash__);
+
+
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+  namespaced: true,
+  state: {
+    products: []
+  },
+  getters: {
+    products: function products(state) {
+      return state.products;
+    }
+  },
+  mutations: {
+    set_products: function set_products(state, value) {
+      state.products = value;
+    }
+  },
+  actions: {
+    get_products: function get_products(context, payload) {
+      __WEBPACK_IMPORTED_MODULE_0__helpers_axios__["a" /* default */].get('/product').then(function (res) {
+        context.commit('set_products', res.data);
+      });
+    }
+  }
+});
+
+/***/ }),
+/* 965 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(966)
+/* template */
+var __vue_template__ = __webpack_require__(967)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/app/student/detail/particles/invoice/Payment.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-4f1053b1", Component.options)
+  } else {
+    hotAPI.reload("data-v-4f1053b1", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 966 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_bus__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__PaymentItem__ = __webpack_require__(971);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__PaymentItem___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__PaymentItem__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+// import TrackingBox from '../class/list/TrackingBox'
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    PaymentItem: __WEBPACK_IMPORTED_MODULE_1__PaymentItem___default.a
+    // TrackingBox
+  },
+  props: {
+    payment: Object
+  },
+  data: function data() {
+    return {
+      menu: false,
+      credit_card_menu: false,
+      print_menu: false
+    };
+  },
+  computed: {
+    items: function items() {
+      return this.payment.items;
+    },
+    payment_code: function payment_code() {
+      return 'Receipt #' + this.payment.id;
+    },
+    date_issued: function date_issued() {
+      return this.$moment(this.payment.payment_date).format('MM/DD/YYYY');
+    },
+    total_refund: function total_refund() {
+      var result = 0;
+      for (var i in this.items) {
+        if (this.items[i].is_refunded) {
+          result += this.items[i].price;
+        }
+      }
+
+      return result;
+    },
+    sub_total: function sub_total() {
+      var result = 0;
+      for (var i in this.items) {
+        result += this.items[i].price;
+      }
+
+      return result;
+    },
+    total: function total() {
+      return this.sub_total - this.total_refund;
+    },
+    status_color: function status_color() {
+      if (this.payment.status === 'Paid') {
+        return 'green lighten-1';
+      } else if (this.payment.status === 'Waiting') {
+        return 'amber darken-1';
+      } else if (this.payment.status === 'Canceled') {
+        return 'grey darken-1';
+      }
+    },
+    is_paid: function is_paid() {
+      return this.payment.status === 'Paid';
+    },
+    is_refunded: function is_refunded() {
+      return this._.filter(this.items, 'is_refunded').length > 0 ? true : false;
+    },
+    is_deleted: function is_deleted() {
+      return this.payment.administration.deleted_at;
+    }
+  },
+  methods: {
+    open_dialog_status_change: function open_dialog_status_change() {
+      __WEBPACK_IMPORTED_MODULE_0_bus__["a" /* default */].$emit('open_dialog_status_change', {
+        payment: this.payment
+      });
+    },
+    open_dialog_deletion: function open_dialog_deletion() {
+      __WEBPACK_IMPORTED_MODULE_0_bus__["a" /* default */].$emit('open_dialog_deletion', {
+        payment: this.payment
+      });
+    },
+
+    // open_dialog_refund () {
+    //   bus.$emit('open_dialog_refund', {
+    //     payment: this.payment
+    //   })
+    // },
+    format_money: function format_money(money) {
+      return this.$account.formatMoney(money);
+    },
+    print: function print(id) {
+      window.open(this.$config.BASE_URL + '/pdf/' + id, '_blank');
+    }
+  }
+});
+
+/***/ }),
+/* 967 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "ca-invoice-item" }, [
+    _c(
+      "div",
+      { staticClass: "__title" },
+      [
+        _c("div", { staticClass: "ca-typo-title-4 mr-2" }, [
+          _vm._v(_vm._s(_vm.payment_code))
+        ]),
+        _vm._v(" "),
+        _c(
+          "v-chip",
+          {
+            attrs: { label: "", color: _vm.status_color, "text-color": "white" }
+          },
+          [_vm._v("\n      " + _vm._s(_vm.payment.status) + "\n    ")]
+        ),
+        _vm._v(" "),
+        _vm.is_deleted
+          ? _c(
+              "v-chip",
+              { attrs: { label: "", color: "red", "text-color": "white" } },
+              [_vm._v("Deleted")]
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        _c("v-spacer"),
+        _vm._v(" "),
+        _c(
+          "v-menu",
+          {
+            staticClass: "test",
+            attrs: {
+              "close-on-content-click": false,
+              "offset-y": "",
+              top: "",
+              "z-index": "2"
+            },
+            model: {
+              value: _vm.print_menu,
+              callback: function($$v) {
+                _vm.print_menu = $$v
+              },
+              expression: "print_menu"
+            }
+          },
+          [
+            _c(
+              "v-btn",
+              { attrs: { slot: "activator", icon: "" }, slot: "activator" },
+              [
+                _c("v-icon", { attrs: { color: "blue darken-2" } }, [
+                  _vm._v("local_printshop")
+                ])
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "v-list",
+              { attrs: { dense: "" } },
+              [
+                _c(
+                  "v-list-tile",
+                  {
+                    on: {
+                      click: function($event) {
+                        _vm.print(_vm.payment.id)
+                      }
+                    }
+                  },
+                  [_c("v-list-tile-title", [_vm._v("Print Receipt")])],
+                  1
+                )
+              ],
+              1
+            )
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c(
+          "v-menu",
+          {
+            attrs: {
+              "close-on-content-click": false,
+              "offset-y": "",
+              top: "",
+              "z-index": "2",
+              "nudge-right": 20
+            },
+            model: {
+              value: _vm.menu,
+              callback: function($$v) {
+                _vm.menu = $$v
+              },
+              expression: "menu"
+            }
+          },
+          [
+            _c(
+              "v-btn",
+              { attrs: { slot: "activator", icon: "" }, slot: "activator" },
+              [
+                _c("v-icon", { attrs: { color: "blue darken-2" } }, [
+                  _vm._v("more_vert")
+                ])
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "v-list",
+              { attrs: { dense: "" } },
+              [
+                !_vm.is_paid
+                  ? _c(
+                      "v-list-tile",
+                      {
+                        on: {
+                          click: function($event) {
+                            _vm.open_dialog_status_change()
+                          }
+                        }
+                      },
+                      [_c("v-list-tile-title", [_vm._v("Change Stauts")])],
+                      1
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _c(
+                  "v-list-tile",
+                  {
+                    on: {
+                      click: function($event) {
+                        _vm.open_dialog_deletion()
+                      }
+                    }
+                  },
+                  [_c("v-list-tile-title", [_vm._v("Delete")])],
+                  1
+                )
+              ],
+              1
+            )
+          ],
+          1
+        )
+      ],
+      1
+    ),
+    _vm._v(" "),
+    _c("div", { staticClass: "__body" }, [
+      _c("div", { staticClass: "__header mb-3" }, [
+        _c("div", [
+          _c("strong", { staticClass: "pr-1" }, [_vm._v("Date Issued")]),
+          _vm._v(" "),
+          _c("span", { staticClass: "ca-typo-style-meta" }, [
+            _vm._v(_vm._s(_vm.date_issued))
+          ]),
+          _vm._v(" "),
+          _c("strong", { staticClass: "ml-2 pr-1" }, [
+            _vm._v("Payment Method")
+          ]),
+          _vm._v(" "),
+          _c(
+            "span",
+            { staticClass: "ca-typo-style-meta" },
+            [
+              _vm._v(
+                "\n          " +
+                  _vm._s(_vm.payment.payment_method.method) +
+                  "\n          "
+              ),
+              _vm.payment.payment_method.key === "CC"
+                ? _c(
+                    "v-menu",
+                    {
+                      attrs: {
+                        "close-on-content-click": false,
+                        "nudge-width": 200,
+                        "offset-x": "",
+                        "z-index": "2"
+                      },
+                      model: {
+                        value: _vm.credit_card_menu,
+                        callback: function($$v) {
+                          _vm.credit_card_menu = $$v
+                        },
+                        expression: "credit_card_menu"
+                      }
+                    },
+                    [
+                      _c(
+                        "v-icon",
+                        {
+                          attrs: { slot: "activator", small: "" },
+                          slot: "activator"
+                        },
+                        [
+                          _vm._v(
+                            "\n                credit_card\n              "
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-card",
+                        [
+                          _c("v-card-title", [_vm._v("Credit Card Details")]),
+                          _vm._v(" "),
+                          _c("v-card-text", [
+                            _c("div", [
+                              _c("div", [_vm._v("The Last 4 Digits")]),
+                              _vm._v(" "),
+                              _c("div", [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm.payment.payment_method.details.digits
+                                  )
+                                )
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("div", [
+                              _c("div", [_vm._v("Name on Card")]),
+                              _vm._v(" "),
+                              _c("div", [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm.payment.payment_method.details.name
+                                  )
+                                )
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("div", [
+                              _c("div", [_vm._v("Expiration")]),
+                              _vm._v(" "),
+                              _c("div", [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm.payment.payment_method.details.month +
+                                      "/" +
+                                      _vm.payment.payment_method.details.year
+                                  )
+                                )
+                              ])
+                            ])
+                          ])
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                : _vm._e()
+            ],
+            1
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", [
+          _c("strong", [_vm._v("Note")]),
+          _vm._v(" "),
+          _c("span", [_vm._v(_vm._s(_vm.payment.note))])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "__detail" }, [
+        _c("table", { staticClass: "ca-table" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _c(
+            "tbody",
+            _vm._l(_vm.items, function(item) {
+              return _c("PaymentItem", { key: item.id, attrs: { item: item } })
+            })
+          )
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "__result" }, [
+        _c("div", { staticClass: "__result-meta" }, [
+          _c("strong", { staticClass: "ca-typo-title-5" }, [
+            _vm._v("Sub Total")
+          ]),
+          _vm._v(" "),
+          _c("span", [_vm._v(_vm._s(_vm.format_money(_vm.sub_total)))])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "__result-meta" }, [
+          _c("strong", { staticClass: "ca-typo-title-5" }, [_vm._v("Refund")]),
+          _vm._v(" "),
+          _c("span", [_vm._v(_vm._s(_vm.format_money(_vm.total_refund)))])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "__result-meta" }, [
+          _c("strong", { staticClass: "ca-typo-title-4" }, [_vm._v("Total")]),
+          _vm._v(" "),
+          _c("span", { staticClass: "ca-typo-4" }, [
+            _vm._v(_vm._s(_vm.format_money(_vm.total)))
+          ])
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { staticClass: "text-xs-left" }, [_vm._v("Name")]),
+        _vm._v(" "),
+        _c("th", { staticClass: "text-xs-center" }, [_vm._v("Week")]),
+        _vm._v(" "),
+        _c("th", { staticClass: "text-xs-center" }, [_vm._v("Qauntity")]),
+        _vm._v(" "),
+        _c("th", { staticClass: "text-xs-right" }, [_vm._v("Price")]),
+        _vm._v(" "),
+        _c("th", { staticClass: "text-xs-right" }, [_vm._v("Total")])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-4f1053b1", module.exports)
+  }
+}
+
+/***/ }),
+/* 968 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(969)
+/* template */
+var __vue_template__ = __webpack_require__(970)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/app/student/detail/particles/invoice/NewPaymentAdditionDialog.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-bc92fda2", Component.options)
+  } else {
+    hotAPI.reload("data-v-bc92fda2", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 969 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_bus__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__invoice_addition_form_PaymentInformationForm__ = __webpack_require__(935);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__invoice_addition_form_PaymentInformationForm___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__invoice_addition_form_PaymentInformationForm__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__invoice_addition_form_InvoiceItemForm__ = __webpack_require__(941);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__invoice_addition_form_InvoiceItemForm___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__invoice_addition_form_InvoiceItemForm__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  // props: {
+  //   payment_methods: Array,
+  //   products: Array
+  // },
+  components: {
+    InvoiceItemForm: __WEBPACK_IMPORTED_MODULE_2__invoice_addition_form_InvoiceItemForm___default.a,
+    PaymentInformationForm: __WEBPACK_IMPORTED_MODULE_1__invoice_addition_form_PaymentInformationForm___default.a
+  },
+  data: function data() {
+    return {
+      is_active: false,
+      wating_result: false,
+      // total: 0,
+      payment_items: [{ GUID: 'first' }]
+    };
+  },
+  computed: {
+    reversed_payment_items: function reversed_payment_items() {
+      var reversed_payment_items = _.reverse(_.clone(this.payment_items));
+      return reversed_payment_items;
+    }
+  },
+  watch: {
+    is_active: function is_active(new_v) {
+      if (!new_v) {
+        this.reset();
+      }
+    }
+  },
+  methods: {
+    validate_all: function validate_all() {
+      var error = 0;
+      var result = {
+        // payment: {},
+        items: []
+      };
+
+      if (this.$refs['payment_information_form'].validate()) {
+        // result.payment = this.$refs['payment_information_form'].validate()
+        Object.assign(result, this.$refs['payment_information_form'].validate());
+      } else {
+        error += 1;
+      }
+
+      for (var i = 0; i < this.$refs['payment_item'].length; i++) {
+        if (this.$refs['payment_item'][i].validate()) {
+          result.items.push(this.$refs['payment_item'][i].validate());
+        } else {
+          error += 1;
+        }
+      }
+
+      if (error > 0) {
+        return false;
+      } else {
+        return result;
+      }
+    },
+    submit: function submit() {
+      var _this = this;
+
+      var data = this.validate_all();
+      // console.log('dat', data)
+      if (data) {
+        this.wating_result = true;
+        this.$store.dispatch('payment/store', {
+          form: {
+            student_id: this.$route.params.student_id,
+            status: data.status,
+            note: data.note,
+            method_key: data.method_key,
+            payment_method_details: data.details || null,
+            items: data.items
+          }
+        }).then(function (res) {
+          _this.wating_result = false;
+          _this.is_active = false;
+        });
+        // this.wating_result = true
+        // this.$axios.post(`/invoice`, {
+        //   student_id: this.$route.params.student_id,
+        //   status: data.payment.information.status,
+        //   note: data.payment.information.note,
+        //   payment_method: {
+        //     method_key: data.payment.information.method_key,
+        //     detail: data.payment.detail
+        //   },
+        //   payment_items: data.payment_items
+        // }).then(res => {
+        //   this.$emit('add_invoice', res.data)
+        //   this.is_active = false
+        //   this.wating_result = false
+        //   this.reset()
+        // })
+      }
+    },
+    add_item: function add_item() {
+      this.payment_items.push({
+        GUID: this.generate_guid()
+      });
+    },
+    remove: function remove(item) {
+      var index = this.payment_items.indexOf(item);
+      this.payment_items.splice(index, 1);
+    },
+    reset: function reset() {
+      this.$refs['payment_item'].forEach(function (item) {
+        item.reset();
+      });
+      this.$refs['payment_information_form'].reset();
+      this.payment_items = [{ GUID: 'first' }];
+    }
+  },
+  created: function created() {
+    var _this2 = this;
+
+    __WEBPACK_IMPORTED_MODULE_0_bus__["a" /* default */].$on('open_dialog_payment_addition', function (payload) {
+      _this2.is_active = true;
+    });
+  }
+});
+
+/***/ }),
+/* 970 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-dialog",
+    {
+      attrs: { persistent: "", scrollable: "", "max-width": "1100" },
+      model: {
+        value: _vm.is_active,
+        callback: function($$v) {
+          _vm.is_active = $$v
+        },
+        expression: "is_active"
+      }
+    },
+    [
+      _c(
+        "v-card",
+        [
+          _c(
+            "v-card-title",
+            { staticClass: "primary white--text ca-typo-title-4" },
+            [
+              _vm._v("\n      Issue New Receipt\n      "),
+              _c("v-spacer"),
+              _vm._v(" "),
+              _c(
+                "v-btn",
+                {
+                  attrs: { color: "primary" },
+                  on: {
+                    click: function($event) {
+                      _vm.reset()
+                    }
+                  }
+                },
+                [_vm._v("\n        Clear\n      ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "v-btn",
+                {
+                  attrs: { color: "primary" },
+                  on: {
+                    click: function($event) {
+                      _vm.add_item()
+                    }
+                  }
+                },
+                [_vm._v("\n        Add New Item\n      ")]
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-card-text",
+            { staticClass: "grey lighten-4" },
+            [
+              _c(
+                "v-container",
+                { staticClass: "pa-0 ca-grid-list-2", attrs: { fluid: "" } },
+                [
+                  _c(
+                    "v-layout",
+                    { attrs: { wrap: "", row: "" } },
+                    [
+                      _c(
+                        "v-flex",
+                        { attrs: { xs5: "" } },
+                        [
+                          _c(
+                            "v-container",
+                            { staticClass: "pa-0", attrs: { fluid: "" } },
+                            [
+                              _c(
+                                "v-layout",
+                                { attrs: { wrap: "" } },
+                                [
+                                  _c(
+                                    "v-flex",
+                                    { attrs: { xs12: "" } },
+                                    [
+                                      _c(
+                                        "v-card",
+                                        [
+                                          _c("v-card-title", [
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass: "ca-typo-title-5"
+                                              },
+                                              [_vm._v("Payment Information")]
+                                            )
+                                          ]),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-card-text",
+                                            [
+                                              _c("PaymentInformationForm", {
+                                                ref: "payment_information_form"
+                                              })
+                                            ],
+                                            1
+                                          )
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-flex",
+                        { attrs: { xs7: "" } },
+                        [
+                          _c(
+                            "v-container",
+                            {
+                              staticClass: "pa-0 ca-grid-list-6-b",
+                              attrs: { fluid: "" }
+                            },
+                            [
+                              _c(
+                                "v-layout",
+                                { attrs: { wrap: "" } },
+                                [
+                                  _c(
+                                    "v-flex",
+                                    { attrs: { xs12: "" } },
+                                    [
+                                      _c(
+                                        "v-card",
+                                        [
+                                          _c("v-card-title", [
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass: "ca-typo-title-5"
+                                              },
+                                              [_vm._v("Invoice Details")]
+                                            )
+                                          ])
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  ),
+                                  _vm._v(" "),
+                                  _vm.reversed_payment_items.length
+                                    ? _vm._l(
+                                        _vm.reversed_payment_items,
+                                        function(item, i) {
+                                          return _c(
+                                            "v-flex",
+                                            {
+                                              key: item.GUID,
+                                              attrs: { xs12: "" }
+                                            },
+                                            [
+                                              _c("invoice-item-form", {
+                                                ref: "payment_item",
+                                                refInFor: true,
+                                                attrs: {
+                                                  GUID: item.GUID,
+                                                  index:
+                                                    _vm.reversed_payment_items
+                                                      .length - i
+                                                },
+                                                on: {
+                                                  remove: function($event) {
+                                                    _vm.remove(item)
+                                                  }
+                                                }
+                                              })
+                                            ],
+                                            1
+                                          )
+                                        }
+                                      )
+                                    : [
+                                        _c("v-flex", { attrs: { xs12: "" } }, [
+                                          _c(
+                                            "div",
+                                            {
+                                              staticClass:
+                                                "ca-typo-title-5 text-xs-center"
+                                            },
+                                            [
+                                              _vm._v(
+                                                "\n                      Please add new item.\n                    "
+                                              )
+                                            ]
+                                          )
+                                        ])
+                                      ]
+                                ],
+                                2
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-card-actions",
+            { staticClass: "primary" },
+            [
+              _c("v-spacer"),
+              _vm._v(" "),
+              _c(
+                "v-btn",
+                {
+                  attrs: { color: "white", flat: "" },
+                  on: {
+                    click: function($event) {
+                      _vm.is_active = false
+                    }
+                  }
+                },
+                [_vm._v("Disagree")]
+              ),
+              _vm._v(" "),
+              _c(
+                "v-btn",
+                {
+                  attrs: {
+                    color: "white",
+                    flat: "",
+                    loading: _vm.wating_result
+                  },
+                  on: {
+                    click: function($event) {
+                      _vm.submit()
+                    }
+                  }
+                },
+                [_vm._v("Agree")]
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-bc92fda2", module.exports)
+  }
+}
+
+/***/ }),
+/* 971 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(972)
+}
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(974)
+/* template */
+var __vue_template__ = __webpack_require__(975)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = "data-v-529a3ce4"
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/app/student/detail/particles/invoice/PaymentItem.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-529a3ce4", Component.options)
+  } else {
+    hotAPI.reload("data-v-529a3ce4", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 972 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(973);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(25)("7313d544", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../../../../node_modules/css-loader/index.js!../../../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-529a3ce4\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./PaymentItem.vue", function() {
+     var newContent = require("!!../../../../../../../../node_modules/css-loader/index.js!../../../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-529a3ce4\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./PaymentItem.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 973 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(4)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.test[data-v-529a3ce4] {\n  text-decoration: line-through;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 974 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    item: Object
+  },
+  computed: {
+    // item_id () {
+    //   return 'ITEM-' + this.item.id
+    // },
+    is_refunded: function is_refunded() {
+      return this.item.is_refunded;
+    },
+
+    // name () {
+    //   return this.invoice.product_name
+    // },
+    // start_date () {
+    //   return this.item.start_date ? this.$moment(this.item.start_date).format('MM/DD/YYYY'):null
+    // },
+    // completion_date () {
+    //   return this.item.completion_date ? this.$moment(this.item.completion_date).format('MM/DD/YYYY'):null
+    // },
+    // formatted_price () {
+    //   return this.$account.formatMoney(this.item.price)
+    // },
+    // term () {
+    //   if (this.start_date && this.completion_date) {
+    //     return `${this.start_date} - ${this.completion_date}`
+    //   } else if (this.start_date) {
+    //     return `${this.start_date} - Not Decided`
+    //   } else if (this.completion) {
+    //     return `Not Decided - ${this.completion_date}`
+    //   } else {
+    //     return null
+    //   }
+    // },
+    // quantity () {
+    //   return this.item.quantity ? this.item.quantity:null
+    // },
+    // price () {
+    //   return this.item.price ? this.item.price:null
+    // },
+    total: function total() {
+      return this.item.quantity * this.item.price;
+    }
+  }
+});
+
+/***/ }),
+/* 975 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("tr", [
+    _c("td", { staticClass: "text-xs-left __item-name" }, [
+      _c("strong", [_vm._v(_vm._s(_vm.item.name))])
+    ]),
+    _vm._v(" "),
+    _c("td", { staticClass: "text-xs-center __item-term" }, [
+      _vm._v(_vm._s(_vm.item.week))
+    ]),
+    _vm._v(" "),
+    _c("td", { staticClass: "text-xs-right __item-quantity" }, [
+      _vm._v(_vm._s(_vm.item.quantity))
+    ]),
+    _vm._v(" "),
+    _c("td", { staticClass: "text-xs-right __item-price" }, [
+      _vm._v(_vm._s(_vm.$account.formatMoney(_vm.item.price)))
+    ]),
+    _vm._v(" "),
+    _c("td", { staticClass: "text-xs-right __item-total" }, [
+      _vm._v(_vm._s(_vm.$account.formatMoney(_vm.total)))
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-529a3ce4", module.exports)
+  }
+}
+
+/***/ }),
+/* 976 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(977);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(8)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../css-loader/index.js!./reset.css", function() {
+			var newContent = require("!!../../../css-loader/index.js!./reset.css");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 977 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(4)(false);
+// imports
+
+
+// module
+exports.push([module.i, "@charset \"UTF-8\";body{font-family:\"Helvetica Neue\",Helvetica,\"PingFang SC\",\"Hiragino Sans GB\",\"Microsoft YaHei\",\"\\5FAE\\8F6F\\96C5\\9ED1\",Arial,sans-serif;font-weight:400;font-size:14px;color:#000;-webkit-font-smoothing:antialiased}a{color:#409EFF;text-decoration:none}a:focus,a:hover{color:#66b1ff}a:active{color:#3a8ee6}h1,h2,h3,h4,h5,h6{color:#606266;font-weight:inherit}h1:first-child,h2:first-child,h3:first-child,h4:first-child,h5:first-child,h6:first-child,p:first-child{margin-top:0}h1:last-child,h2:last-child,h3:last-child,h4:last-child,h5:last-child,h6:last-child,p:last-child{margin-bottom:0}h1{font-size:20px}h2{font-size:18px}h3{font-size:16px}h4,h5,h6,p{font-size:inherit}p{line-height:1.8}sub,sup{font-size:13px}small{font-size:12px}hr{margin-top:20px;margin-bottom:20px;border:0;border-top:1px solid #eee}", ""]);
+
+// exports
+
 
 /***/ })
 /******/ ]);

@@ -1,19 +1,33 @@
 <template>
   <v-dialog v-model="is_active" persistent max-width="400">
     <v-card>
-      <v-card-title class="ca-typo-title-4">Do you want to change status?</v-card-title>
+      <v-card-title class="primary white--text ca-typo-title-4">
+        Change Status
+      </v-card-title>
       <v-card-text>
-        <v-container fluid class="pa-0">
-          <v-layout wrap>
-            <v-flex xs12>
-              <v-select
-                v-model="status"
-                :items="STATUS_ITEMS"
-              >
-              </v-select>
-            </v-flex>
-          </v-layout>
-        </v-container>          
+        <el-form ref="form" :model="form" label-position="top">
+          <v-container fluid class="pa-0">
+            <v-layout wrap>
+              <v-flex xs12>
+                <el-form-item label="Status" class="ca-label">
+                  <el-select 
+                    v-model="form.status" 
+                    placeholder="Select"
+                    class="ca-block"
+                  >
+                    <el-option
+                      v-for="item in STATUS_ITEMS"
+                      :key="item"
+                      :label="item"
+                      :value="item"
+                    >
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+              </v-flex>
+            </v-layout>
+          </v-container>
+        </el-form>      
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
@@ -35,24 +49,43 @@ import bus from 'bus'
 export default {
   data: () => ({
     is_active: false,
-    status: '',
-    invoice: {},
-    wating_result: false
+    wating_result: false,
+    // status: '',
+    payment: {},
+    form: {
+      status: ''
+    }
   }),
+  watch: {
+    is_active (new_v) {
+      if (!new_v) {
+        this.reset_data()
+      }
+    }
+  },
   methods: {
     submit () {
       this.wating_result = true
-      this.$axios.post(`/invoice/${this.invoice.id}/change_status`, {
-        status: this.status
+      this.$store.dispatch('payment/change_status', {
+        payment_id: this.payment.id,
+        form: this.form
       }).then(res => {
-        // console.log('res', res)
-        this.$emit('change_status', {
-          new: res.data,
-          old: this.invoice
-        })
-        this.is_active = false
+        console.log('aaaa')
         this.wating_result = false
+        this.is_active = false
       })
+      // this.wating_result = true
+      // this.$axios.post(`/invoice/${this.invoice.id}/change_status`, {
+      //   status: this.status
+      // }).then(res => {
+      //   // console.log('res', res)
+      //   this.$emit('change_status', {
+      //     new: res.data,
+      //     old: this.invoice
+      //   })
+      //   this.is_active = false
+      //   this.wating_result = false
+      // })
 
       // this.$store.dispatch('invoice/change_status',{
       //   invoice_id: this.invoice.id,
@@ -71,8 +104,8 @@ export default {
   created () {
     bus.$on('open_dialog_status_change', (payload) => {
       this.is_active = true
-      this.invoice = payload.invoice
-      this.status = payload.invoice.status
+      this.payment = payload.payment
+      this.form.status = payload.payment.status
     })
   }
 }

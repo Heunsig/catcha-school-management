@@ -11,6 +11,8 @@ use App\Category;
 use App\Classinfo;
 use App\Payment;
 use App\Product;
+use App\PaymentMethod;
+
 use App\Http\Resources\StudentResource;
 use App\Http\Resources\StudentBasicInformationResource;
 use App\Http\Resources\StudentClassResource;
@@ -21,6 +23,8 @@ use App\Http\Resources\ClassBelongingToStudentResource;
 
 use App\Http\Resources\ProgramResource;
 use App\Http\Resources\ProgramListResource;
+use App\Http\Resources\PaymentMethodResource;
+use App\Http\Resources\InvoiceResource;
 
 
 class StudentController extends Controller
@@ -114,6 +118,17 @@ class StudentController extends Controller
             'program_selection_options' => ProgramListResource::collection($program_selection_options),
             // 'classes_belonging_to' => ClassBelongingToStudentResource::collection($classes_belonging_to),
             // 'programs_taken' => ProgramTakenResource::collection(collect($programs_taken))
+        ]);
+    }
+
+    public function payment($student_id)
+    {
+        $payment_methods = PaymentMethod::all();
+        $payments = Payment::all();
+
+        return response()->json([
+            'payments' => InvoiceResource::collection($payments),
+            'payment_methods' => PaymentMethodResource::collection($payment_methods)
         ]);
     }
 

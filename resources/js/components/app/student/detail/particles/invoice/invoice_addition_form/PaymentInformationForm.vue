@@ -64,9 +64,9 @@ export default {
   components: {
     CreditCard
   },
-  props: {
-    payment_methods: Array
-  },
+  // props: {
+  //   payment_methods: Array
+  // },
   data: () => ({
     form: {
       status: '',
@@ -82,6 +82,11 @@ export default {
       ]
     }
   }),
+  computed: {
+    payment_methods () {
+      return this.$store.getters['payment/payment_methods']
+    }
+  },
   methods: {
     validate() {
       let $this = this
@@ -90,17 +95,20 @@ export default {
         if (valid) {
           if (this.form.method_key === 'CC') {
             if (this.$refs['credit_card'].validate()) {
-              result = {
-                information: $this.form,
-                detail: this.$refs['credit_card'].validate()
-              }
+              // result = {
+              //   information: $this.form,
+              //   details: this.$refs['credit_card'].validate()
+              // }
+              result = $this.form
+              result.details = this.$refs['credit_card'].validate()
             } else {
               result = false
             }
           } else {
-            result = {
-              information: $this.form
-            }
+            result = $this.form
+            // result = {
+            //   information: $this.form
+            // }
           }
         } else {
           result = false

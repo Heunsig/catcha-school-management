@@ -24,7 +24,15 @@
               </el-form-item>
             </v-flex>
             <template>
-              <v-flex xs6>
+              <v-flex xs12>
+                <el-form-item label="Week" class="ca-label" prop="week">
+                  <el-input 
+                    v-model="form.week"
+                    placeholder="Please input week" 
+                  ></el-input>
+                </el-form-item>
+              </v-flex>
+              <!-- <v-flex xs6>
                 <el-form-item label="Start Date" class="ca-label" prop="start_date">
                   <v-menu
                     :close-on-content-click="false"
@@ -70,7 +78,7 @@
                     ></v-date-picker>
                   </v-menu>
                 </el-form-item>
-              </v-flex>
+              </v-flex> -->
               <v-flex xs9>
                 <el-form-item label="Price" class="ca-label">
                   <el-input 
@@ -110,25 +118,31 @@ export default {
   props: {
     GUID: String,
     index: Number,
-    products: Array
+    // products: Array
   },
   data: () => ({
     form: {
       product_id: null,
-      start_date: null,
-      completion_date: null,
+      // start_date: null,
+      // completion_date: null,
+      week: null,
       price: null,
       quantity: 1,
       note: null
     },
-    start_date_picker: false,
-    completion_date_picker: false,
+    // start_date_picker: false,
+    // completion_date_picker: false,
     rules: {
       product_id: [
         { required: true, message: 'Please select product', trigger: 'change' }
       ]
     }
   }),
+  computed: {
+    products () {
+      return this.$store.getters['product/products']
+    }
+  },
   methods: {
     validate () {
       let $this = this

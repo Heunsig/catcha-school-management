@@ -8,6 +8,8 @@ class Payment extends Model
 {
     protected $table = 'payment';
 
+    public $timestamps = false;
+
     public function payment_method()
     {
         return $this->belongsTo('App\PaymentMethod', 'payment_method_key', 'key');
@@ -21,13 +23,19 @@ class Payment extends Model
                                     'product_id')
                     ->withPivot([
                         'id',
-                        'start_date',
-                        'completion_date',
+                        'week',
+                        // 'start_date',
+                        // 'completion_date',
                         'price',
                         'quantity',
                         'note',
                         'is_refunded',
                     ]);
+    }
+
+    public function item()
+    {
+        return $this->hasMany('App\Item', 'payment_id');
     }
 
     public function credit_card_information()

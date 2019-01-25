@@ -33,8 +33,11 @@
                         <div class="ca-typo-title-5">Payment Information</div>
                       </v-card-title>
                       <v-card-text>
-                        <PaymentInformationForm
+                        <!-- <PaymentInformationForm
                           :payment_methods="payment_methods"
+                          ref="payment_information_form"
+                        ></PaymentInformationForm> -->
+                        <PaymentInformationForm
                           ref="payment_information_form"
                         ></PaymentInformationForm>
                       </v-card-text>
@@ -53,15 +56,21 @@
                       </v-card-title>
                     </v-card>
                   </v-flex>
-                  <template v-if="reversed_invoice_items.length">
-                    <v-flex xs12 v-for="(invoice_item, i) in reversed_invoice_items" :key="invoice_item.GUID">
+                  <template v-if="reversed_payment_items.length">
+                    <v-flex xs12 v-for="(item, i) in reversed_payment_items" :key="item.GUID">
                       <invoice-item-form
+                        ref="payment_item"
+                        :GUID="item.GUID"
+                        :index="reversed_payment_items.length - i"
+                        @remove="remove(item)"
+                      ></invoice-item-form>
+                      <!-- <invoice-item-form
                         ref="invoice"
                         :GUID="invoice_item.GUID"
-                        :index="reversed_invoice_items.length - i"
+                        :index="reversed_payment_items.length - i"
                         :products="products"
                         @remove="remove(invoice_item)"
-                      ></invoice-item-form>
+                      ></invoice-item-form> -->
                     </v-flex>
                   </template>
                   <template v-else>
@@ -97,46 +106,53 @@ import PaymentInformationForm from './invoice_addition_form/PaymentInformationFo
 import InvoiceItemForm from './invoice_addition_form/InvoiceItemForm'
 
 export default {
-  props: {
-    payment_methods: Array,
-    products: Array
-  },
+  // props: {
+  //   payment_methods: Array,
+  //   products: Array
+  // },
   components: {
     InvoiceItemForm,
     PaymentInformationForm
   },
   data: () => ({
     is_active: false,
+    wating_result: false,
     // total: 0,
-    invoice_items: [
+    payment_items: [
       { GUID: 'first' }
     ],
-    wating_result: false
   }),
   computed: {
-    reversed_invoice_items () {
-      let reversed_invoice_items = _.reverse(_.clone(this.invoice_items))
-      return reversed_invoice_items
+    reversed_payment_items () {
+      let reversed_payment_items = _.reverse(_.clone(this.payment_items))
+      return reversed_payment_items
+    }
+  },
+  watch: {
+    is_active (new_v) {
+      if (!new_v) {
+        this.reset()
+      }
     }
   },
   methods: {
     validate_all () {
       let error = 0
       let result = {
-        payment: {},
-        invoice_items: []
+        // payment: {},
+        items: []
       }
 
-
       if (this.$refs['payment_information_form'].validate()) {
-        result.payment = this.$refs['payment_information_form'].validate()
+        // result.payment = this.$refs['payment_information_form'].validate()
+        Object.assign(result, this.$refs['payment_information_form'].validate())
       } else {
         error += 1
       }
 
-      for (let i = 0 ; i < this.$refs['invoice'].length ; i++) {
-        if (this.$refs['invoice'][i].validate()) {
-          result.invoice_items.push(this.$refs['invoice'][i].validate())
+      for (let i = 0 ; i < this.$refs['payment_item'].length ; i++) {
+        if (this.$refs['payment_item'][i].validate()) {
+          result.items.push(this.$refs['payment_item'][i].validate())
         } else {
           error += 1
         }
@@ -151,47 +167,61 @@ export default {
     },
     submit () {
       let data = this.validate_all()
-
+      // console.log('dat', data)
       if (data) {
         this.wating_result = true
-        this.$axios.post(`/invoice`, {
-          student_id: this.$route.params.student_id,
-          status: data.payment.information.status,
-          note: data.payment.information.note,
-          payment_method: {
-            method_key: data.payment.information.method_key,
-            detail: data.payment.detail
-          },
-          invoice_items: data.invoice_items
+        this.$store.dispatch('payment/store', {
+          form: {
+            student_id: this.$route.params.student_id,
+            status: data.status,
+            note: data.note,
+            method_key: data.method_key,
+            payment_method_details: data.details || null,
+            items: data.items
+          }
         }).then(res => {
-          this.$emit('add_invoice', res.data)
-          this.is_active = false
           this.wating_result = false
-          this.reset()
+          this.is_active = false
         })
+        // this.wating_result = true
+        // this.$axios.post(`/invoice`, {
+        //   student_id: this.$route.params.student_id,
+        //   status: data.payment.information.status,
+        //   note: data.payment.information.note,
+        //   payment_method: {
+        //     method_key: data.payment.information.method_key,
+        //     detail: data.payment.detail
+        //   },
+        //   payment_items: data.payment_items
+        // }).then(res => {
+        //   this.$emit('add_invoice', res.data)
+        //   this.is_active = false
+        //   this.wating_result = false
+        //   this.reset()
+        // })
       }
     },
     add_item () {
-      this.invoice_items.push({
+      this.payment_items.push({
         GUID: this.generate_guid()
       })
     },
     remove (item) {
-      let index = this.invoice_items.indexOf(item)
-      this.invoice_items.splice(index, 1)
+      let index = this.payment_items.indexOf(item)
+      this.payment_items.splice(index, 1)
     },
     reset () {
-      this.$refs['invoice'].forEach(item => {
+      this.$refs['payment_item'].forEach(item => {
         item.reset()
       })
       this.$refs['payment_information_form'].reset()
-      this.invoice_items = [
+      this.payment_items = [
         { GUID : 'first' }
       ]
     }
   },
   created () {
-    bus.$on('open_dialog_invoice_addition', (payload) => {
+    bus.$on('open_dialog_payment_addition', (payload) => {
       this.is_active = true
     })
   }
