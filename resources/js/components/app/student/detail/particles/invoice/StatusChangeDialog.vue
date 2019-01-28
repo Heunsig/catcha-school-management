@@ -50,7 +50,6 @@ export default {
   data: () => ({
     is_active: false,
     wating_result: false,
-    // status: '',
     payment: {},
     form: {
       status: ''
@@ -74,31 +73,6 @@ export default {
         this.wating_result = false
         this.is_active = false
       })
-      // this.wating_result = true
-      // this.$axios.post(`/invoice/${this.invoice.id}/change_status`, {
-      //   status: this.status
-      // }).then(res => {
-      //   // console.log('res', res)
-      //   this.$emit('change_status', {
-      //     new: res.data,
-      //     old: this.invoice
-      //   })
-      //   this.is_active = false
-      //   this.wating_result = false
-      // })
-
-      // this.$store.dispatch('invoice/change_status',{
-      //   invoice_id: this.invoice.id,
-      //   status: this.status
-      // }).then(res => {
-      //   this.$emit('change_status', {
-      //     new: res,
-      //     old: this.invoice
-      //   })
-
-      //   this.is_active = false
-      //   this.wating_result = false
-      // })
     }
   },
   created () {

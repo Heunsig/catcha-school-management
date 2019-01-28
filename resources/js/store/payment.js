@@ -23,6 +23,9 @@ export default {
     set_payment_methods (state, value) {
       state.payment_methods = value
     },
+    add_payment (state, value) {
+      state.payments.push(value)
+    },
     update_payment (state, value) {
       state.payments.some((payment, i) => {
         if (payment.id === value.id) {
@@ -45,6 +48,7 @@ export default {
       new Promise((resolve, reject) => {
         axios.post(`/payment`, payload.form).then(res => {
           console.log('res', res)
+          context.commit('add_payment', res.data)
           resolve()
         })
       })

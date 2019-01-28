@@ -2,6 +2,9 @@
   <v-container grid-list-lg fluid class="pa-0">
     <v-layout wrap>
       <v-flex xs12>
+        <!-- <v-btn
+        @click="test"
+        >test</v-btn> -->
         <v-card class="elevation-0 transparent">
           <v-card-title>
             <div>
@@ -152,7 +155,14 @@ export default {
       this.big_image_dialog = true
       this.image_src = src
       // console.log('Hello World')
-    }
+    },
+    // test () {
+    //   this.$axios.put(`/leave/1/program`,{
+    //     test: 'hi'
+    //   }).then(res => {
+    //     console.log('res', res)
+    //   })
+    // }
   },
   created () {
     this.$axios.get('/student').then(res => {

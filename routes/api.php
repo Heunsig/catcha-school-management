@@ -30,9 +30,11 @@ Route::middleware('auth:api')->group(function () {
 
     Route::get('/student/{student_id}/basic_information', 'StudentController@basic_information');
     Route::get('/student/{student_id}/class', 'StudentController@class');
-    Route::get('/student/{student_id}/payment', 'StudentController@payment');
-    // Route::post('/student/{student_id}/program', 'StudentController@add_program');
     Route::post('/student/{student_id}/class', 'StudentController@add_class');
+    Route::get('/student/{student_id}/payment', 'StudentController@payment');
+    Route::get('/student/{student_id}/leave', 'StudentController@leave');
+
+    // Route::post('/student/{student_id}/program', 'StudentController@add_program');
     // Route::post('/student/{student_id}/class/pivot/{pivot_id}/change_class', 'StudentController@change_class');
     // Route::post('/student/{student_id}/class/pivot/{pivot_id}/edit_date', 'StudentController@edit_date');
     // Route::delete('/student/{student_id}/class/pivot/{pivot_id}', 'StudentController@delete_class');
@@ -50,6 +52,7 @@ Route::middleware('auth:api')->prefix('program')->group(function(){
     Route::delete('class/{class_in_program_id}', 'ProgramController@destroy_class');
 
     Route::post('{program_id}/date', 'ProgramController@update_program_date');
+    Route::post('date', 'ProgramController@update_programs_date');
 });
 
 Route::middleware('auth:api')->prefix('class_in_program')->group(function(){
@@ -81,13 +84,18 @@ Route::middleware('auth:api')->prefix('payment')->group(function(){
     Route::post('{payment_id}/change_status', 'PaymentController@change_status');
 });
 
+Route::middleware('auth:api')->prefix('leave')->group(function(){
+    Route::post('', 'LeaveController@store');
+    Route::put('{leave_id}', 'LeaveController@update');
+    // Route::patch('')
+    Route::delete('{leave_id}', 'LeaveController@destroy');
+    Route::post('{leave_id}/program', 'LeaveController@attach_program');
+    Route::delete('{leave_id}/program', 'LeaveController@detach_program');
+});
+
 
 Route::post('/refresh', 'AuthController@refresh');
 Route::post('/login', 'AuthController@login');
 
-
-
-Route::get('/test', function(){
-    // return TestCollection::collection(User::all());
-});
+Route::resource('test', 'TestController');
 

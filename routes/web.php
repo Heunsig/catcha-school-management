@@ -17,6 +17,7 @@ Route::get('/', function () {
 
 Route::get('pdf/{invoice_id}', 'InvoiceController@pdf_test');
 
+// Route::resource('test', 'TestController');
 
 // Route::get('/test', function () {
 //     return view('welcome');

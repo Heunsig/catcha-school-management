@@ -74,53 +74,6 @@
             <v-list-tile-title>Delete</v-list-tile-title>
           </v-list-tile>
         </v-list>
-        <!-- <v-card>
-          <v-card-text>
-            <div class="ca-menu-action">
-              <ul class="__button-list">
-                <li class="__button">
-                  <v-btn
-                    depressed
-                    block
-                    color="yellow darken-3"
-                    :dark="!is_paid"
-                    :disabled="is_paid"
-                    @click="open_dialog_status_change()"
-                  >
-                    Change Status
-                  </v-btn>
-                </li>
-                <li class="__button">
-                  <v-btn
-                    depressed
-                    block
-                    color="red"
-                    :dark="is_paid"
-                    :disabled="!is_paid"
-                    @click="open_dialog_refund()"
-                  >
-                    Refund
-                  </v-btn>
-                </li>
-                <li class="__button">
-                  <v-btn
-                    depressed
-                    block
-                    color="red"
-                    dark
-                    @click="open_dialog_deletion()"
-                  >
-                    Delete
-                  </v-btn>
-                </li>
-              </ul>
-            </div>
-            <v-divider></v-divider>
-            <!-- <tracking-box
-              :item="invoice"
-            ></tracking-box> -->
-          <!-- </v-card-text> -->
-        <!-- </v-card> -->
       </v-menu>
     </div>
     <div class="__body">

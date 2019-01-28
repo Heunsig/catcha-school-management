@@ -62,6 +62,7 @@
                   <li class="ca-tab-item" :class="{'ca-active':is_active('')}" @click="$router.push({name: 'student.basic_information', params:{student_id: $route.params.student_id}})">Basic Information</li>
                   <li class="ca-tab-item" :class="{'ca-active':is_active('class')}" @click="$router.push({name: 'student.class', params:{student_id: $route.params.student_id}})">Class</li>
                   <li class="ca-tab-item" :class="{'ca-active':is_active('invoice')}" @click="$router.push({name: 'student.invoice', params:{student_id: $route.params.student_id}})">Payment</li>
+                  <li class="ca-tab-item" :class="{'ca-active':is_active('leave')}" @click="$router.push({name: 'student.leave', params:{student_id: $route.params.student_id}})">Leave</li>
                 </ul>
               </v-card>
             </v-flex>

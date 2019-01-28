@@ -32,53 +32,6 @@
                   ></el-input>
                 </el-form-item>
               </v-flex>
-              <!-- <v-flex xs6>
-                <el-form-item label="Start Date" class="ca-label" prop="start_date">
-                  <v-menu
-                    :close-on-content-click="false"
-                    v-model="start_date_picker"
-                    :nudge-right="40"
-                    lazy
-                    transition="scale-transition"
-                    offset-y
-                    full-width
-                    min-width="290px"
-                  >
-                    <el-input 
-                      slot="activator"
-                      :value="format_date(form.start_date)"
-                      placeholder="Please input" 
-                      readonly
-                    ></el-input>
-                    <v-date-picker v-model="form.start_date" @input="start_date_picker = false"></v-date-picker>
-                  </v-menu>
-                </el-form-item>
-              </v-flex>
-              <v-flex xs6>
-                <el-form-item label="Completion Date" class="ca-label">
-                  <v-menu
-                    :close-on-content-click="false"
-                    v-model="completion_date_picker"
-                    :nudge-right="40"
-                    lazy
-                    transition="scale-transition"
-                    offset-y
-                    full-width
-                    min-width="290px"
-                  >
-                    <el-input 
-                      slot="activator"
-                      :value="format_date(form.completion_date)"
-                      placeholder="Please input" 
-                      readonly
-                    ></el-input>
-                    <v-date-picker
-                      v-model="form.completion_date"
-                      @input="completion_date_picker = false"
-                    ></v-date-picker>
-                  </v-menu>
-                </el-form-item>
-              </v-flex> -->
               <v-flex xs9>
                 <el-form-item label="Price" class="ca-label">
                   <el-input 
@@ -118,20 +71,15 @@ export default {
   props: {
     GUID: String,
     index: Number,
-    // products: Array
   },
   data: () => ({
     form: {
       product_id: null,
-      // start_date: null,
-      // completion_date: null,
       week: null,
       price: null,
       quantity: 1,
       note: null
     },
-    // start_date_picker: false,
-    // completion_date_picker: false,
     rules: {
       product_id: [
         { required: true, message: 'Please select product', trigger: 'change' }

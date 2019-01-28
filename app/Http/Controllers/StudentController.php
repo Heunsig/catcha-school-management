@@ -12,6 +12,8 @@ use App\Classinfo;
 use App\Payment;
 use App\Product;
 use App\PaymentMethod;
+use App\Leave;
+use App\Program;
 
 use App\Http\Resources\StudentResource;
 use App\Http\Resources\StudentBasicInformationResource;
@@ -25,6 +27,9 @@ use App\Http\Resources\ProgramResource;
 use App\Http\Resources\ProgramListResource;
 use App\Http\Resources\PaymentMethodResource;
 use App\Http\Resources\InvoiceResource;
+
+use App\Http\Resources\LeaveRequestResource;
+use App\Http\Resources\ProgramSimpleResource;
 
 
 class StudentController extends Controller
@@ -129,6 +134,23 @@ class StudentController extends Controller
         return response()->json([
             'payments' => InvoiceResource::collection($payments),
             'payment_methods' => PaymentMethodResource::collection($payment_methods)
+        ]);
+    }
+
+    public function leave($student_id)
+    {
+        $leave_requests = Leave::where('student_id', $student_id)->get();
+        $leave_types = Category::where('group', 'leave_type')->get();
+        // ProgramResource
+        $programs_taken = Program::where('student_id', $student_id)->get();
+        $programs_taken = $programs_taken->filter(function($value, $key) {
+            return $value->deleted_at === null;
+        });
+
+        return response()->json([
+            'leave_requests' => LeaveRequestResource::collection($leave_requests),
+            'leave_types' => $leave_types,
+            'programs_taken' => ProgramSimpleResource::collection($programs_taken)
         ]);
     }
 

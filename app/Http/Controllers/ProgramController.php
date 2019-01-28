@@ -156,4 +156,40 @@ class ProgramController extends Controller
         $updated_program = Program::where('id', $program_id)->first();
         return response()->json(new ProgramResource($updated_program));
     }
+
+    public function update_programs_date(Request $request) 
+    {
+        DB::beginTransaction();
+
+        $program_ids = $request->program_ids;
+
+        try {
+
+            foreach($program_ids as $program_id) {
+                $program = Program::where('id', $program_id)->first();
+
+                $program_date = new ProgramDate([
+                    'start_date' => $request->start_date,
+                    'completion_date' => $request->completion_date,
+                    'reason' => $request->reason
+                ]);
+
+                $program->program_date()->save($program_date);
+
+                // Updated program
+                $program->updated_at = Carbon::now();
+                $program->updated_by = $request->user()->id;
+                $program->save();
+            }
+
+            DB::commit();
+
+        } catch(\Illuminate\Database\QueryException $e) {
+            DB::rollBack();
+
+            return response($e);
+        }
+
+        return response()->json('success');
+    }
 }

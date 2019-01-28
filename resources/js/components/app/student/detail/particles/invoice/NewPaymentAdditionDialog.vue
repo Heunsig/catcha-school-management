@@ -33,10 +33,6 @@
                         <div class="ca-typo-title-5">Payment Information</div>
                       </v-card-title>
                       <v-card-text>
-                        <!-- <PaymentInformationForm
-                          :payment_methods="payment_methods"
-                          ref="payment_information_form"
-                        ></PaymentInformationForm> -->
                         <PaymentInformationForm
                           ref="payment_information_form"
                         ></PaymentInformationForm>
@@ -64,13 +60,6 @@
                         :index="reversed_payment_items.length - i"
                         @remove="remove(item)"
                       ></invoice-item-form>
-                      <!-- <invoice-item-form
-                        ref="invoice"
-                        :GUID="invoice_item.GUID"
-                        :index="reversed_payment_items.length - i"
-                        :products="products"
-                        @remove="remove(invoice_item)"
-                      ></invoice-item-form> -->
                     </v-flex>
                   </template>
                   <template v-else>
@@ -106,10 +95,6 @@ import PaymentInformationForm from './invoice_addition_form/PaymentInformationFo
 import InvoiceItemForm from './invoice_addition_form/InvoiceItemForm'
 
 export default {
-  // props: {
-  //   payment_methods: Array,
-  //   products: Array
-  // },
   components: {
     InvoiceItemForm,
     PaymentInformationForm
@@ -117,7 +102,6 @@ export default {
   data: () => ({
     is_active: false,
     wating_result: false,
-    // total: 0,
     payment_items: [
       { GUID: 'first' }
     ],
@@ -139,12 +123,10 @@ export default {
     validate_all () {
       let error = 0
       let result = {
-        // payment: {},
         items: []
       }
 
       if (this.$refs['payment_information_form'].validate()) {
-        // result.payment = this.$refs['payment_information_form'].validate()
         Object.assign(result, this.$refs['payment_information_form'].validate())
       } else {
         error += 1
@@ -167,7 +149,7 @@ export default {
     },
     submit () {
       let data = this.validate_all()
-      // console.log('dat', data)
+
       if (data) {
         this.wating_result = true
         this.$store.dispatch('payment/store', {
@@ -183,22 +165,6 @@ export default {
           this.wating_result = false
           this.is_active = false
         })
-        // this.wating_result = true
-        // this.$axios.post(`/invoice`, {
-        //   student_id: this.$route.params.student_id,
-        //   status: data.payment.information.status,
-        //   note: data.payment.information.note,
-        //   payment_method: {
-        //     method_key: data.payment.information.method_key,
-        //     detail: data.payment.detail
-        //   },
-        //   payment_items: data.payment_items
-        // }).then(res => {
-        //   this.$emit('add_invoice', res.data)
-        //   this.is_active = false
-        //   this.wating_result = false
-        //   this.reset()
-        // })
       }
     },
     add_item () {

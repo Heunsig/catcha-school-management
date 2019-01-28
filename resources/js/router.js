@@ -11,6 +11,7 @@ import StudentDetailLayout from './components/app/student/detail/Layout'
 import StudentBasicInformation from './components/app/student/detail/BasicInformation'
 import StudentClass from './components/app/student/detail/Class'
 import StduentInvoice from './components/app/student/detail/Invoice'
+import StudentLeave from './components/app/student/detail/Leave'
 
 Vue.use(VueRouter)
 
@@ -60,6 +61,11 @@ const router = new VueRouter({
               path: 'invoice',
               component: StduentInvoice,
               name: 'student.invoice'
+            },
+            {
+              path: 'leave',
+              component: StudentLeave,
+              name: 'student.leave'
             }
           ]
         }

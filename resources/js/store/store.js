@@ -7,6 +7,7 @@ import invoiceModule from './invoice'
 import classModule from './class'
 import paymentModule from './payment'
 import productModule from './product'
+import leaveModule from './leave'
 
 Vue.use(Vuex)
 
@@ -16,7 +17,8 @@ export default new Vuex.Store({
     invoice: invoiceModule,
     class: classModule,
     payment: paymentModule,
-    product: productModule
+    product: productModule,
+    leave: leaveModule
   },
   state: {
     token: localStorage.getItem('access_token') || null
