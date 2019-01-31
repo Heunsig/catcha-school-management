@@ -42,6 +42,8 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/class', 'ClassinfoController@list');
 });
 
+Route::middleware('auth:api')->get('dashboard', 'DashboardController@index');
+
 Route::middleware('auth:api')->prefix('program')->group(function(){
     Route::get('', 'ProgramController@list');
     Route::post('', 'ProgramController@store');

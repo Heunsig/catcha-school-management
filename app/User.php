@@ -60,6 +60,11 @@ class User extends Authenticatable
         return $full_name;
     }
 
+    public function student()
+    {
+        return $this->hasOne('App\Student', 'id');
+    }
+
     /**
      * This method is to change email which is a base element which is to 
      * find a exact passport to another element, such as user id, name or number.

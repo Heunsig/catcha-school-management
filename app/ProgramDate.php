@@ -20,6 +20,6 @@ class ProgramDate extends Model
 
     public function program()
     {
-        return $this->belongsTo('App\Program');
+        return $this->belongsTo('App\Program', 'program_id');
     }
 }

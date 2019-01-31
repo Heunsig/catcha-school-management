@@ -4,6 +4,9 @@ import store from './store/store'
 
 import LoginForm from './components/login/LoginForm'
 import Main from './components/Main'
+
+import Dashboard from './components/app/dashboard/Dashboard'
+
 import StudentList from './components/app/student/StudentList'
 import StudentRegistration from './components/app/student/StudentRegistration'
 
@@ -33,6 +36,11 @@ const router = new VueRouter({
         requiresAuth: true
       },
       children: [
+        {
+          path: 'dashboard',
+          component: Dashboard,
+          name: 'dashboard'
+        },
         {
           path:'student',
           component: StudentList,

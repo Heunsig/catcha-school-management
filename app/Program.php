@@ -10,6 +10,11 @@ class Program extends Model
 
     public $timestamps = false;
 
+    public function student()
+    {
+        return $this->belongsTo('App\Student', 'student_id');
+    }
+
     public function product()
     {
         return $this->belongsTo('App\Product', 'product_id');

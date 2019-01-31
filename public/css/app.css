@@ -15,6 +15,14 @@ Lacacy of bootstrap
 }
 */
 
+/*.ca-tab {*/
+
+.ca-list-reset {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
 .ca-typo-title-1,
 .ca-typo-title-2,
 .ca-typo-title-3,
@@ -606,6 +614,26 @@ Lacacy of bootstrap
   font-size: 1.143em;
 }
 
+.ca-simplified-list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.ca-simplified-list-item {
+  padding: 5px 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.ca-simplified-list-item-avatar {
+  margin-right: 10px;
+}
+
 .ca-block {
   width: 100% !important;
 }
@@ -613,6 +641,10 @@ Lacacy of bootstrap
 .ca-label label {
   line-height: 25px !important;
   padding-bottom: 3px !important;
+}
+
+.ca-cursor-pointer {
+  cursor: pointer;
 }
 
 .cadisabled {

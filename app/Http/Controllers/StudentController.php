@@ -36,11 +36,8 @@ class StudentController extends Controller
 {   
     public function list()
     {
-        $students = Student::all();
-
+        $students = Student::with('user')->get();
         return response()->json(StudentResource::collection($students));
-        // $a = $students::where('id', 51)->first(
-        // return response()->json($students->category);
     }
 
     public function register()

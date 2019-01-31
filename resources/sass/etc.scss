@@ -8,3 +8,9 @@
     padding-bottom: 3px!important;
   }
 }
+
+.#{$prefix}-cursor {
+  &-pointer {
+    cursor: pointer;
+  }
+}

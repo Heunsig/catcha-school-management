@@ -10,6 +10,11 @@ class Leave extends Model
 
     public $timestamps = false;
 
+    public function student()
+    {
+        return $this->belongsTo('App\Student', 'student_id');
+    }
+
     public function program()
     {
         return $this->belongsToMany('App\Program', 'link_leave_program', 'leave_id', 'program_id');

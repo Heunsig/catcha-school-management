@@ -3,3 +3,8 @@
   margin: 0;
   list-style: none;
 }
+
+/*.#{$prefix}-tab {*/
+.#{$prefix}-list-reset {
+  @include list-style-reset;
+}
