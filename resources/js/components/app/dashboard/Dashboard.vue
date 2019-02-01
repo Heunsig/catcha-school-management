@@ -22,6 +22,7 @@
         <FinishingLeaveSection></FinishingLeaveSection>
       </v-flex>
     </v-layout>
+    <!-- <ComingProgramExtensionDialog></ComingProgramExtensionDialog> -->
   </v-container>
 </template>
 <script>
@@ -32,6 +33,8 @@ import FinishingProgramSection from './particles/FinishingProgramSection'
 import ComingLeaveSection from './particles/ComingLeaveSection'
 import FinishingLeaveSection from './particles/FinishingLeaveSection'
 
+// import ComingProgramExtensionDialog from './particles/dialogs/ComingProgramExtensionDialog'
+
 export default {
   components: {
     NewStudentSection,
@@ -39,7 +42,8 @@ export default {
     ComingProgramSection,
     FinishingProgramSection,
     ComingLeaveSection,
-    FinishingLeaveSection
+    FinishingLeaveSection,
+    // ComingProgramExtensionDialog
   },
   data () {
     return {

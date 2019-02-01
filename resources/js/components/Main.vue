@@ -5,7 +5,7 @@
       fixed
       app
     >
-      <v-list dense>
+      <v-list>
         <v-list-tile @click="$router.push({ name: 'dashboard' })">
           <v-list-tile-action>
             <v-icon>dashboard</v-icon>

@@ -1,9 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
-class LeaveTypeSeeder extends Seeder
+class StudentTypeSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,12 +13,12 @@ class LeaveTypeSeeder extends Seeder
     {
         DB::table('category')->insert([
             [
-                'value' => 'Vacation',
-                'group' => 'leave_type'
+                'value' => 'F1',
+                'group' => 'student_type'
             ],
             [
-                'value' => 'Personal Excuses',
-                'group' => 'leave_type'
+                'value' => 'Non F1',
+                'group' => 'student_type'
             ],
         ]);
     }

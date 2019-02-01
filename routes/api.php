@@ -42,7 +42,16 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/class', 'ClassinfoController@list');
 });
 
-Route::middleware('auth:api')->get('dashboard', 'DashboardController@index');
+// Route::middleware('auth:api')->get('dashboard', 'DashboardController@index');
+
+Route::middleware('auth:api')->prefix('dashboard')->group(function(){
+    Route::get('', 'DashboardController@index');
+    Route::get('new_students', 'DashboardController@get_new_students');
+    Route::get('coming_programs', 'DashboardController@get_coming_programs');
+    Route::get('finishing_programs', 'DashboardController@get_finishing_programs');
+    Route::get('coming_leaves', 'DashboardController@get_coming_leaves');
+    Route::get('finishing_leaves', 'DashboardController@get_finishing_leaves');
+});
 
 Route::middleware('auth:api')->prefix('program')->group(function(){
     Route::get('', 'ProgramController@list');

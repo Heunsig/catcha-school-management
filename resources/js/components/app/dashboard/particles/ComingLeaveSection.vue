@@ -30,15 +30,34 @@
       </ul>
     </v-card-text>
     <v-card-actions>
-      <v-btn flat block color="orange">More<span v-if="coming_leaves.count" class="ml-1">(+ {{ parseInt(coming_leaves.count) - coming_leaves.items.length }})</span></v-btn>
+      <v-btn 
+        flat 
+        block 
+        color="orange"
+        @click="open_dialog_for_coming_leaves_extension()"
+      >
+        More<span v-if="coming_leaves.count" class="ml-1">(+ {{ parseInt(coming_leaves.count) - coming_leaves.items.length }})</span>
+      </v-btn>
     </v-card-actions>
+    <ComingLeaveExtensionDialog></ComingLeaveExtensionDialog>
   </v-card>
 </template>
 <script>
+import bus from 'bus'
+
+import ComingLeaveExtensionDialog from './dialogs/ComingLeaveExtensionDialog'
 export default {
+  components: {
+    ComingLeaveExtensionDialog
+  },
   computed: {
     coming_leaves () {
       return this.$store.getters['dashboard/coming_leaves']
+    }
+  },
+  methods: {
+    open_dialog_for_coming_leaves_extension () {
+      bus.$emit('open_dialog_for_coming_leaves_extension')
     }
   }
 }

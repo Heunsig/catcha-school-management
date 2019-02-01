@@ -30,35 +30,35 @@
       </ul>
     </v-card-text>
     <v-card-actions>
-      <v-btn flat block color="orange">
+      <v-btn 
+        flat 
+        block 
+        color="orange"
+        @click="open_dialog_for_extension()"
+      >
         More<span v-if="coming_programs.count" class="ml-1">(+ {{ parseInt(coming_programs.count) - coming_programs.items.length }})</span>
       </v-btn>
     </v-card-actions>
+    <ComingProgramExtensionDialog></ComingProgramExtensionDialog>
   </v-card>
 </template>
 <script>
+import bus from 'bus'
+
+import ComingProgramExtensionDialog from './dialogs/ComingProgramExtensionDialog'
 export default {
+  components: {
+    ComingProgramExtensionDialog
+  },  
   computed: {
     coming_programs () {
       return this.$store.getters['dashboard/coming_programs']
     }
+  },
+  methods: {
+    open_dialog_for_extension () {
+      bus.$emit('open_dialog_for_extension')
+    }
   }
 }
 </script>
-<!-- <style scoped>
-  .insty-list-reset {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .insty-item {
-    padding: 5px 0;
-    display: flex;
-    align-items: center;
-  }
-
-  .insty-avatar {
-    margin-right: 10px;
-  }
-</style> -->

@@ -30,18 +30,36 @@
       </ul>
     </v-card-text>
     <v-card-actions>
-      <v-btn flat block color="orange">
+      <v-btn 
+        flat 
+        block 
+        color="orange"
+        @click="open_dialog_full_finishing_programs()"
+      >
         More<span v-if="finishing_programs.count" class="ml-1">(+ {{ parseInt(finishing_programs.count) - finishing_programs.items.length }})</span>
       </v-btn>
     </v-card-actions>
+    <FinishingProgramExtensionDialog></FinishingProgramExtensionDialog>
   </v-card>
 </template>
 <script>
+import bus from 'bus'
+
+import FinishingProgramExtensionDialog from './dialogs/FinishingProgramExtensionDialog'
 export default {
+  components: {
+    FinishingProgramExtensionDialog
+  }, 
   computed: {
     finishing_programs () {
       return this.$store.getters['dashboard/finishing_programs']
     }
+  },
+  methods: {
+    open_dialog_full_finishing_programs () {
+      bus.$emit('open_dialog_full_finishing_programs')
+    }
   }
+
 }
 </script>

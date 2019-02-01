@@ -57,7 +57,12 @@
         </v-btn>
       </template>
       <template v-else>
-        <v-btn flat block color="orange">
+        <v-btn 
+          flat 
+          block 
+          color="orange"
+          @click="open_dialog_for_new_students_extension()"
+        >
           More
           <span class="ml-1" v-if="more">
           (+ {{ more }})
@@ -65,10 +70,18 @@
         </v-btn>
       </template>
     </v-card-actions>
+    <NewStudentExtensionDialog></NewStudentExtensionDialog>
   </v-card>
 </template>
 <script>
+import bus from 'bus'
+
+import NewStudentExtensionDialog from './dialogs/NewStudentExtensionDialog'
+
 export default {
+  components: {
+    NewStudentExtensionDialog
+  },
   computed: {
     new_students () {
       return this.$store.getters['dashboard/new_students']
@@ -78,6 +91,11 @@ export default {
     },
     is_no_more () {
       return this.more <= 0
+    }
+  },
+  methods: {
+    open_dialog_for_new_students_extension () {
+      bus.$emit('open_dialog_for_new_students_extension')
     }
   }
 }

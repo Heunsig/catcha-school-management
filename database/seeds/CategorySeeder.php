@@ -14,15 +14,15 @@ class CategorySeeder extends Seeder
     {
         DB::table('category')->insert([
             [
-                'name' => 'In progress',
+                'value' => 'In School',
                 'group' => 'student_status'
             ],
             [
-                'name' => 'Graduated',
+                'value' => 'Completed',
                 'group' => 'student_status'
             ],
             [
-                'name' => 'Prospective',
+                'value' => 'Terminated',
                 'group' => 'student_status'
             ],
         ]);

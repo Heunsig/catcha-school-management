@@ -30,15 +30,34 @@
       </ul>
     </v-card-text>
     <v-card-actions>
-      <v-btn flat block color="orange">More<span v-if="finishing_leaves.count" class="ml-1">(+ {{ parseInt(finishing_leaves.count) - finishing_leaves.items.length }})</span></v-btn>
+      <v-btn 
+        flat 
+        block 
+        color="orange"
+        @click="open_dialog_for_finishing_leaves_extension()"
+      >
+        More<span v-if="finishing_leaves.count" class="ml-1">(+ {{ parseInt(finishing_leaves.count) - finishing_leaves.items.length }})</span>
+      </v-btn>
     </v-card-actions>
+    <FinishingLeaveExtensionDialog></FinishingLeaveExtensionDialog>
   </v-card>
 </template>
 <script>
+import bus from 'bus'
+
+import FinishingLeaveExtensionDialog from './dialogs/FinishingLeaveExtensionDialog'
 export default {
+  components: {
+    FinishingLeaveExtensionDialog
+  },
   computed: {
     finishing_leaves () {
       return this.$store.getters['dashboard/finishing_leaves']
+    }
+  },
+  methods: {
+    open_dialog_for_finishing_leaves_extension () {
+      bus.$emit('open_dialog_for_finishing_leaves_extension')
     }
   }
 }
