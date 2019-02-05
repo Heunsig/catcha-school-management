@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Carbon;
 
 class StudentResource extends JsonResource
 {
@@ -17,13 +18,12 @@ class StudentResource extends JsonResource
         // return parent::toArray($request);
         return [
             'id' => $this->id,
-            'full_name' => $this->user->full_name,
-            'email' => $this->user->email,
-            'type' => 'F1',
+            'full_name' => $this->full_name,
+            'type' => $this->type,
             'status' => $this->status,
-            'birth_day' => null,
-            'created_at' => $this->user->created_at->format('m/d/Y'),
-            'hidden_created_at' => $this->user->created_at->format('YmdHis')
+            // 'date_of_birth' => $this->date_of_birth,
+            'created_at' => $this->created_at,
+            'hidden_created_at' => Carbon::parse($this->created_at)->format('YmdHis')
         ];
     }
 }

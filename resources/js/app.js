@@ -33,6 +33,8 @@ import {
   FormItem
 } from 'element-ui'
 
+import CaFloatingBox from './components/ca-components/FloatingBox'
+
 Vue.use(Vuetify)
 Vue.use(VueTheMask)
 Vue.use(VeeValidate, {fieldsBagName: 'vee-fields'})
@@ -52,6 +54,9 @@ Vue.use(Option)
 Vue.use(Cascader)
 Vue.use(Form)
 Vue.use(FormItem)
+
+// Vue.component(CaFloatingBox)
+Vue.component('ca-floating-box', CaFloatingBox)
 
 const app = new Vue({
   el: '#app',

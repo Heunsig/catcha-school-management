@@ -2,13 +2,10 @@
   <v-container grid-list-lg fluid class="pa-0">
     <v-layout wrap>
       <v-flex xs12>
-        <!-- <v-btn
-        @click="test"
-        >test</v-btn> -->
         <v-card class="elevation-0 transparent">
           <v-card-title>
             <div>
-              <h1 class="ca-title-1">Student</h1>
+              <h1 class="ca-typo-title-1">Student</h1>
               <v-breadcrumbs :items="breadcrumbs" class="ca-breadcrumbs">
                 <template slot="item" slot-scope="props">
                   <span v-if="props.item.disabled" :class="[props.item.disabled && 'ca-disabled']">{{ props.item.text }}</span>
@@ -17,28 +14,24 @@
               </v-breadcrumbs>
             </div>
             <v-spacer></v-spacer>
-              <v-btn 
-                color="primary" 
-                depressed
-                @click="$router.push({name: 'student.registration'})"
-              >
-                Register New Student
-              </v-btn>
+              <div class="insty-tool-box">
+                <el-input
+                  v-model="search"
+                  placeholder="Search"
+                  suffix-icon="el-icon-search"
+                ></el-input>
+                <v-btn 
+                  color="primary" 
+                  @click="$router.push({name: 'student.registration'})"
+                >
+                  Add Student
+                </v-btn>
+              </div>
           </v-card-title>
         </v-card>
       </v-flex>
       <v-flex xs12>
         <v-card>
-          <v-card-title>
-            <v-spacer></v-spacer>
-            <v-text-field
-              v-model="search"
-              append-icon="search"
-              label="Search"
-              single-line
-              hide-details
-            ></v-text-field>
-          </v-card-title>
           <v-data-table
             :headers="headers"
             :items="students"
@@ -63,10 +56,8 @@
               </td>
               <td>{{ props.item.type }}</td>
               <td>{{ props.item.full_name }}</td>
-              <td>{{ props.item.email }}</td>
-              <td>{{ props.item.status.name }}</td>
-              <td>{{ props.item.birth_day }}</td>
-              <td>{{ props.item.created_at }}</td>
+              <td>{{ props.item.status }}</td>
+              <td>{{ $moment(props.item.created_at).format('MM/DD/YYYY') }}</td>
               <td>
                 <v-btn 
                   icon
@@ -125,16 +116,8 @@ export default {
         value: 'full_name'
       },
       {
-        text: 'Email',
-        value: 'email'
-      },
-      {
         text: 'Status',
         value: 'status.name'
-      },
-      {
-        text: 'Birth Day',
-        value: 'birth_day'
       },
       {
         text: 'Created At',
@@ -172,3 +155,9 @@ export default {
   }
 }
 </script>
+<style>
+  .insty-tool-box {
+    display: flex;
+    align-items: center;
+  }
+</style>

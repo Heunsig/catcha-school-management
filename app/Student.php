@@ -9,15 +9,34 @@ class Student extends Model
     protected $table = 'student';
     public $timestamps = false;
 
-    public function user()
+    protected $appends = [
+        'full_name'
+    ];
+
+    // public function user()
+    // {
+    //     return $this->hasOne('App\User', 'id');
+    // }
+
+    public function address()
     {
-        return $this->hasOne('App\User', 'id');
+        return $this->hasMany('App\Address', 'student_id');
     }
 
-    public function status()
+    public function contact()
     {
-        return $this->belongsTo('App\Category', 'status_id');
+        return $this->hasMany('App\Contact', 'student_id');
     }
+
+    public function emergency_contact()
+    {
+        return $this->hasMany('App\EmergencyContact', 'student_id');
+    }
+
+    // public function status()
+    // {
+    //     return $this->belongsTo('App\Category', 'status_id');
+    // }
 
 
     public function classinfo()
@@ -58,6 +77,20 @@ class Student extends Model
     public function program()
     {
         return $this->hasMany('App\Program');
+    }
+
+    public function getFullNameAttribute($value)
+    {
+        $full_name = $this->first_name;
+        if ($this->middle_name) {
+            $full_name .= ' ' . $this->middle_name;
+        }
+
+        if($this->last_name) {
+            $full_name .= ' ' . $this->last_name;
+        }
+
+        return $full_name;
     }
 
     // public function programs_taken()

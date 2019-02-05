@@ -12,4 +12,10 @@ class CategoryController extends Controller
         $category = Category::where('group', 'student_status')->get();
         return response()->json($category);
     }
+
+    public function country() 
+    {
+        $countries = Category::where('group', 'country')->get();
+        return response()->json($countries);
+    }
 }

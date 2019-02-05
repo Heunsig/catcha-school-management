@@ -22,13 +22,11 @@ Route::middleware('auth:api')->group(function () {
 
     Route::post('/logout', 'AuthController@logout');
 
-    Route::get('/category/student_status', 'CategoryController@student_status');
-
     Route::get('/student', 'StudentController@list');
     Route::get('/student/register', 'StudentController@register');
     Route::post('/student', 'StudentController@store');
 
-    Route::get('/student/{student_id}/basic_information', 'StudentController@basic_information');
+    Route::get('/student/{student_id}', 'StudentController@basic_information');
     Route::get('/student/{student_id}/class', 'StudentController@class');
     Route::post('/student/{student_id}/class', 'StudentController@add_class');
     Route::get('/student/{student_id}/payment', 'StudentController@payment');
@@ -43,6 +41,10 @@ Route::middleware('auth:api')->group(function () {
 });
 
 // Route::middleware('auth:api')->get('dashboard', 'DashboardController@index');
+Route::middleware('auth:api')->prefix('category')->group(function(){
+    Route::get('student_status', 'CategoryController@student_status');
+    Route::get('country', 'CategoryController@country');
+});
 
 Route::middleware('auth:api')->prefix('dashboard')->group(function(){
     Route::get('', 'DashboardController@index');
@@ -104,6 +106,21 @@ Route::middleware('auth:api')->prefix('leave')->group(function(){
     Route::delete('{leave_id}/program', 'LeaveController@detach_program');
 });
 
+Route::middleware('auth:api')->prefix('address')->group(function(){
+    Route::post('', 'AddressController@store');
+    Route::delete('{address_id}', 'AddressController@destroy');
+    Route::put('{address_id}', 'AddressController@update');
+});
+
+Route::middleware('auth:api')->prefix('contact')->group(function(){
+    Route::post('', 'ContactController@store');
+    Route::delete('{contact_id}', 'ContactController@destroy');
+});
+
+Route::middleware('auth:api')->prefix('emergency_contact')->group(function(){
+    Route::post('', 'EmergencyContactController@store');
+    Route::put('{emergency_contact_id}', 'EmergencyContactController@update');
+});
 
 Route::post('/refresh', 'AuthController@refresh');
 Route::post('/login', 'AuthController@login');

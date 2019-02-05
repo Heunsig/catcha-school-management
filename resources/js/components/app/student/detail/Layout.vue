@@ -5,7 +5,7 @@
         <v-card class="elevation-0 transparent">
           <v-card-title>
             <div>
-              <h1 class="ca-typo-title-1">{{ full_name }}'s Details</h1>
+              <h1 class="ca-typo-title-1">{{ student.full_name }}'s Details</h1>
               <v-breadcrumbs :items="breadcrumbs" class="ca-breadcrumbs">
                 <template slot="item" slot-scope="props">
                   <span v-if="props.item.disabled" :class="[props.item.disabled && 'ca-disabled']">{{ props.item.text }}</span>
@@ -21,23 +21,26 @@
           <v-layout wrap>
             <v-flex xs12>
               <v-card>
-                <v-img :src="AVATAR_BASE_URL + '/510/'+ full_name +'.png'" aspect-ratio="1.3"></v-img>
+                <v-img :src="AVATAR_BASE_URL + '/510/'+ student.full_name +'.png'" aspect-ratio="1.3"></v-img>
                 <v-card-text>
+                  <div class="mb-1">
+                    <span class="ca-typo-title-5">{{ student.type }}</span> <span class="ca-typo-title-5">/</span> <span class="ca-typo-title-5">{{ student.status }}</span>
+                  </div>
                   <div class="ca-typo-title-3 mb-2">
-                    <span class="flag-icon flag-icon-kr"></span>
-                    {{ full_name }}
-                    <small class="ml-1" v-if="nickname">({{ nickname }})</small>
+                    <v-tooltip bottom>
+                      <span slot="activator" class="flag-icon" :class="flag"></span>
+                      <span>{{ get_country(student.country_of_citizenship).name }}</span>
+                    </v-tooltip>
+                    {{ student.full_name }}
+                    <small class="ml-1" v-if="student.nickname">({{ student.nickname }})</small>
                   </div>
-                  <div class="ca-typo-style-meta-medium">
-                    {{ email }}
-                  </div>
-                  <div class="ca-typo-style-meta-medium">
+                  <!-- <div class="ca-typo-style-meta-medium">
                     217-760-1587
-                  </div>
+                  </div> -->
                 </v-card-text>
               </v-card>
             </v-flex>
-            <v-flex xs12>
+            <!-- <v-flex xs12>
               <v-card>
                 <v-card-title>
                   <div class="ca-typo-title-4">Latest activity</div>
@@ -49,7 +52,7 @@
                   <v-btn depressed small block color="transparent" class="blue--text">More</v-btn>
                 </v-card-actions>
               </v-card>
-            </v-flex>
+            </v-flex> -->
           </v-layout>
         </v-container>
       </v-flex>
@@ -77,7 +80,12 @@
 </template>
 <script>
 import LatestActivityList from './particles/latest_activity/List'
+import countriesMixin from '../../../../mixins/countries'
+
 export default {
+  mixins: [
+    countriesMixin
+  ],
   components: {
     LatestActivityList
   },
@@ -94,14 +102,16 @@ export default {
     ]
   }),
   computed: {
-    full_name () {
-      return this.$store.getters['student/basic_information'].full_name
+    student () {
+      return this.$store.getters['student/student']
     },
-    nickname () {
-      return this.$store.getters['student/basic_information'].nickname
-    },
-    email () {
-      return this.$store.getters['student/basic_information'].email
+    // country_name () {
+    //   if (this.student.country_of_citizenship) {
+    //     return this.get_country(this.student.country_of_citizenship).name  
+    //   }
+    // },
+    flag () {
+      return this.student.country_of_citizenship ? 'flag-icon-'+this.student.country_of_citizenship.toLowerCase():''
     }
   },
   methods: {
@@ -118,10 +128,12 @@ export default {
       student_id: this.$route.params.student_id
     }).then(res => {
       this.breadcrumbs.push({
-        text: this.full_name,
+        text: res.full_name,
         disabled: true
       })
     })
+
+    // this.$store.dispatch('student/get_countries')
   }
 }
 </script>

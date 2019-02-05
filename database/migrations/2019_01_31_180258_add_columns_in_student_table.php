@@ -15,7 +15,7 @@ class AddColumnsInStudentTable extends Migration
     {
         Schema::table('student', function (Blueprint $table) {
             $table->integer('type_id')->unsigned()->after('id');
-            $table->string('email')->unique();
+            $table->string('email')->nullable()->unique();
             $table->string('first_name', 50);
             $table->string('middle_name', 50)->nullable();
             $table->string('last_name', 50)->nullable();

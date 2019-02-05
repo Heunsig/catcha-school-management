@@ -5,7 +5,7 @@
         <v-card class="elevation-0 transparent">
           <v-card-title>
             <div>
-              <h1 class="ca-title-1">Student Registration</h1>
+              <h1 class="ca-typo-title-1">Student Registration</h1>
               <v-breadcrumbs :items="breadcrumbs" class="ca-breadcrumbs">
                 <template slot="item" slot-scope="props">
                   <span v-if="props.item.disabled" :class="[props.item.disabled && 'ca-disabled']">{{ props.item.text }}</span>

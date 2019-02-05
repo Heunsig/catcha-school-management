@@ -7,11 +7,12 @@ import Main from './components/Main'
 
 import Dashboard from './components/app/dashboard/Dashboard'
 
+import Student from './components/app/student/Index'
 import StudentList from './components/app/student/StudentList'
 import StudentRegistration from './components/app/student/StudentRegistration'
 
 import StudentDetailLayout from './components/app/student/detail/Layout'
-import StudentBasicInformation from './components/app/student/detail/BasicInformation'
+import StudentInformation from './components/app/student/detail/student_information/Index'
 import StudentClass from './components/app/student/detail/Class'
 import StduentInvoice from './components/app/student/detail/Invoice'
 import StudentLeave from './components/app/student/detail/Leave'
@@ -42,38 +43,44 @@ const router = new VueRouter({
           name: 'dashboard'
         },
         {
-          path:'student',
-          component: StudentList,
-          name: 'student.list',
-        },
-        {
-          path: 'student/register',
-          component: StudentRegistration,
-          name: 'student.registration'
-        },
-        {
-          path: 'student/:student_id',
-          component: StudentDetailLayout,
+          path: 'student',
+          component: Student,
           children: [
             {
-              path: '',
-              component: StudentBasicInformation,
-              name: 'student.basic_information'
+              path:'',
+              component: StudentList,
+              name: 'student.list',
             },
             {
-              path: 'class',
-              component: StudentClass,
-              name: 'student.class'
+              path: 'register',
+              component: StudentRegistration,
+              name: 'student.registration'
             },
             {
-              path: 'invoice',
-              component: StduentInvoice,
-              name: 'student.invoice'
-            },
-            {
-              path: 'leave',
-              component: StudentLeave,
-              name: 'student.leave'
+              path: ':student_id',
+              component: StudentDetailLayout,
+              children: [
+                {
+                  path: '',
+                  component: StudentInformation,
+                  name: 'student.basic_information'
+                },
+                {
+                  path: 'class',
+                  component: StudentClass,
+                  name: 'student.class'
+                },
+                {
+                  path: 'invoice',
+                  component: StduentInvoice,
+                  name: 'student.invoice'
+                },
+                {
+                  path: 'leave',
+                  component: StudentLeave,
+                  name: 'student.leave'
+                }
+              ]
             }
           ]
         }

@@ -41,6 +41,9 @@ export default {
       if (!_.isEmpty(init_data)) {
         Object.assign(this.$data, init_data)
       }
+    },
+    capitalize_first_letter(string) {
+      return string.charAt(0).toUpperCase() + string.slice(1);
     }
   }
 }

@@ -16,13 +16,20 @@ class StudentBasicInformationResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'email' => $this->user->email,
-            'first_name' => $this->user->first_name,
-            'middle_name' => $this->user->middle_name,
-            'last_name' => $this->user->last_name,
-            'full_name' => $this->user->full_name,
-            'nickname' => $this->user->nickname,
-            'note' => $this->user->note
+            'type' => $this->type,
+            'status' => $this->status,
+            'email' => $this->email,
+            'first_name' => $this->first_name,
+            'middle_name' => $this->middle_name,
+            'last_name' => $this->last_name,
+            'full_name' => $this->full_name,
+            'nickname' => $this->nickname,
+            'date_of_birth' => $this->date_of_birth,
+            'country_of_birth' => $this->country_of_birth,
+            'country_of_citizenship' => $this->country_of_citizenship,
+            'city_of_birth' => $this->city_of_birth,
+            'sex' => $this->sex,
+            'note' => $this->note
         ];
     }
 }

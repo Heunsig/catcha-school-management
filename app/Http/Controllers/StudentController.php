@@ -30,22 +30,27 @@ use App\Http\Resources\InvoiceResource;
 
 use App\Http\Resources\LeaveRequestResource;
 use App\Http\Resources\ProgramSimpleResource;
-
+use App\Http\Resources\AddressResource;
+use App\Http\Resources\ContactResource;
+use App\Http\Resources\EmergencyContactResource;
 
 class StudentController extends Controller
 {   
     public function list()
     {
-        $students = Student::with('user')->get();
+        $students = Student::all();
+        // return response()->json($students);
         return response()->json(StudentResource::collection($students));
     }
 
     public function register()
     {
-        $student_status_options= Category::where('group', 'student_status')->get();
+        $status_options = Category::where('group', 'student_status')->get();
+        $type_options = Category::where('group', 'student_type')->get();
         
         return response()->json([
-            'student_status_options' => $student_status_options
+            'status_options' => $status_options,
+            'type_options' => $type_options,
         ]);
     }
 
@@ -54,28 +59,33 @@ class StudentController extends Controller
         DB::beginTransaction();
 
         try {
-            $user = new User();
-            $user->email = $request->email;
-            $user->password = bcrypt($request->password);
-            $user->first_name = $request->first_name;
-            $user->middle_name = $request->middle_name;
-            $user->last_name = $request->last_name;
-            $user->nickname = $request->nickname;
-            $user->note = $request->note;
-            $user->created_by = $request->user()->id;
-            $user->updated_by = $request->user()->id;
-            $user->save();
-
             $student = new Student();
-            $student->id = $user->id;
-            $student->status_id = $request->status_id;
+            $student->first_name = $request->first_name;
+            $student->middle_name = $request->middle_name;
+            $student->last_name = $request->last_name;
+            $student->nickname = $request->nickname;
+            $student->email = $request->email;
+            $student->note = $request->note;
+            $student->type = $request->type;
+            $student->status = $request->status;
+            $student->sex = $request->sex;
+            $student->date_of_birth = $request->date_of_birth;
+            $student->city_of_birth = $request->city_of_birth;
+            $student->country_of_birth = $request->country_of_birth;
+            $student->country_of_citizenship = $request->country_of_citizenship;
+
+            $student->created_at = Carbon::now();
+            $student->created_by = $request->user()->id;
+            $student->updated_at = Carbon::now();
+            $student->updated_by = $request->user()->id;
+
             $student->save();   
 
             DB::commit();
 
             return response()->json([
                 'msg' => 'success',
-                'student_id' => $user->id
+                'student_id' => $student->id
             ]);
 
         } catch(\Illuminate\Database\QueryException $e) {
@@ -88,8 +98,21 @@ class StudentController extends Controller
 
     public function basic_information($student_id)
     {
-        $basic_information = Student::with('user')->where('id', $student_id)->first();
-        return response()->json(new StudentBasicInformationResource($basic_information));
+        $student = Student::where('id', $student_id)->first();
+        $current_address = $student->address()->whereNull('deleted_at')->where('category', 'current')->orderBy('created_at', 'desc')->first();
+        $home_address = $student->address()->whereNull('deleted_at')->where('category', 'home')->orderBy('created_at', 'desc')->first();
+
+        $contacts = $student->contact()->whereNull('deleted_at')->get();
+
+        $emergency_contact = $student->emergency_contact()->orderBy('created_at', 'desc')->first();
+
+        return response()->json([
+            'student' => new StudentBasicInformationResource($student),
+            'current_address' => $current_address ? new AddressResource($current_address):[],
+            'home_address' => $home_address ? new AddressResource($home_address):[],
+            'contacts' => ContactResource::collection($contacts),
+            'emergency_contact' => $emergency_contact ? new EmergencyContactResource($emergency_contact):[]
+        ]);
     }
 
     public function class($student_id)
