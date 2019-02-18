@@ -30,6 +30,8 @@ class ProgramController extends Controller
         $program->product_id = $request->product_id;
         $program->created_at = Carbon::now();
         $program->created_by = $request->user()->id;
+        $program->updated_at = Carbon::now();
+        $program->updated_by = $request->user()->id;
         $program->save();
 
         $program->program_date()->create([
@@ -64,6 +66,8 @@ class ProgramController extends Controller
         $class->start_date = $request->start_date;
         $class->created_at = Carbon::now();
         $class->created_by = $request->user()->id;
+        $class->updated_at = Carbon::now();
+        $class->updated_by = $request->user()->id;
 
         $class->save();
 
@@ -92,6 +96,9 @@ class ProgramController extends Controller
             $new_class->start_date = $request->start_date;
             $new_class->created_at = Carbon::now();
             $new_class->created_by = $request->user()->id;
+            $new_class->updated_at = Carbon::now();
+            $new_class->updated_by = $request->user()->id;
+
             $new_class->save();
 
             DB::commit();

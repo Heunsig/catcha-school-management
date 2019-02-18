@@ -22,7 +22,7 @@ class CreateAddressTable extends Migration
             $table->string('state')->nullable();
             $table->string('postal_code')->nullable();
             $table->string('country');
-            $table->string('category')->comment('home, USA');
+            $table->string('type')->comment('home, USA');
             $table->datetime('created_at');
             $table->integer('created_by')->unsigned();
             $table->datetime('updated_at');

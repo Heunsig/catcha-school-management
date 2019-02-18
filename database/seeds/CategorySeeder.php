@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class CategorySeeder extends Seeder
 {
@@ -14,17 +13,25 @@ class CategorySeeder extends Seeder
     {
         DB::table('category')->insert([
             [
-                'value' => 'In School',
-                'group' => 'student_status'
+                'parent_category_id' => null,
+                'name' => 'English Programs',
+                'description' => ''
             ],
             [
-                'value' => 'Completed',
-                'group' => 'student_status'
+                'parent_category_id' => null,
+                'name' => 'Textbooks',
+                'description' => ''
             ],
             [
-                'value' => 'Terminated',
-                'group' => 'student_status'
+                'parent_category_id' => 2,
+                'name' => 'Beginner',
+                'description' => ''
             ],
+            [
+                'parent_category_id' => 2,
+                'name' => 'Intermediate',
+                'description' => ''
+            ]
         ]);
     }
 }

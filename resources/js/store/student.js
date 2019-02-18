@@ -67,13 +67,22 @@ const student = {
     get_student (context, payload) {
       return new Promise((resolve, reject) => {
         axios.get(`/student/${payload.student_id}`).then(res => {
-          console.log('h', res)
+          console.log('student', res)
           context.commit('set_student', res.data.student)
           context.commit('set_current_address', res.data.current_address)
           context.commit('set_home_address', res.data.home_address)
           context.commit('set_cellphones', res.data.contacts)
           context.commit('set_emergency_contact', res.data.emergency_contact)
           resolve(res.data)
+        })
+      })
+    },
+    update_basic (context, payload) {
+      return new Promise((resolve, reject) => {
+        axios.put(`/student/${payload.student_id}`, payload.form).then(res => {
+          console.log('res', res)
+          context.commit('set_student', res.data)
+          resolve()
         })
       })
     },
@@ -99,6 +108,7 @@ const student = {
       return new Promise((resolve, reject) => {
         axios.post(`/emergency_contact`, payload.form).then(res => {
           console.log('res', res)
+          context.commit('set_emergency_contact', res.data)
           resolve()
         })
       })
@@ -108,6 +118,15 @@ const student = {
         axios.put(`/emergency_contact/${payload.emergency_contact_id}`, payload.form).then(res => {
           console.log('res', res)
           context.commit('set_emergency_contact', res.data)
+          resolve()
+        })
+      })
+    },
+    delete_emergency_contact (context, payload) {
+      return new Promise((resolve, reject) => {
+        axios.delete(`/emergency_contact/${payload.emergency_contact_id}`).then(res => {
+          console.log('res', res)
+          context.commit('set_emergency_contact', [])
           resolve()
         })
       })

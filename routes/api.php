@@ -25,6 +25,8 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/student', 'StudentController@list');
     Route::get('/student/register', 'StudentController@register');
     Route::post('/student', 'StudentController@store');
+    Route::put('/student/{student_id}', 'StudentController@update');
+
 
     Route::get('/student/{student_id}', 'StudentController@basic_information');
     Route::get('/student/{student_id}/class', 'StudentController@class');
@@ -41,9 +43,9 @@ Route::middleware('auth:api')->group(function () {
 });
 
 // Route::middleware('auth:api')->get('dashboard', 'DashboardController@index');
-Route::middleware('auth:api')->prefix('category')->group(function(){
-    Route::get('student_status', 'CategoryController@student_status');
-    Route::get('country', 'CategoryController@country');
+Route::middleware('auth:api')->prefix('selection_option')->group(function(){
+    Route::get('student_status', 'SelectionOptionController@student_status');
+    Route::get('country', 'SelectionOptionController@country');
 });
 
 Route::middleware('auth:api')->prefix('dashboard')->group(function(){
@@ -79,6 +81,8 @@ Route::middleware('auth:api')->prefix('payment_method')->group(function(){
 
 Route::middleware('auth:api')->prefix('product')->group(function(){ 
     Route::get('', 'ProductController@list');
+    Route::get('test', 'ProductController@test');
+    // Route::get('{product_id}/attribute', 'ProductController@get_attribute');
 });
 
 
@@ -120,6 +124,7 @@ Route::middleware('auth:api')->prefix('contact')->group(function(){
 Route::middleware('auth:api')->prefix('emergency_contact')->group(function(){
     Route::post('', 'EmergencyContactController@store');
     Route::put('{emergency_contact_id}', 'EmergencyContactController@update');
+    Route::delete('{emergency_contact_id}', 'EmergencyContactController@destroy');
 });
 
 Route::post('/refresh', 'AuthController@refresh');

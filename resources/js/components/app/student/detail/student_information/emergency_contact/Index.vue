@@ -5,9 +5,24 @@
       <v-spacer></v-spacer>
       <v-btn 
         icon
+        @click="open_dialog_add()"
+        v-if="_.isEmpty(emergency_contact)"
+      >
+        <v-icon small>add</v-icon>
+      </v-btn>
+      <v-btn 
+        icon
         @click="open_dialog_edit()"
+        v-if="!_.isEmpty(emergency_contact)"
       >
         <v-icon small>edit</v-icon>
+      </v-btn>
+      <v-btn 
+        icon 
+        @click="open_dialog_deletion()"
+        v-if="!_.isEmpty(emergency_contact)"
+      >
+        <v-icon small>close</v-icon>
       </v-btn>
     </v-card-title>
     <v-card-text>
@@ -41,7 +56,7 @@
                   <span>{{ get_country_as_dial_code(emergency_contact.country_code).name }}</span>
                 </v-tooltip>
                 <span>+{{ emergency_contact.country_code }}</span>
-                <span>{{ emergency_contact.number }} ({{ capitalize_first_letter(emergency_contact.category) }})</span>
+                <span>{{ emergency_contact.number }} ({{ capitalize_first_letter(emergency_contact.type) }})</span>
               </div>
               <div class="ca-label-content ca-typo-style-blank" v-else>No Info</div>
             </div>
@@ -94,11 +109,15 @@
         </v-layout>
       </v-container>
     </v-card-text>
-    <!-- <EmergencyAdditionDialog></EmergencyAdditionDialog> -->
+    <EmergencyAdditionDialog
+      :relationship_options="relationship_options"
+      :types="types"
+    ></EmergencyAdditionDialog>
     <EmergencyEditDialog
       :relationship_options="relationship_options"
       :types="types"
     ></EmergencyEditDialog>
+    <EmergencyDeletionDialog></EmergencyDeletionDialog>
   </v-card>
 </template>
 <script>
@@ -106,13 +125,15 @@ import bus from 'bus'
 import countries from '../../../../../../mixins/countries'
 import EmergencyAdditionDialog from './EmergencyAdditionDialog'
 import EmergencyEditDialog from './EmergencyEditDialog'
+import EmergencyDeletionDialog from './EmergencyDeletionDialog'
 export default {
   mixins: [
     countries
   ],
   components: {
     EmergencyAdditionDialog,
-    EmergencyEditDialog
+    EmergencyEditDialog,
+    EmergencyDeletionDialog
   },
   data () {
     return {
@@ -129,6 +150,9 @@ export default {
     get_flag (code) {
       return code ? 'flag-icon-' + code.toLowerCase():null
     },
+    open_dialog_add () {
+      bus.$emit('open_dialog_emergency_add')
+    },
     open_dialog_edit () {
       bus.$emit('open_dialog_emergency_edit', {
         emergency_contact_id: this.emergency_contact.id,
@@ -138,7 +162,7 @@ export default {
           etc: this.emergency_contact.relationship,
           country_code: this.emergency_contact.country_code,
           number: this.emergency_contact.number,
-          category: this.emergency_contact.category,
+          type: this.emergency_contact.type,
           email: this.emergency_contact.email,
           address_line1: this.emergency_contact.address_line1,
           address_line2: this.emergency_contact.address_line2,
@@ -148,6 +172,11 @@ export default {
           country: this.emergency_contact.country
         }
       })
+    },
+    open_dialog_deletion () {
+      bus.$emit('open_dialog_emergency_delete', {
+        emergency_contact_id: this.emergency_contact.id
+      });
     }
   }
 }

@@ -21,7 +21,8 @@ class InvoiceItemResource extends JsonResource
             'price' => $this->price,
             'quantity' => $this->quantity,
             'note' => $this->note,
-            'is_refunded' => $this->is_refunded
+            'attributes' => PaymentDetailAttributeResource::collection($this->attribute)
+            // 'is_refunded' => $this->is_refunded
         ];
         // return [
         //     'id' => $this->pivot->id,

@@ -93,6 +93,27 @@ class Student extends Model
         return $full_name;
     }
 
+    public function purchased_programs()
+    {
+        $payments = $this->hasMany('App\Payment')->get();
+
+        $result = [];
+        foreach ($payments as $payment) {
+            foreach ($payment->payment_detail()->get() as $item) {
+                if ($item->product->category_id === 1) {
+                    // The category is "Type"
+                    if ($item->attribute()->where('attribute_id', 1)->first()) {
+                        if ($item->attribute()->where('attribute_id', 1)->first()->value->id === 1) {
+                            $result[] = $item;
+                        }
+                    }
+                }
+            }
+        }
+
+        return $result;
+    }
+
     // public function programs_taken()
     // {
 

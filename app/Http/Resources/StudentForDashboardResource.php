@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Carbon;
 
 class StudentForDashboardResource extends JsonResource
 {
@@ -18,11 +19,11 @@ class StudentForDashboardResource extends JsonResource
             'id' => $this->id,
             'full_name' => $this->full_name,
             'email' => $this->email,
-            'type' => 'F1',
-            // 'status' => $this->status,
-            'birth_day' => '1990-12-26',
-            'created_at' => $this->created_at->format('Y-m-d'),
-            // 'hidden_created_at' => $this->created_at->format('YmdHis')
+            'type' => $this->type,
+            'date_of_birth' => $this->date_of_birth,
+            'created_at' => Carbon::parse($this->created_at)->format('Y-m-d')
+            // 'created_at' => $this->created_at->format('Y-m-d'),
+
         ];
     }
 }

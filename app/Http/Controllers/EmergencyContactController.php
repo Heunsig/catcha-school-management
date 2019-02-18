@@ -17,7 +17,7 @@ class EmergencyContactController extends Controller
         $emergency_contact->relationship = $request->relationship;
         $emergency_contact->country_code = $request->country_code;
         $emergency_contact->number = $request->number;
-        $emergency_contact->category = $request->category;
+        $emergency_contact->type = $request->type;
         $emergency_contact->email = $request->email;
         $emergency_contact->address_line1 = $request->address_line1;
         $emergency_contact->address_line2 = $request->address_line2;
@@ -31,7 +31,9 @@ class EmergencyContactController extends Controller
         $emergency_contact->updated_by = $request->user()->id;
         $emergency_contact->save();
 
-        return response()->json('success');
+        $new_emergency_contact = EmergencyContact::where('id', $emergency_contact->id)->first();
+
+        return response()->json(new EmergencyContactResource($new_emergency_contact));
     }
 
     public function update(Request $request, $emergency_contact_id)
@@ -41,7 +43,7 @@ class EmergencyContactController extends Controller
         $emergency_contact->relationship = $request->relationship;
         $emergency_contact->country_code = $request->country_code;
         $emergency_contact->number = $request->number;
-        $emergency_contact->category = $request->category;
+        $emergency_contact->type = $request->type;
         $emergency_contact->email = $request->email;
         $emergency_contact->address_line1 = $request->address_line1;
         $emergency_contact->address_line2 = $request->address_line2;
@@ -56,5 +58,17 @@ class EmergencyContactController extends Controller
         $updated_emergency_contact = EmergencyContact::where('id', $emergency_contact_id)->first();
 
         return response()->json(new EmergencyContactResource($updated_emergency_contact));
+    }
+
+    public function destroy(Request $request, $emergency_contact_id)
+    {
+        $emergency_contact = EmergencyContact::where('id', $emergency_contact_id)->first();
+        $emergency_contact->deleted_at = Carbon::now();
+        $emergency_contact->deleted_by = $request->user()->id;
+        $emergency_contact->save();
+
+        $destroyed_emergency_contact = EmergencyContact::where('id', $emergency_contact_id)->first();
+
+        return response()->json(new EmergencyContactResource($destroyed_emergency_contact));
     }
 }

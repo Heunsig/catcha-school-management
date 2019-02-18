@@ -22,6 +22,6 @@ class Leave extends Model
 
     public function leave_type()
     {
-      return $this->belongsTo('App\Category', 'leave_type_id')->where('group', 'leave_type');
+      return $this->belongsTo('App\SelectionOption', 'leave_type_id')->where('group', 'leave_type');
     }
 }

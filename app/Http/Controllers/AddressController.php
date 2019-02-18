@@ -21,7 +21,7 @@ class AddressController extends Controller
         $address->state = $request->state;
         $address->postal_code = $request->postal_code;
         $address->country = $request->country;
-        $address->category = $request->category;
+        $address->type = $request->type;
         $address->created_at = Carbon::now();
         $address->created_by = $request->user()->id;
         $address->updated_at = Carbon::now();
@@ -43,7 +43,7 @@ class AddressController extends Controller
         $address->state = $request->state;
         $address->postal_code = $request->postal_code;
         $address->country = $request->country;
-        $address->category = $request->category;
+        $address->type = $request->type;
         $address->updated_at = Carbon::now();
         $address->updated_by = $request->user()->id;
 

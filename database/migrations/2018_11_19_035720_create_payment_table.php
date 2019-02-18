@@ -18,7 +18,7 @@ class CreatePaymentTable extends Migration
             $table->integer('student_id')->unsigned();
             $table->string('payment_method_key', 2);
             $table->string('status', 50);
-            $table->boolean('is_refund')->default(false);
+            // $table->boolean('is_refund')->default(false);
             $table->datetime('payment_date');
             $table->text('note')->nullable();
             $table->datetime('created_at');

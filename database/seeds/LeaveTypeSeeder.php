@@ -12,7 +12,7 @@ class LeaveTypeSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('category')->insert([
+        DB::table('selection_option')->insert([
             [
                 'value' => 'Vacation',
                 'group' => 'leave_type'

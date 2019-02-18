@@ -48,7 +48,7 @@
                 <v-flex xs12>
                   <el-form-item label="Type" class="ca-label">
                     <el-select 
-                      v-model="form.category" 
+                      v-model="form.type" 
                       filterable
                       placeholder="Select"
                       class="ca-block"
@@ -158,7 +158,16 @@
   </v-dialog>
 </template>
 <script>
+import bus from 'bus'
+import countriesMixin from '../../../../../../mixins/countries'
 export default {
+  props: [
+    'relationship_options',
+    'types'
+  ],
+  mixins: [
+    countriesMixin
+  ],
   data () {
     return {
       is_active: false,
@@ -168,7 +177,7 @@ export default {
         etc: '',
         country_code: '',
         number: '',
-        category: '',
+        type: '',
         email: '',
         address_line1: '',
         address_line2: '',
@@ -188,6 +197,11 @@ export default {
         this.is_active = false
       })
     }
+  },
+  created () {
+    bus.$on('open_dialog_emergency_add', (payload) => {
+      this.is_active = true
+    })
   }
 }
 </script>

@@ -28,7 +28,8 @@ Lacacy of bootstrap
 .ca-typo-title-3,
 .ca-typo-title-4,
 .ca-typo-title-5,
-.ca-typo-title-6 {
+.ca-typo-title-6,
+.ca-typo-title-7 {
   font-weight: bold;
   color: #4d4d4d;
 }
@@ -54,7 +55,11 @@ Lacacy of bootstrap
 }
 
 .ca-typo-title-6 {
-  font-size: 0.71em;
+  font-size: 0.86em;
+}
+
+.ca-typo-title-7 {
+  font-size: 0.714em;
 }
 
 .ca-typo-1 {
@@ -632,6 +637,54 @@ Lacacy of bootstrap
 
 .ca-simplified-list-item-avatar {
   margin-right: 10px;
+}
+
+.ca-dashboard-section .ca-dashboard-section-title {
+  height: 60px;
+  text-align: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.ca-dashboard-section .ca-dashboard-section-title span {
+  color: #fff;
+  font-size: 1.1em;
+  /*font-size: 2em;*/
+}
+
+.ca-dashboard-section .ca-dashboard-section-text {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  height: 230px;
+}
+
+.ca-dashboard-section .ca-dashboard-section-noinfo {
+  -webkit-box-flex: 1;
+      -ms-flex: 1 1 auto;
+          flex: 1 1 auto;
+  -ms-flex-item-align: center;
+      align-self: center;
+}
+
+.ca-dashboard-section .ca-dashboard-section-noinfo span {
+  color: #d6d6d6;
+}
+
+.ca-dashboard-section .ca-dashboard-section-loading-box {
+  -webkit-box-flex: 1;
+      -ms-flex: 1 1 auto;
+          flex: 1 1 auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 
 .ca-block {

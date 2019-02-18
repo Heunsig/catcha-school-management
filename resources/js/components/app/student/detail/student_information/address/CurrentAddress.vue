@@ -98,7 +98,7 @@ export default {
     },
     open_dialog_store () {
       bus.$emit('open_dialog_address_addition', {
-        category: 'current'
+        type: 'current'
       })
     },
     open_dialog_edit () {
@@ -111,7 +111,7 @@ export default {
           state: this.current_address.state,
           postal_code: this.current_address.postal_code,
           country: this.current_address.country,
-          category: this.current_address.category
+          type: this.current_address.type
         }
       })
     },

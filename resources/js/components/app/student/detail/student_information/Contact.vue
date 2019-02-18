@@ -33,7 +33,7 @@
             </td>
             <td>
               <div class="ca-label-content" v-if="cellphone.country_code">
-                <span>{{ cellphone.number }} ({{ capitalize_first_letter(cellphone.category) }})</span>
+                <span>{{ cellphone.number }} ({{ capitalize_first_letter(cellphone.type) }})</span>
               </div>
               <div class="ca-label-content ca-typo-style-blank" v-else>No Info</div>
             </td>
@@ -73,7 +73,7 @@
                 <v-flex xs12>
                   <el-form-item label="Type" class="ca-label">
                     <el-select 
-                      v-model="form.category" 
+                      v-model="form.type" 
                       filterable
                       placeholder="Select"
                       class="ca-block"
@@ -147,7 +147,7 @@ export default {
         student_id: null,
         country_code: '',
         number: '',
-        category: ''
+        type: ''
       },
       rules: {}
     }

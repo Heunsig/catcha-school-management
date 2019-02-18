@@ -26,9 +26,9 @@ class ProgramDateForDashboardResource extends JsonResource
             ],
             'student' => [
                 'id' => $this->program->student->id,
-                'email' => $this->program->student->user->email,
-                'first_name' => $this->program->student->user->first_name,
-                'full_name' => $this->program->student->user->full_name
+                'email' => $this->program->student->email,
+                'first_name' => $this->program->student->first_name,
+                'full_name' => $this->program->student->full_name
             ]
         ];
     }

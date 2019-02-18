@@ -75,7 +75,7 @@ export default {
         state: '',
         postal_code: '',
         country: '',
-        category: ''
+        type: ''
       }
     }
   },
@@ -92,7 +92,7 @@ export default {
   created () {
     bus.$on('open_dialog_address_addition', (payload) => {
       this.is_active = true
-      this.form.category = payload.category
+      this.form.type = payload.type
     })
   }
 }

@@ -38,6 +38,11 @@ class Payment extends Model
         return $this->hasMany('App\Item', 'payment_id');
     }
 
+    public function payment_detail()
+    {
+        return $this->hasMany('App\PaymentDetail', 'payment_id');   
+    }
+
     public function credit_card_information()
     {
         return $this->hasMany('App\CreditCardInformation', 'payment_id');

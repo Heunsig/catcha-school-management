@@ -19,7 +19,7 @@
                       v-for="option in program_selection_options"
                       :key="option.id"
                       :label="option.name"
-                      :value="option.id"
+                      :value="option.product_id"
                     >
                     </el-option>
                   </el-select>

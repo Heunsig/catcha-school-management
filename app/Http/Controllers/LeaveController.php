@@ -24,6 +24,8 @@ class LeaveController extends Controller
         $leave->completion_date = $request->completion_date;
         $leave->created_at = Carbon::now();
         $leave->created_by = $request->user()->id;
+        $leave->updated_at = Carbon::now();
+        $leave->updated_by = $request->user()->id;
         $leave->save();
 
         $stored_leave = Leave::where('id', $leave->id)->first();

@@ -18,7 +18,7 @@ class LeaveRequestResource extends JsonResource
         return [
             'id' => $this->id,
             'leave_type_id' => $this->leave_type->id,
-            'leave_type' => $this->leave_type->name,
+            'leave_type' => $this->leave_type->value,
             'start_date' => $this->start_date,
             'completion_date' => $this->completion_date,
             'associated_programs' => ProgramSimpleResource::collection($this->program),

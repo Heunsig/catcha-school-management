@@ -33,8 +33,13 @@ $typo: #{$prefix}-typo;
 
   &-6 { 
     @extend %title-setup;
-    font-size: 0.71em;
+    font-size: 0.86em;
   }  
+
+  &-7 { 
+    @extend %title-setup;
+    font-size: 0.714em;
+  }    
 }
 
 .#{$typo} {

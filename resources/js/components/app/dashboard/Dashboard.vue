@@ -1,58 +1,71 @@
 <template>
-  <v-container fluid class="pa-0 ca-grid-list-4">
+  <v-container fluid class="pa-0 ca-grid-list-2">
     <v-layout wrap>
       <v-flex xs8>
         <NewStudentSection></NewStudentSection>
       </v-flex>
       <v-flex xs4>
-        <CurrentStudyingStudent></CurrentStudyingStudent>
+        <!-- <CurrentStudyingStudent></CurrentStudyingStudent> -->
       </v-flex>
     </v-layout>
     <v-layout wrap>
-      <v-flex xs3>
-        <ComingProgramSection></ComingProgramSection>
+      <v-flex xs6>
+        <ProgramSection></ProgramSection>
+      </v-flex>
+      <v-flex xs6>
+        <LeaveSection></LeaveSection>
+      </v-flex>
+      <!-- <v-flex xs3>
+        <ComingProgramSection
+          :is_ready="is_ready"
+        ></ComingProgramSection>
       </v-flex>
       <v-flex xs3>
-        <FinishingProgramSection></FinishingProgramSection>
+        <FinishingProgramSection
+          :is_ready="is_ready"
+        ></FinishingProgramSection>
+      </v-flex> -->
+      <!-- <v-flex xs3>
+        <ComingLeaveSection
+          :is_ready="is_ready"
+        ></ComingLeaveSection>
       </v-flex>
       <v-flex xs3>
-        <ComingLeaveSection></ComingLeaveSection>
-      </v-flex>
-      <v-flex xs3>
-        <FinishingLeaveSection></FinishingLeaveSection>
-      </v-flex>
+        <FinishingLeaveSection
+          :is_ready="is_ready"
+        ></FinishingLeaveSection>
+      </v-flex> -->
     </v-layout>
     <!-- <ComingProgramExtensionDialog></ComingProgramExtensionDialog> -->
   </v-container>
 </template>
 <script>
-import NewStudentSection from './particles/NewStudentSection'
-import CurrentStudyingStudent from './particles/CurrentStudyingStudentSection'
-import ComingProgramSection from './particles/ComingProgramSection'
-import FinishingProgramSection from './particles/FinishingProgramSection'
-import ComingLeaveSection from './particles/ComingLeaveSection'
-import FinishingLeaveSection from './particles/FinishingLeaveSection'
+import NewStudentSection from './new_student_section/Index'
+import ProgramSection from './program_section/Index'
+import LeaveSection from './leave_section/Index'
+// import CurrentStudyingStudent from './current'
+// import ComingProgramSection from './coming_program_section/Index'
+// import FinishingProgramSection from './finishing_program_section/Index'
+import ComingLeaveSection from './coming_leave_section/Index'
+import FinishingLeaveSection from './finishing_leave_section/Index'
 
 // import ComingProgramExtensionDialog from './particles/dialogs/ComingProgramExtensionDialog'
 
 export default {
   components: {
     NewStudentSection,
-    CurrentStudyingStudent,
-    ComingProgramSection,
-    FinishingProgramSection,
+    ProgramSection,
+    LeaveSection,
+    // CurrentStudyingStudent,
+    // ComingProgramSection,
+    // FinishingProgramSection,
     ComingLeaveSection,
     FinishingLeaveSection,
     // ComingProgramExtensionDialog
   },
   data () {
     return {
-      items: [
-        { active: true, title: 'Jason Oner', avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg' },
-        { active: true, title: 'Ranee Carlson', avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg' },
-        { title: 'Cindy Baker', avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg' },
-        { title: 'Ali Connors', avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg' }
-      ],
+      is_ready: false
     }
   },
   computed: {
@@ -70,7 +83,12 @@ export default {
     },
   },
   created () {
-    this.$store.dispatch('dashboard/get_init');
+    this.$store.dispatch('dashboard/get_init').then(res => {
+      console.log('hi')
+      this.is_ready = true
+    }).catch(err => {
+      console.log('Error!!')
+    });
   }
 }
 </script>

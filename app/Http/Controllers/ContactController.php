@@ -16,7 +16,7 @@ class ContactController extends Controller
         $contact->student_id = $request->student_id;
         $contact->country_code = $request->country_code;
         $contact->number = $request->number;
-        $contact->category = strtolower($request->category);
+        $contact->type = strtolower($request->type);
         $contact->created_at = Carbon::now();
         $contact->created_by = $request->user()->id;
         $contact->updated_at = Carbon::now();

@@ -44,7 +44,7 @@ class InvoiceResource extends JsonResource
                 'method' => $this->payment_method->method,
                 'details' => $this->when($this->payment_method->key === 'CC',  new CreditCardInformationResource($this->credit_card_information()->first())),
             ],
-            'items' => InvoiceItemResource::collection($this->item),
+            'items' => InvoiceItemResource::collection($this->payment_detail),
             'administration' => [
                 'created_at' => $this->created_at,
                 'created_by' => new AdministratorResource(User::where('id', $this->created_by)->first()),

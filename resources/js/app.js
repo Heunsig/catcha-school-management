@@ -30,7 +30,9 @@ import {
   Option,
   Cascader,
   Form, 
-  FormItem
+  FormItem,
+  Table,
+  TableColumn,
 } from 'element-ui'
 
 import CaFloatingBox from './components/ca-components/FloatingBox'
@@ -54,6 +56,8 @@ Vue.use(Option)
 Vue.use(Cascader)
 Vue.use(Form)
 Vue.use(FormItem)
+Vue.use(Table)
+Vue.use(TableColumn)
 
 // Vue.component(CaFloatingBox)
 Vue.component('ca-floating-box', CaFloatingBox)

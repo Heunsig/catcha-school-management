@@ -68,6 +68,7 @@ export default {
     get_init (context, payload) {
       return new Promise((resolve, reject) => {
         axios.get(`student/${payload.student_id}/leave`).then(res => {
+          console.log('res', res)
           context.commit('set_leave_types', res.data.leave_types)
           context.commit('set_leave_requests', res.data.leave_requests)
           context.commit('set_programs_taken', res.data.programs_taken)

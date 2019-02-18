@@ -16,7 +16,9 @@ class ProgramListResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name
+            'product_id' => $this->product->id,
+            'name' => $this->product->name,
+            'created_at' => $this->payment->created_at
         ];
     }
 }

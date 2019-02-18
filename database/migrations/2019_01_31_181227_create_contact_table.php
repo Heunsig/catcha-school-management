@@ -18,7 +18,7 @@ class CreateContactTable extends Migration
             $table->integer('student_id')->unsigned();
             $table->string('country_code', 10)->nullable();
             $table->string('number');
-            $table->string('category')->comment('phone, cellphone, fax');
+            $table->string('type')->comment('phone, cellphone, fax');
             $table->datetime('created_at');
             $table->integer('created_by')->unsigned();
             $table->datetime('updated_at');

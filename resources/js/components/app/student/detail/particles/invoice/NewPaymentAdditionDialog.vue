@@ -162,6 +162,7 @@ export default {
             items: data.items
           }
         }).then(res => {
+          // console.log('res', res)
           this.wating_result = false
           this.is_active = false
         })

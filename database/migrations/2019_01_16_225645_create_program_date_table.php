@@ -19,12 +19,12 @@ class CreateProgramDateTable extends Migration
             $table->date('start_date')->nullable();
             $table->date('completion_date')->nullable();
             $table->string('reason')->nullable();
-            $table->datetime('created_at');
-            $table->integer('created_by')->unsigned();
-            $table->datetime('updated_at');
-            $table->integer('updated_by')->unsigned();
-            $table->datetime('deleted_at')->nullable();
-            $table->integer('deleted_by')->unsigned()->nullable();
+            // $table->datetime('created_at');
+            // $table->integer('created_by')->unsigned();
+            // $table->datetime('updated_at');
+            // $table->integer('updated_by')->unsigned();
+            // $table->datetime('deleted_at')->nullable();
+            // $table->integer('deleted_by')->unsigned()->nullable();
         });
     }
 

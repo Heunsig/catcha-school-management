@@ -6,8 +6,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 use App\Payment;
-use App\Item;
+use App\PaymentDetail;
+use App\PaymentDetailAttribute;
 use Carbon;
+
 
 use App\Http\Resources\InvoiceResource;
 
@@ -16,14 +18,19 @@ class PaymentController extends Controller
 
     public function list()
     {
-        $payments = Payment::all();
+        $payments = Payment::whereNull('deleted_at')->get();
 
         return response()->json(InvoiceResource::collection($payments));
     }
 
+    /*
+     * Need refactoring
+     */
     public function store(Request $request)
     {
         DB::beginTransaction();
+
+        $test = null;
         
         try {
 
@@ -35,6 +42,8 @@ class PaymentController extends Controller
             $payment->note = $request->note;
             $payment->created_at = Carbon::now();
             $payment->created_by = $request->user()->id;
+            $payment->updated_at = Carbon::now();
+            $payment->updated_by = $request->user()->id;
 
             $payment->save();
 
@@ -52,17 +61,30 @@ class PaymentController extends Controller
 
             $items = [];
             for($i = 0 ; $i < count($request->items) ; $i++) {
-                $item = new Item();
+                $item = new PaymentDetail();
                 $item->product_id = $request->items[0]['product_id'][count($request->items[0]['product_id']) - 1];
                 $item->price = $request->items[$i]['price'];
                 $item->quantity = $request->items[$i]['quantity'];
                 $item->week = $request->items[$i]['week'];
                 $item->note = $request->items[$i]['note'];
-                
+
                 $items[] = $item;
             }
 
-            $payment->item()->saveMany($items);
+            $payment->payment_detail()->saveMany($items);
+
+            for ($i = 0 ; $i < count($items) ; $i++) {
+                $attributes = [];
+                for ($j = 0 ; $j < count($request->items[$i]['attributes']) ; $j++) {
+                    $attribute = new PaymentDetailAttribute();
+                    $attribute->attribute_id = $request->items[$i]['attributes'][$j]['attribute_id'];
+                    $attribute->attribute_value_id = $request->items[$i]['attributes'][$j]['attribute_value_id'];
+                    
+                    $attributes[] = $attribute;                    
+                }
+
+                $items[$i]->attribute()->saveMany($attributes);
+            }
 
             DB::commit();
         } catch(\Illuminate\Database\QueryException $e) {

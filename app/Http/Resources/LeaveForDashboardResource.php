@@ -16,15 +16,15 @@ class LeaveForDashboardResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'leave_type' => $this->leave_type->name,
+            'leave_type' => $this->leave_type->value,
             'start_date' => $this->start_date,
             'completion_date' => $this->completion_date,
             // 'associated_programs' => ProgramSimpleResource::collection($this->program),
             'student' => [
                 'id' => $this->student->id, 
-                'email' => $this->student->user->email,
-                'first_name' => $this->student->user->first_name,
-                'full_name' => $this->student->user->full_name
+                'email' => $this->student->email,
+                'first_name' => $this->student->first_name,
+                'full_name' => $this->student->full_name
             ]
         ];
     }

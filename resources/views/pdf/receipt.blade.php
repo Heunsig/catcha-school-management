@@ -20,7 +20,7 @@
         </div>
         <div class="meta">
           <span class="meta-label">Name</span>
-          <span class="meta-value">{{ $invoice->student->user->full_name }}</span>
+          <span class="meta-value">{{ $invoice->student->full_name }}</span>
         </div>
         <div class="meta">
           <span class="meta-label">Method</span>

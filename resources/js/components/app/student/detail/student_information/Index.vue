@@ -17,7 +17,7 @@
   </v-container>
 </template>
 <script>
-import BasicInformation from './BasicInformation'
+import BasicInformation from './basic_information/Index'
 import Contact from './Contact'
 import EmergencyContact from './emergency_contact/Index'
 import Address from './address/Index'

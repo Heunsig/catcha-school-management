@@ -18,7 +18,7 @@ class ContactResource extends JsonResource
             'id' => $this->id,
             'country_code' => $this->country_code,
             'number' => $this->number,
-            'category' => $this->category
+            'type' => $this->type
         ];
     }
 }

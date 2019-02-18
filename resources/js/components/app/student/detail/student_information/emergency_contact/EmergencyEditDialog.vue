@@ -48,7 +48,7 @@
                 <v-flex xs12>
                   <el-form-item label="Type" class="ca-label">
                     <el-select 
-                      v-model="form.category" 
+                      v-model="form.type" 
                       filterable
                       placeholder="Select"
                       class="ca-block"
@@ -178,7 +178,7 @@ export default {
         etc: '',
         country_code: '',
         number: '',
-        category: '',
+        type: '',
         email: '',
         address_line1: '',
         address_line2: '',
@@ -190,6 +190,7 @@ export default {
     }
   },
   methods: {
+    // here
     submit () {
       this.form.student_id = this.$route.params.student_id
       this.$store.dispatch('student/update_emergency_contact', {

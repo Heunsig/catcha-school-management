@@ -8,24 +8,24 @@ export default {
     // added_students: [],
     current_studying_students: 0,
     new_students: {
-      items: [],
-      count: null
+      // items: [],
+      // count: null
     },
     coming_programs: {
-      items: [],
-      count: null
+      // items: [],
+      // count: null
     },
     finishing_programs: {
-      items: [],
-      count: null
+      // items: [],
+      // count: null
     },
     coming_leaves: {
-      items: [],
-      count: null
+      // items: [],
+      // count: null
     },
     finishing_leaves: {
-      items: [],
-      count: null
+      // items: [],
+      // count: null
     },
     full_new_students: [],
     full_coming_programs: [],
@@ -105,14 +105,20 @@ export default {
   },
   actions: {
     get_init (context, payload) {
-      axios.get('dashboard').then(res => {
-        console.log('res', res)
-        context.commit('set_current_studying_students', res.data.current_studying_students)
-        context.commit('set_new_student', res.data.new_students)
-        context.commit('set_coming_programs', res.data.coming_programs)
-        context.commit('set_finishing_programs', res.data.finishing_programs)
-        context.commit('set_coming_leaves', res.data.coming_leaves)
-        context.commit('set_finishing_leaves', res.data.finishing_leaves)
+      new Promise((resolve, reject) => {
+        axios.get('dashboard').then(res => {
+          console.log('res', res)
+          context.commit('set_current_studying_students', res.data.current_studying_students)
+          context.commit('set_new_student', res.data.new_students)
+          context.commit('set_coming_programs', res.data.coming_programs)
+          context.commit('set_finishing_programs', res.data.finishing_programs)
+          context.commit('set_coming_leaves', res.data.coming_leaves)
+          context.commit('set_finishing_leaves', res.data.finishing_leaves)
+          resolve()
+        }).catch(err => {
+          console.log('Reject!!!')
+          reject()
+        })
       })
     },
     get_full_coming_programs (context, payload) {

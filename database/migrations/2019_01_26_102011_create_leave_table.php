@@ -19,6 +19,12 @@ class CreateLeaveTable extends Migration
             $table->integer('student_id')->unsigned();
             $table->date('start_date');
             $table->date('completion_date');
+            $table->datetime('created_at');
+            $table->integer('created_by')->unsigned();
+            $table->datetime('updated_at');
+            $table->integer('updated_by')->unsigned();
+            $table->datetime('deleted_at')->nullable();
+            $table->integer('deleted_by')->unsigned()->nullable();
         });
     }
 

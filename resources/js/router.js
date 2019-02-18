@@ -15,7 +15,7 @@ import StudentDetailLayout from './components/app/student/detail/Layout'
 import StudentInformation from './components/app/student/detail/student_information/Index'
 import StudentClass from './components/app/student/detail/Class'
 import StduentInvoice from './components/app/student/detail/Invoice'
-import StudentLeave from './components/app/student/detail/Leave'
+import StudentLeave from './components/app/student/detail/leave/Index'
 
 Vue.use(VueRouter)
 

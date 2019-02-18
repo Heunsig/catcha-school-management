@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Carbon;
 use App\Student;
 use App\User;
-use App\Category;
+use App\SelectionOption;
 use App\Classinfo;
 use App\Payment;
 use App\Product;
@@ -45,8 +45,8 @@ class StudentController extends Controller
 
     public function register()
     {
-        $status_options = Category::where('group', 'student_status')->get();
-        $type_options = Category::where('group', 'student_type')->get();
+        $status_options = SelectionOption::where('group', 'student_status')->get();
+        $type_options = SelectionOption::where('group', 'student_type')->get();
         
         return response()->json([
             'status_options' => $status_options,
@@ -96,15 +96,42 @@ class StudentController extends Controller
 
     }
 
+    public function update(Request $request, $student_id)
+    {
+        $student = Student::where('id', $student_id)->first();
+        $student->first_name = $request->first_name;
+        $student->middle_name = $request->middle_name;
+        $student->last_name = $request->last_name;
+        $student->nickname = $request->nickname;
+        $student->email = $request->email;
+        $student->note = $request->note;
+        $student->type = $request->type;
+        $student->status = $request->status;
+        $student->sex = $request->sex;
+        $student->date_of_birth = $request->date_of_birth;
+        $student->city_of_birth = $request->city_of_birth;
+        $student->country_of_birth = $request->country_of_birth;
+        $student->country_of_citizenship = $request->country_of_citizenship;
+
+        $student->updated_at = Carbon::now();
+        $student->updated_by = $request->user()->id;
+
+        $student->save();
+
+        $updated_student = Student::where('id', $student_id)->first();
+
+        return response()->json(new StudentBasicInformationResource($updated_student));
+    }
+
     public function basic_information($student_id)
     {
         $student = Student::where('id', $student_id)->first();
-        $current_address = $student->address()->whereNull('deleted_at')->where('category', 'current')->orderBy('created_at', 'desc')->first();
-        $home_address = $student->address()->whereNull('deleted_at')->where('category', 'home')->orderBy('created_at', 'desc')->first();
+        $current_address = $student->address()->whereNull('deleted_at')->where('type', 'current')->orderBy('created_at', 'desc')->first();
+        $home_address = $student->address()->whereNull('deleted_at')->where('type', 'home')->orderBy('created_at', 'desc')->first();
 
         $contacts = $student->contact()->whereNull('deleted_at')->get();
 
-        $emergency_contact = $student->emergency_contact()->orderBy('created_at', 'desc')->first();
+        $emergency_contact = $student->emergency_contact()->whereNull('deleted_at')->orderBy('created_at', 'desc')->first();
 
         return response()->json([
             'student' => new StudentBasicInformationResource($student),
@@ -118,8 +145,10 @@ class StudentController extends Controller
     public function class($student_id)
     {
         $student = Student::where('id', $student_id)->first();
+        $programs = $student->program;
         $class_selection_options = Classinfo::all();
-        $program_selection_options = Product::where('parent_product_id', 1)->get();
+        // $program_selection_options = Product::where('parent_product_id', 1)->get();
+        $program_selection_options = collect($student->purchased_programs());
         // $programs = $student->program
 
 
@@ -138,9 +167,10 @@ class StudentController extends Controller
         // $programs_taken = $student->programs_taken();
 
         return response()->json([
-            'programs' => ProgramResource::collection($student->program),
+            'programs' => ProgramResource::collection($programs),
             'class_selection_options' => ClassListResource::collection($class_selection_options),
             'program_selection_options' => ProgramListResource::collection($program_selection_options),
+            // 'program_selection_options' => $program_selection_options,
             // 'classes_belonging_to' => ClassBelongingToStudentResource::collection($classes_belonging_to),
             // 'programs_taken' => ProgramTakenResource::collection(collect($programs_taken))
         ]);
@@ -160,7 +190,7 @@ class StudentController extends Controller
     public function leave($student_id)
     {
         $leave_requests = Leave::where('student_id', $student_id)->get();
-        $leave_types = Category::where('group', 'leave_type')->get();
+        $leave_types = SelectionOption::where('group', 'leave_type')->get();
         // ProgramResource
         $programs_taken = Program::where('student_id', $student_id)->get();
         $programs_taken = $programs_taken->filter(function($value, $key) {

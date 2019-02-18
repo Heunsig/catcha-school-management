@@ -75,7 +75,7 @@ export default {
         state: '',
         postal_code: '',
         country: '',
-        category: ''
+        type: ''
       }
     }
   },

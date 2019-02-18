@@ -41,7 +41,7 @@
                   <span>{{ get_country_as_dial_code(emergency_contact.country_code).name }}</span>
                 </v-tooltip>
                 <span>+{{ emergency_contact.country_code }}</span>
-                <span>{{ emergency_contact.number }} ({{ capitalize_first_letter(emergency_contact.category) }})</span>
+                <span>{{ emergency_contact.number }} ({{ capitalize_first_letter(emergency_contact.type) }})</span>
               </div>
               <div class="ca-label-content ca-typo-style-blank" v-else>No Info</div>
             </div>
@@ -143,7 +143,7 @@
                   <v-flex xs12>
                     <el-form-item label="Type" class="ca-label">
                       <el-select 
-                        v-model="form.category" 
+                        v-model="form.type" 
                         filterable
                         placeholder="Select"
                         class="ca-block"
@@ -270,7 +270,7 @@ export default {
         etc: '',
         country_code: '',
         number: '',
-        category: '',
+        type: '',
         email: '',
         address_line1: '',
         address_line2: '',
