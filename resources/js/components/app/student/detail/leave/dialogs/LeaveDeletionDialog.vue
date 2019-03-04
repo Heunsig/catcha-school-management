@@ -24,13 +24,14 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn flat @click="is_active = false">Disagree</v-btn>
+        <v-btn flat color="grey darken-2" @click="is_active = false">Close</v-btn>
         <v-btn 
           flat
+          color="primary"
           @click="submit()"
           :loading="wating_result"
         >
-          Agree
+          Submit
         </v-btn>
       </v-card-actions>
     </v-card>

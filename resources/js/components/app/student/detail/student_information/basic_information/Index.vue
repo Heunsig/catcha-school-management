@@ -7,7 +7,7 @@
         <v-icon>add</v-icon>
       </v-btn> -->
       <v-btn icon @click="open_dialog_edit()">
-        <v-icon>edit</v-icon>
+        <v-icon small color="grey darken-1">edit</v-icon>
       </v-btn>
     </v-card-title>
     <v-card-text>
@@ -16,14 +16,14 @@
           <v-flex xs6>
             <div class="ca-label">
               <div class="ca-label-title ca-title-5 font-weight-bold">Type</div>
-              <div class="ca-label-content" v-if="student.type">{{ student.type }}</div>
+              <div class="ca-label-content" v-if="student.type.name">{{ student.type.name }}</div>
               <div class="ca-label-content ca-typo-style-blank" v-else>No Info</div>
             </div>
           </v-flex>
           <v-flex xs6>
             <div class="ca-label">
               <div class="ca-label-title ca-title-5 font-weight-bold">Status</div>
-              <div class="ca-label-content" v-if="student.status">{{ student.status }}</div>
+              <div class="ca-label-content" v-if="student.status.name">{{ student.status.name }}</div>
               <div class="ca-label-content ca-typo-style-blank" v-else>No Info</div>
             </div>
           </v-flex>
@@ -72,18 +72,24 @@
           <v-flex xs4>
             <div class="ca-label">
               <div class="ca-label-title ca-title-5 font-weight-bold">Date of Birth</div>
-              <div class="ca-label-content" v-if="student.date_of_birth">{{ student.date_of_birth }}</div>
+              <div class="ca-label-content" v-if="student.date_of_birth">{{ $moment(student.date_of_birth).format('MM/DD/Y') }}</div>
               <div class="ca-label-content ca-typo-style-blank" v-else>No Info</div>
             </div>
           </v-flex>
           <v-flex xs4>
             <div class="ca-label-title ca-title-5 font-weight-bold">Country of Citizenship</div>
-            <div class="ca-label-content" v-if="student.country_of_citizenship">{{ get_country(student.country_of_citizenship).name }}</div>
+            <div class="ca-label-content" v-if="student.country_of_citizenship">
+              <span class="flag-icon mr-1" :class="get_flag(get_country(student.country_of_citizenship).code)"></span>
+              {{ get_country(student.country_of_citizenship).name }}
+            </div>
             <div class="ca-label-content ca-typo-style-blank" v-else>No Info</div>
           </v-flex>
           <v-flex xs4>
             <div class="ca-label-title ca-title-5 font-weight-bold">Country of Birth</div>
-            <div class="ca-label-content" v-if="student.country_of_birth">{{ get_country(student.country_of_birth).name }}</div>
+            <div class="ca-label-content" v-if="student.country_of_birth">
+              <span class="flag-icon mr-1" :class="get_flag(get_country(student.country_of_citizenship).code)"></span>
+              {{ get_country(student.country_of_birth).name }}
+            </div>
             <div class="ca-label-content ca-typo-style-blank" v-else>No Info</div>
           </v-flex>
           <v-flex xs4>
@@ -125,6 +131,9 @@ export default {
     }
   },
   methods: {
+    get_flag (code) {
+      return code ? 'flag-icon-' + code.toLowerCase():null
+    },
     // open_dialog_add () {
     //   console.log('hid')
     //   bus.$emit('open_dialog_basic_information_addition')
@@ -132,8 +141,8 @@ export default {
     open_dialog_edit () {
       bus.$emit('open_dialog_basic_information_edit', {
         form: {
-          type: this.student.type,
-          status: this.student.status,
+          type_id: this.student.type.id,
+          status_id: this.student.status.id,
           email: this.student.email,
           first_name: this.student.first_name,
           middle_name: this.student.middle_name,

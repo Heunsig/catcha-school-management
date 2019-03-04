@@ -19,13 +19,13 @@ class CreateEmergencyContactTable extends Migration
             $table->string('name');
             $table->string('relationship');
             $table->string('country_code', 10)->nullable();
-            $table->string('number');
-            $table->string('address_line1');
+            $table->string('number')->nullable();
+            $table->string('address_line1')->nullable();
             $table->string('address_line2')->nullable();
-            $table->string('city');
+            $table->string('city')->nullable();
             $table->string('state')->nullable();
             $table->string('postal_code')->nullable();
-            $table->string('country');
+            $table->string('country')->nullable();
             $table->datetime('created_at');
             $table->integer('created_by')->unsigned();
             $table->datetime('updated_at');

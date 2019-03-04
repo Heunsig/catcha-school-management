@@ -25,7 +25,7 @@
                     slot="activator"
                     size="35"
                     color="grey lighten-4 ca-cursor-pointer"
-                    @click="$router.push({name: 'student.basic_information', params: {student_id: leave.student.id}})"
+                    @click="$router.push({name: 'student.information.basic_information', params: {student_id: leave.student.id}})"
                   >
                     <img :src="AVATAR_BASE_URL+'/50/'+leave.student.full_name" :alt="leave.student.full_name"/>
                   </v-avatar>
@@ -49,20 +49,38 @@
         </template>
         <template v-else>
           <div class="ca-dashboard-section-noinfo text-xs-center">
-            <span class="ca-typo-title-4">No Student</span>
+            <span class="ca-typo-title-5">No Student</span>
           </div>
         </template>
       </template>
     </v-card-text>
     <v-card-actions>
-      <v-btn 
+      <template v-if="more">
+        <v-btn 
+          flat 
+          block 
+          color="orange"
+          @click="open_dialog_for_coming_leaves_extension()"
+        >
+          More
+          <span class="ml-1">
+          ({{ more }})
+          </span>
+        </v-btn>
+      </template>
+      <template v-else>
+        <v-btn flat block color="orange" disabled>
+          More
+        </v-btn>
+      </template>
+      <!-- <v-btn 
         flat 
         block 
         color="orange"
         @click="open_dialog_for_coming_leaves_extension()"
       >
         More<span v-if="coming_leaves.count" class="ml-1">(+ {{ parseInt(coming_leaves.count) - coming_leaves.items.length }})</span>
-      </v-btn>
+      </v-btn> -->
     </v-card-actions>
     <ExtensionDialog></ExtensionDialog>
   </v-card>
@@ -81,6 +99,9 @@ export default {
   computed: {
     coming_leaves () {
       return this.$store.getters['dashboard/coming_leaves']
+    },
+    more () {
+      return this.coming_leaves.count ? this.coming_leaves.count : null
     }
   },
   methods: {

@@ -1,9 +1,10 @@
 <template>
-  <v-card class="ca-dashboard-section">
+  <v-card class="ca-dashboard-section elevation-0">
     <v-card-title>
       <h5 class="ca-typo-title-5">Students who will finish programs</h5>
     </v-card-title>
     <v-card-text class="ca-dashboard-section-text">
+    <!-- <v-card-text> -->
       <template v-if="_.isEmpty(finishing_programs)">
         <div class="ca-dashboard-section-loading-box">
           <v-progress-circular
@@ -25,7 +26,7 @@
                     slot="activator"
                     size="35"
                     color="grey lighten-4 ca-cursor-pointer"
-                    @click="$router.push({name: 'student.basic_information', params: {student_id: program.student.id}})"
+                    @click="$router.push({name: 'student.information.basic_information', params: {student_id: program.student.id}})"
                   >
                     <img :src="AVATAR_BASE_URL+'/50/'+program.student.full_name" :alt="program.student.full_name"/>
                   </v-avatar>
@@ -56,20 +57,30 @@
         </template>
         <template v-else>
           <div class="ca-dashboard-section-noinfo text-xs-center">
-            <span class="ca-typo-title-4">No Student</span>
+            <span class="ca-typo-title-5">No Student</span>
           </div>
         </template>
       </template>
     </v-card-text>
     <v-card-actions>
-      <v-btn 
-        flat 
-        block 
-        color="orange"
-        @click="open_dialog_full_finishing_programs()"
-      >
-        More<span v-if="finishing_programs.count" class="ml-1">(+ {{ parseInt(finishing_programs.count) - finishing_programs.items.length }})</span>
-      </v-btn>
+      <template v-if="more">
+        <v-btn 
+          flat 
+          block 
+          color="orange"
+          @click="open_dialog_full_finishing_programs()"
+        >
+          More
+          <span class="ml-1">
+          ({{ more }})
+          </span>
+        </v-btn>
+      </template>
+      <template v-else>
+        <v-btn flat block color="orange" disabled>
+          More
+        </v-btn>
+      </template>
     </v-card-actions>
     <ExtensionDialog></ExtensionDialog>
   </v-card>
@@ -86,11 +97,15 @@ export default {
     finishing_programs () {
       return this.$store.getters['dashboard/finishing_programs']
       // return {}
+    },
+    more () {
+      return this.finishing_programs.count ? parseInt(this.finishing_programs.count):null
     }
   },
   methods: {
     open_dialog_full_finishing_programs () {
-      bus.$emit('open_dialog_full_finishing_programs')
+      // bus.$emit('open_dialog_full_finishing_programs')
+      bus.$emit('dialog:dashboard.full_finishing_programs')
     }
   }
 

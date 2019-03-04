@@ -15,6 +15,7 @@ class ProgramDateResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
             'start_date' => $this->start_date,
             'completion_date' => $this->completion_date,
             'reason' =>$this->reason,

@@ -13,11 +13,18 @@ class StudentTypeSeeder extends Seeder
     {
         DB::table('selection_option')->insert([
             [
-                'value' => 'F1',
+                'key' => 'F1',
+                'value' => '1',
                 'group' => 'student_type'
             ],
             [
-                'value' => 'Non F1',
+                'key' => 'Vacation English',
+                'value' => '2',
+                'group' => 'student_type'
+            ],
+            [
+                'key' => 'Regular',
+                'value' => '3',
                 'group' => 'student_type'
             ],
         ]);

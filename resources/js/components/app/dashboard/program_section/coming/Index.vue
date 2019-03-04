@@ -1,9 +1,11 @@
 <template>
-  <v-card class="ca-dashboard-section">
+  <v-card class="ca-dashboard-section elevation-0">
+  <!-- <v-card> -->
     <v-card-title>
-      <h5 class="ca-typo-title-5">Students who will begin new programs</h5>
+      <h5 class="ca-typo-title-5">Students who will begin programs</h5>
     </v-card-title>
     <v-card-text class="ca-dashboard-section-text">
+    <!-- <v-card-text> -->
       <template v-if="_.isEmpty(coming_programs)">
         <div class="ca-dashboard-section-loading-box">
           <v-progress-circular
@@ -25,7 +27,7 @@
                     slot="activator"
                     size="35"
                     color="grey lighten-4 ca-cursor-pointer"
-                    @click="$router.push({name: 'student.basic_information', params: {student_id: program.student.id}})"
+                    @click="$router.push({name: 'student.information.basic_information', params: {student_id: program.student.id}})"
                   >
                     <img :src="AVATAR_BASE_URL+'/50/'+program.student.full_name" :alt="program.student.full_name"/>
                   </v-avatar>
@@ -56,22 +58,32 @@
         </template>
         <template v-else>
           <div class="ca-dashboard-section-noinfo text-xs-center">
-            <span class="ca-typo-title-4">No Student</span>
+            <span class="ca-typo-title-5">No Student</span>
           </div>
         </template>
       </template>
     </v-card-text>
     <v-card-actions>
-      <v-btn 
-        flat 
-        block 
-        color="orange"
-        @click="open_dialog_for_extension()"
-      >
-        More<span v-if="coming_programs.count" class="ml-1">(+ {{ parseInt(coming_programs.count) - coming_programs.items.length }})</span>
-      </v-btn>
+      <template v-if="more">
+        <v-btn 
+          flat 
+          block 
+          color="orange"
+          @click="open_dialog_for_extension()"
+        >
+          More
+          <span class="ml-1">
+          ({{ more }})
+          </span>
+        </v-btn>
+      </template>
+      <template v-else>
+        <v-btn flat block color="orange" disabled>
+          more
+        </v-btn>
+      </template>
     </v-card-actions>
-    <!-- <ExtensionDialog></ExtensionDialog> -->
+    <ExtensionDialog></ExtensionDialog>
   </v-card>
 </template>
 <script>
@@ -88,11 +100,14 @@ export default {
   computed: {
     coming_programs () {
       return this.$store.getters['dashboard/coming_programs']
+    },
+    more () {
+      return this.coming_programs.count ? parseInt(this.coming_programs.count):null
     }
   },
   methods: {
     open_dialog_for_extension () {
-      bus.$emit('open_dialog_for_extension')
+      bus.$emit('dialog:dashboard.full_coming_programs')
     }
   }
 }

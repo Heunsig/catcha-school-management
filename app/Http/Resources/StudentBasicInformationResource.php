@@ -16,8 +16,14 @@ class StudentBasicInformationResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'type' => $this->type,
-            'status' => $this->status,
+            'type' => [
+                'name' => $this->type->key,
+                'id' => $this->type->value
+            ],
+            'status' => [
+                'name' => $this->status->key,
+                'id' => $this->status->value
+            ],
             'email' => $this->email,
             'first_name' => $this->first_name,
             'middle_name' => $this->middle_name,

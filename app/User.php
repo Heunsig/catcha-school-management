@@ -28,7 +28,8 @@ class User extends Authenticatable
         'created_at',
         'created_by',
         'updated_at',
-        'updated_by'
+        'updated_by',
+        // 'password'
         // 'name', 'email', 'password',
     ];
 
@@ -60,10 +61,10 @@ class User extends Authenticatable
         return $full_name;
     }
 
-    public function student()
-    {
-        return $this->hasOne('App\Student', 'id');
-    }
+    // public function student()
+    // {
+    //     return $this->hasOne('App\Student', 'id');
+    // }
 
     /**
      * This method is to change email which is a base element which is to 

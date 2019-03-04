@@ -36,6 +36,11 @@ export default {
     AddressAdditionDialog,
     AddressEditDialog,
     ConfirmDeletionDialog
+  },
+  created () {
+    this.$store.dispatch('student/get_address', {
+      student_id: this.$route.params.student_id
+    })
   }
 }
 </script>

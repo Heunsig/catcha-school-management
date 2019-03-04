@@ -1,5 +1,82 @@
 <template>
-  <div style="display:flex;align-items: flex-end;">
+  <v-card>
+    <v-card-title>
+      <h4 class="ca-typo-title-4">Home Address</h4>
+      <v-spacer></v-spacer>
+      <v-btn 
+        icon
+        @click="open_dialog_store()"
+        v-if="_.isEmpty(home_address)"
+      >
+        <v-icon small color="grey darken-1">add</v-icon>
+      </v-btn>
+      <v-btn 
+        icon
+        @click="open_dialog_edit()"
+        v-if="!_.isEmpty(home_address)"
+      >
+        <v-icon small color="grey darken-1">edit</v-icon>
+      </v-btn>
+      <v-btn 
+        icon
+        @click="open_dialog_deletion()"
+        v-if="!_.isEmpty(home_address)"
+      >
+        <v-icon small color="grey darken-1">close</v-icon>
+      </v-btn>
+    </v-card-title>
+    <v-card-text>
+      <v-container fluid class="pa-0 ca-grid-list-2">
+        <v-layout wrap>
+          <v-flex xs12>
+            <div class="ca-label ca-label-wrap">
+              <div class="ca-label-title ca-title-5 font-weight-bold">Address</div>
+              <template>
+                <div class="ca-label-content" v-if="home_address.address_line1">{{ home_address.address_line1 }}</div>
+                <div class="ca-label-content ca-typo-style-blank" v-else>No Info</div>
+              </template>
+              <div class="ca-label-content" v-if="home_address.address_line2">{{ home_address.address_line2 }}</div>
+            </div>
+          </v-flex>
+          <v-flex xs3>
+            <div class="ca-label ca-label-wrap">
+              <div class="ca-label-title ca-title-5 font-weight-bold">City</div>
+              <div class="ca-label-content" v-if="home_address.city">{{ home_address.city }}</div>
+              <div class="ca-label-content ca-typo-style-blank" v-else>No Info</div>
+            </div>
+          </v-flex>
+          <v-flex xs3>
+            <div class="ca-label ca-label-wrap">
+              <div class="ca-label-title ca-title-5 font-weight-bold">State</div>
+              <div class="ca-label-content" v-if="home_address.state">{{ home_address.state }}</div>
+              <div class="ca-label-content ca-typo-style-blank" v-else>No Info</div>
+            </div>
+          </v-flex>
+          <v-flex xs3>
+            <div class="ca-label ca-label-wrap">
+              <div class="ca-label-title ca-title-5 font-weight-bold">Country</div>
+              <div class="ca-label-content" v-if="home_address.country">
+                <v-tooltip bottom>
+                  <span slot="activator" class="flag-icon mr-1" :class="get_flag(home_address.country)"></span>
+                  <span>{{ get_country(home_address.country).name }}</span>
+                </v-tooltip>
+                {{ get_country(home_address.country).name }}
+              </div>
+              <div class="ca-label-content ca-typo-style-blank" v-else>No Info</div>
+            </div>
+          </v-flex>
+          <v-flex xs3>
+            <div class="ca-label ca-label-wrap">
+              <div class="ca-label-title ca-title-5 font-weight-bold">Postal Code</div>
+              <div class="ca-label-content" v-if="home_address.postal_code">{{ home_address.postal_code }}</div>
+              <div class="ca-label-content ca-typo-style-blank" v-else>No Info</div>
+            </div>
+          </v-flex>
+        </v-layout>
+      </v-container>
+    </v-card-text>
+  </v-card>
+  <!-- <div style="display:flex;align-items: flex-end;">
     <div style="flex:1 1 auto;">
       <h3 class="ca-typo-title-4 mb-1">Home Address</h3>
       <div>
@@ -77,7 +154,7 @@
         <v-icon small>close</v-icon>
       </v-btn>
     </div>
-  </div>
+  </div> -->
 </template>
 <script>
 import bus from 'bus'

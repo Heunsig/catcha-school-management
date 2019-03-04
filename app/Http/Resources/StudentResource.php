@@ -19,8 +19,14 @@ class StudentResource extends JsonResource
         return [
             'id' => $this->id,
             'full_name' => $this->full_name,
-            'type' => $this->type,
-            'status' => $this->status,
+            'type' => [
+                'id' => $this->type->value,
+                'name' => $this->type->key,
+            ],
+            'status' => [
+                'id' => $this->status->value,
+                'name' => $this->status->key,
+            ],
             // 'date_of_birth' => $this->date_of_birth,
             'created_at' => $this->created_at,
             'hidden_created_at' => Carbon::parse($this->created_at)->format('YmdHis')

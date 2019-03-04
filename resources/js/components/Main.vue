@@ -36,17 +36,13 @@
           :size="40"
           color="grey lighten-4"
         >
-          <img :src="AVATAR_BASE_URL+'/50/Heunsig.png'" alt="avatar">
+          <img :src="AVATAR_BASE_URL+'/50/'+user_name+'.png'" alt="avatar">
         </v-avatar>
-        <v-card>
-          <v-list dense>
-            <v-list-tile
-              @click=""
-            >
-              <v-list-tile-title>Signed in as Heunsig</v-list-tile-title>
-            </v-list-tile>
-          </v-list>
-          <v-divider></v-divider>
+        <v-card max-width="170">
+          <div style="padding: 16px;">
+            <h6 class="ca-typo-title-6">Hello {{ user_name }}</h6>
+          </div>
+          <v-divider style="margin-top: 0px; margin-bottom: 0px;"></v-divider>
           <v-list dense>
             <v-list-tile
               @click="logout()"
@@ -54,9 +50,9 @@
               <v-list-tile-title>Logout</v-list-tile-title>
             </v-list-tile>
             <v-list-tile
-              @click=""
+              @click="$router.push({name: 'account.profile'})"
             >
-              <v-list-tile-title>Settings</v-list-tile-title>
+              <v-list-tile-title>Account</v-list-tile-title>
             </v-list-tile>
           </v-list>
         </v-card>
@@ -82,6 +78,14 @@
     data: () => ({
       drawer: null
     }),
+    computed: {
+      user_email () {
+        return this.$store.getters['account/user'].email
+      },
+      user_name () {
+        return this.$store.getters['account/user'].first_name
+      }
+    },
     methods: {
       logout () {
         this.$store.dispatch('destroyToken').then(() => {
@@ -91,6 +95,12 @@
     },
     created () {
       this.$axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.getters.token
+
     }
   }
 </script>
+<style>
+  #inspire {
+    background: #f3f3f3;
+  }
+</style>

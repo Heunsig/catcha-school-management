@@ -174,7 +174,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-
+        App\Providers\AppEnvServiceProvider::class,
     ],
 
     /*
@@ -227,6 +227,7 @@ return [
         'PDF_old' => Barryvdh\DomPDF\Facade::class,
         'PDF' => Barryvdh\Snappy\Facades\SnappyPdf::class,
         'SnappyImage' => Barryvdh\Snappy\Facades\SnappyImage::class,
+        'AppEnv' => App\Helpers\AppEnv::class,
     ],
 
 ];

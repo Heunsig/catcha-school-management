@@ -2,9 +2,11 @@
   <v-card>
     <v-card-title>
       <h3 class="ca-typo-title-4">Program</h3>
+      <v-spacer></v-spacer>
+      <strong>within 1 month</strong>
     </v-card-title>
     <v-card-text>
-      <v-container fluid class="pa-0 ca-grid-list-1">
+      <v-container fluid class="pa-0">
         <v-layout wrap>
           <v-flex xs6>
             <ComingSection></ComingSection>

@@ -14,15 +14,23 @@ class SelectionOptionSeeder extends Seeder
     {
         DB::table('selection_option')->insert([
             [
-                'value' => 'In School',
+                'key' => 'In School',
+                'value' => '1',
                 'group' => 'student_status'
             ],
             [
-                'value' => 'Completed',
+                'key' => 'Completed',
+                'value' => '2',
                 'group' => 'student_status'
             ],
             [
-                'value' => 'Terminated',
+                'key' => 'Terminated',
+                'value' => '3',
+                'group' => 'student_status'
+            ],
+            [
+                'key' => 'Prospective',
+                'value' => '4',
                 'group' => 'student_status'
             ],
         ]);

@@ -14,9 +14,9 @@
               </div>
               <v-spacer></v-spacer>
               <div>
-                <span>{{ request.start_date }}</span>
+                <span>{{ $moment(request.start_date).format('M/D/Y') }}</span>
                 -
-                <span>{{ request.completion_date }}</span>
+                <span>{{ $moment(request.completion_date).format('M/D/Y') }}</span>
               </div>
               <v-menu
                 bottom left

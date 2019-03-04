@@ -1,0 +1,20 @@
+.#{$prefix}-nodata-box {
+  display: flex;
+  height: 125px;
+  align-items: center;
+  justify-content: center;
+}
+
+.#{$prefix}-nodata-box__message {
+  text-align: center;
+}
+
+.#{$prefix}-nodata-box__message > .v-icon {
+  color: #c2c2c2!important;
+  font-size: 50px!important;
+}
+
+.#{$prefix}-nodata-box__message > .message { 
+  color: #acacac;
+  font-size: 25px;
+}

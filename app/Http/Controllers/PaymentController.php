@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Payment;
 use App\PaymentDetail;
 use App\PaymentDetailAttribute;
+use App\Program;
 use Carbon;
 
 
@@ -62,7 +63,7 @@ class PaymentController extends Controller
             $items = [];
             for($i = 0 ; $i < count($request->items) ; $i++) {
                 $item = new PaymentDetail();
-                $item->product_id = $request->items[0]['product_id'][count($request->items[0]['product_id']) - 1];
+                $item->product_id = $request->items[$i]['product_id'][count($request->items[$i]['product_id']) - 1];
                 $item->price = $request->items[$i]['price'];
                 $item->quantity = $request->items[$i]['quantity'];
                 $item->week = $request->items[$i]['week'];
@@ -85,6 +86,31 @@ class PaymentController extends Controller
 
                 $items[$i]->attribute()->saveMany($attributes);
             }
+
+            $stored_payment = Payment::with(['payment_detail.attribute', 'payment_detail.product'])->where('id', $payment->id)->first();
+            $items = $stored_payment->payment_detail;
+
+            if ($stored_payment->status === 'Paid' || $stored_payment->status === 'Waiting') {
+                foreach ($items as $item) {
+                    // category == English program
+                    if ($item->product->category_id === 1) {
+                        $melons = $item->attribute()->where('attribute_id', 1)->where('attribute_value_id', 1)->get();
+                        if (count($melons) > 0) {
+                            $new_program = new Program();
+                            $new_program->student_id = $request->student_id;
+                            $new_program->product_id = $item->product->id;
+                            $new_program->payment_detail_id = $item->id;
+                            $new_program->created_at = Carbon::now();
+                            $new_program->created_by = $request->user()->id;
+                            $new_program->updated_at = Carbon::now();
+                            $new_program->updated_by = $request->user()->id;
+
+                            $new_program->save();
+                        }
+                    }
+                }
+            }
+
 
             DB::commit();
         } catch(\Illuminate\Database\QueryException $e) {

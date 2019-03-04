@@ -9,6 +9,7 @@ import paymentModule from './payment'
 import productModule from './product'
 import leaveModule from './leave'
 import dashboardModule from './dashboard'
+import accountMoudle from './account'
 
 Vue.use(Vuex)
 
@@ -20,10 +21,14 @@ export default new Vuex.Store({
     payment: paymentModule,
     product: productModule,
     leave: leaveModule,
-    dashboard: dashboardModule
+    dashboard: dashboardModule,
+    account: accountMoudle
   },
   state: {
-    token: localStorage.getItem('access_token') || null
+    token: localStorage.getItem('access_token') || null,
+    user: {}
+    // user_email: '',
+    // user_name: '',
   },
   getters: {
     loggedIn (state) {
@@ -31,6 +36,15 @@ export default new Vuex.Store({
     },
     token (state) {
       return state.token
+    },
+    user (state) {
+      return state.user
+    },
+    user_email (state) {
+      return state.user.email
+    },
+    user_name (state) {
+      return state.user.full_name
     }
   },
   mutations: {
@@ -39,9 +53,22 @@ export default new Vuex.Store({
     },
     destroyToken (state) {
       state.token = null
+    },
+    setUser (state, user) {
+      state.user = user
     }
   },
   actions: {
+    // retrieveUser (context, payload) {
+    //   axios.defaults.headers.common['Authorization'] = 'Bearer ' + payload.token
+
+    //   return new Promise((resolve, reject) => {
+    //     axios.get('/user').then(res => {
+    //       context.commit('setUser', res.data)
+    //       resolve()
+    //     })
+    //   })
+    // },
     retrieveToken (context, credentials) {
       return new Promise((resolve, reject) => {
         axios.post('/login', {
@@ -52,7 +79,7 @@ export default new Vuex.Store({
 
           localStorage.setItem('access_token', token)
           context.commit('retrieveToken', token)
-          resolve(res)
+          resolve(token)
         })
       })
     },

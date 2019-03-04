@@ -18,6 +18,7 @@ class ProgramResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->product->name,
+            'status' => $this->payment_detail->payment->status,
             'dates' => ProgramDateResource::collection($this->program_date),
             'classes' => ClassInProgramResource::collection($this->class->filter(function($value, $key){
                 return $value['deleted_at'] === null;

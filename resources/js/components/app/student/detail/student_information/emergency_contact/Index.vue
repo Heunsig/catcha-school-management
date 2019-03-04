@@ -56,7 +56,12 @@
                   <span>{{ get_country_as_dial_code(emergency_contact.country_code).name }}</span>
                 </v-tooltip>
                 <span>+{{ emergency_contact.country_code }}</span>
-                <span>{{ emergency_contact.number }} ({{ capitalize_first_letter(emergency_contact.type) }})</span>
+                <span>
+                  {{ emergency_contact.number }} 
+                  <span v-if="emergency_contact.type">
+                    ({{ capitalize_first_letter(emergency_contact.type) }})  
+                  </span>
+                </span>
               </div>
               <div class="ca-label-content ca-typo-style-blank" v-else>No Info</div>
             </div>
@@ -178,11 +183,11 @@ export default {
         emergency_contact_id: this.emergency_contact.id
       });
     }
+  },
+  created () {
+    this.$store.dispatch('student/get_emergency_contact', {
+      student_id: this.$route.params.student_id
+    })
   }
 }
 </script>
-<!-- <style scoped>
-  .el-form-item {
-    margin-bottom: 0px!important;
-  }
-</style> -->

@@ -2,20 +2,34 @@
   <v-dialog v-model="is_active" scrollable persistent max-width="1000">
     <v-card>
       <v-card-title>
+        <h4 class="ca-typo-title-4">New Students</h4>
         <v-spacer></v-spacer>
-        <v-text-field
+        <div>
+          <el-input
+            v-model="search"
+            placeholder="Search"
+            suffix-icon="el-icon-search"
+          ></el-input>
+        </div>
+        <!-- <v-btn
+          icon
+        >
+          <v-icon>more_vert</v-icon>
+        </v-btn> -->
+        <!-- <v-text-field
           v-model="search"
           append-icon="search"
           label="Search"
           single-line
           hide-details
-        ></v-text-field>
+        ></v-text-field> -->
       </v-card-title>
       <v-card-text>
         <v-data-table
           :headers="headers"
-          :items="full_finishing_programs"
+          :items="full_new_students"
           :search="search"
+          :pagination.sync="pagination"
           :rows-per-page-items="RPPI"
         >
           <template slot="items" slot-scope="props">
@@ -23,26 +37,27 @@
               <v-btn 
                 fab 
                 icon
-                @click="open_big_img(AVATAR_BASE_URL+'/400/'+props.item.student.full_name)"
+                @click="open_big_img(AVATAR_BASE_URL+'/400/'+props.item.full_name)"
               >
                 <v-avatar
                   size="45"
                   color="grey lighten-4"
                 >
-                  <img :src="AVATAR_BASE_URL+'/50/'+props.item.student.full_name" :alt="props.item.student.full_name"/>
+                  <img :src="AVATAR_BASE_URL+'/50/'+props.item.full_name" :alt="props.item.full_name"/>
                 </v-avatar>
               </v-btn>
             </td>
-            <td>{{ props.item.student.full_name }}</td>
-            <td>{{ props.item.start_date }}</td>
-            <td>{{ props.item.completion_date }}</td>
+            <td>{{ props.item.type.name }}</td>
+            <td>{{ props.item.status.name }}</td>
+            <td>{{ props.item.full_name }}</td>
+            <td>{{ $moment(props.item.created_at).format('MM/DD/YYYY') }}</td>
             <td>
               <v-btn 
                 icon
                 @click="$router.push({
-                  name: 'student.basic_information',
+                  name: 'student.information.basic_information',
                   params: {
-                    student_id: props.item.student.id
+                    student_id: props.item.id
                   }
                 })"
               >
@@ -57,7 +72,8 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="green darken-1" flat @click="is_active = false">Close</v-btn>
+        <!-- <v-btn color="green darken-1" flat @click="is_active = false">Close</v-btn> -->
+        <v-btn color="grey darken-2" flat @click="is_active = false">Close</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -71,39 +87,48 @@ export default {
       loading: false,
       is_active: false,
       search: '',
+      pagination: {
+        descending: true,
+        sortBy: 'created_at'
+      },
       headers: [
         {
-          text: '',
-          sortable: false,
-        },
-        {
-          text: 'Name',
-          value: 'student.full_name'
-        },
-        {
-          text: 'Start Date',
-          value: 'start_date'
-        },
-        {
-          text: 'Completion Date',
-          value: 'completion_date'
-        },
-        {
-          text: 'Actions',
-          sortable: false
-        }
+        text: '',
+        sortable: false,
+      },
+      {
+        text: 'Type',
+        value: 'type'
+      },
+      {
+        text: 'Status',
+        value: 'status.name'
+      },
+      {
+        text: 'Name',
+        value: 'full_name'
+      },
+      {
+        text: 'Created At',
+        value: 'created_at'
+      },
+      {
+        text: 'Actions',
+        sortable: false
+      }
       ],
     }
   },
   computed: {
-    full_finishing_programs () {
-      return this.$store.getters['dashboard/full_finishing_programs']
+    full_new_students () {
+      return this.$store.getters['dashboard/full_new_students']
     }
   },
   watch: {
     is_active (new_v) {
       if (new_v) {
-        this.$store.dispatch('dashboard/get_full_finishing_programs').then(res => {
+        this.$store.dispatch('dashboard/get_full_new_students').then(res => {
+          // console.log('res', res)
           /*
            *  After taking programs
            */
@@ -112,7 +137,7 @@ export default {
     }
   },
   created () {
-    bus.$on('open_dialog_full_finishing_programs', (payload) => {
+    bus.$on('dialog:new_students', (payload) => {
       this.is_active = true
     })
   }

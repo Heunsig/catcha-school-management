@@ -19,8 +19,15 @@ class StudentForDashboardResource extends JsonResource
             'id' => $this->id,
             'full_name' => $this->full_name,
             'email' => $this->email,
-            'type' => $this->type,
-            'date_of_birth' => $this->date_of_birth,
+            'type' => [
+                'id' => $this->type->value,
+                'name' => $this->type->key
+            ],
+            'status' => [
+                'id' => $this->status->value,
+                'name' => $this->status->key
+            ],
+            // 'date_of_birth' => $this->date_of_birth,
             'created_at' => Carbon::parse($this->created_at)->format('Y-m-d')
             // 'created_at' => $this->created_at->format('Y-m-d'),
 

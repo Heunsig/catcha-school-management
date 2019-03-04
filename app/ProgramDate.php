@@ -14,6 +14,7 @@ class ProgramDate extends Model
         'start_date',
         'completion_date',
         'reason',
+        'active',
         'deleted_at',
         'deleted_by'
     ];

@@ -29,6 +29,9 @@ Lacacy of bootstrap
 @import './dashboard/section.scss';
 @import './dashboard/common.scss';
 @import './etc.scss';
+@import './overwrite.scss';
+@import './loading-box.scss';
+@import './nodata-box.scss';
 
 .#{$prefix} {
 

@@ -1,26 +1,29 @@
 <template>
   <v-card>
     <v-card-title>
-      
+      <h4 class="ca-typo-title-4">
+        Total Students in school
+        <!-- <v-btn @click="haha()">test</v-btn> -->
+      </h4>
     </v-card-title>
-    <v-card-text>
+    <v-card-text style="height: 433px;">
       <div class="text-xs-center mb-4">
+        <!-- <div>
+          <span class="insty-total-title">Total Students</span>
+        </div> -->
         <div>
-          <span class="insty-total-title">F1 + Non F1</span>
-        </div>
-        <div>
-          <span class="insty-total">{{ current_studying_students }}</span>
+          <span class="insty-total">{{ total_student }}</span>
         </div>
       </div>
       <div class="insty-details">
-        <div>
-          <div class="insty-detail-title">F1</div>
-          <div class="insty-detail-content">1000</div>
+        <div v-for="(group, key) in grouped_students">
+          <div class="insty-detail-title">{{ key }}</div>
+          <div class="insty-detail-content">{{ group.length }}</div>
         </div>
-        <div>
+        <!-- <div>
           <div class="insty-detail-title">Non F1</div>
           <div class="insty-detail-content">1000</div>
-        </div>
+        </div> -->
       </div>
     </v-card-text>
   </v-card>
@@ -30,7 +33,18 @@ export default {
   computed: {
     current_studying_students () {
       return this.$store.getters['dashboard/current_studying_students']
+    },
+    total_student () {
+      return this.current_studying_students.length
+    },
+    grouped_students () {
+      return this._.groupBy(this.current_studying_students, 'type.name')
     }
+  },
+  methods: {
+    // haha () {
+    //   console.log('ttt', this._.groupBy(this.current_studying_students, 'type.name'))
+    // }
   }
 }
 </script>

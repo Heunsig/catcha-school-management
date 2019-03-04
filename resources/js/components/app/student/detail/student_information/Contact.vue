@@ -4,14 +4,15 @@
       <div class="ca-typo-title-3">Contact</div>
       <v-spacer></v-spacer>
       <v-btn icon @click="dialog_add = true">
-        <v-icon>add</v-icon>
+        <v-icon small color="grey darken-1">add</v-icon>
       </v-btn>
     </v-card-title>
     <v-card-text>
       <table class="insty-table">
         <thead>
           <tr>
-            <th class="text-xs-left" style="width:110px;">Country Code</th>
+            <th class="text-xs-center">Type</th>
+            <th class="text-xs-left" style="width:200px;">Country Code</th>
             <th class="text-xs-left" style="width:auto;">Contact Number</th>
             <th style="width:30px;"></th>
           </tr>
@@ -21,6 +22,7 @@
             v-for="cellphone in cellphones"
             :key="cellphone.id"
           >
+            <td class="text-xs-center">{{ capitalize_first_letter(cellphone.type) }}</td>
             <td>
               <div class="ca-label-content" v-if="cellphone.country_code">
                 <v-tooltip bottom>
@@ -33,7 +35,7 @@
             </td>
             <td>
               <div class="ca-label-content" v-if="cellphone.country_code">
-                <span>{{ cellphone.number }} ({{ capitalize_first_letter(cellphone.type) }})</span>
+                <span>{{ cellphone.number }}</span>
               </div>
               <div class="ca-label-content ca-typo-style-blank" v-else>No Info</div>
             </td>
@@ -65,13 +67,15 @@
     </v-dialog>
     <v-dialog v-model="dialog_add" persistent max-width="600">
       <v-card>
-        <v-card-title>Add</v-card-title>  
+        <v-card-title>
+          <h4 class="ca-typo-title-4">Add Contact</h4>
+        </v-card-title>  
         <v-card-text>
           <el-form ref="form" :model="form" :rules="rules" label-position="top">
-            <v-container fluid class="pa-0 ca-grid-list-3">
+            <v-container fluid class="pa-0 ca-grid-list-2">
               <v-layout wrap>
                 <v-flex xs12>
-                  <el-form-item label="Type" class="ca-label">
+                  <el-form-item label="Type" class="ca-label" prop="type">
                     <el-select 
                       v-model="form.type" 
                       filterable
@@ -90,7 +94,7 @@
                   </el-form-item>
                 </v-flex>
                 <v-flex xs5>
-                  <el-form-item label="Country Dial Code" class="ca-label">
+                  <el-form-item label="Country Dial Code" class="ca-label" prop="country_code">
                     <el-select 
                       v-model="form.country_code" 
                       filterable
@@ -110,7 +114,7 @@
                   </el-form-item>
                 </v-flex>
                 <v-flex xs7>
-                  <el-form-item label="Contact Number" class="ca-label">
+                  <el-form-item label="Contact Number" class="ca-label" prop="number">
                     <el-input placeholder="Please input" v-model="form.number">
                       <template slot="prepend">
                         <span v-if="form.country_code">+{{ form.country_code }}</span>
@@ -124,8 +128,13 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn flat @click="dialog_add = false">Disagree</v-btn>
-          <v-btn flat @click="submit_store()">Agree</v-btn>
+          <v-btn flat color="grey darken-2" @click="dialog_add = false">Disagree</v-btn>
+          <v-btn 
+            flat
+            @click="submit_store()"
+            color="primary"
+            :loading="wating_result"
+          >Agree</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -141,6 +150,7 @@ export default {
     return {
       dialog_remove: false,
       dialog_add: false,
+      wating_result: false,
       types: ['Cellphone', 'Phone', 'Fax'],
       selected_contact: {},
       form: {
@@ -149,13 +159,30 @@ export default {
         number: '',
         type: ''
       },
-      rules: {}
+      rules: {
+        type: [
+          { required: true, message: 'Please select type', trigger: 'change' },
+        ],
+        country_code: [
+          { required: true, message: 'Please select country', trigger: 'change' },
+        ],
+        number: [
+          { required: true, message: 'Please input number', trigger: 'blur' },
+        ]
+      }
     }
   },
   computed: {
     cellphones () {
       return this.$store.getters['student/cellphones']
     },
+  },
+  watch: {
+    dialog_add (n_val) {
+      if(!n_val) {
+        this.$refs['form'].resetFields()
+      }
+    }
   },
   methods: {
     get_flag (code) {
@@ -177,23 +204,53 @@ export default {
       })
     },
     submit_store () {
-      this.form.student_id = this.$route.params.student_id
-      this.$store.dispatch('student/store_contact', {
-        form: this.form
-      }).then(res => {
-        this.dialog_add = false
-      })
+      this.$refs['form'].validate((valid) => {
+        if (valid) {
+          this.wating_result = true
+          this.form.student_id = this.$route.params.student_id
+          this.$store.dispatch('student/store_contact', {
+            form: this.form
+          }).then(res => {
+            this.wating_result = false
+            this.dialog_add = false
+          })
+          // this.wating_result = true
+          // this.$axios.post(`/student`, this.form).then(res => {
+          //   this.wating_result = false
+          //   this.created_student_name = this.form.first_name
+          //   this.created_student_id = res.data.student_id
+          //   this.snackbar = true
+          //   this.clear()
+          // })
+        }
+      });
+      
     }
+  },
+  created () {
+    this.$store.dispatch('student/get_contact', {
+      student_id: this.$route.params.student_id
+    })
   }
 }
 </script>
 <style scoped>
   .insty-table {
     width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .insty-table thead tr th {
+    color: #555555;
+    border-bottom: 1px solid #cccccc;
+  }
+
+  .insty-table th {
+    font-weight: 300;
   }
 
   .insty-table th, .insty-table td {
-    padding: 7px 0;
+    padding: 10px 0;
   }
 
   .insty-hover-close:hover {

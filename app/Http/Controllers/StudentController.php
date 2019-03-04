@@ -33,13 +33,16 @@ use App\Http\Resources\ProgramSimpleResource;
 use App\Http\Resources\AddressResource;
 use App\Http\Resources\ContactResource;
 use App\Http\Resources\EmergencyContactResource;
+use App\Http\Resources\StudentMinInformationResource;
+
+use AppEnv;
 
 class StudentController extends Controller
 {   
     public function list()
     {
-        $students = Student::all();
-        // return response()->json($students);
+        $student_types = AppEnv::get_student_types();
+        $students = Student::whereIn('type_id', $student_types)->get();
         return response()->json(StudentResource::collection($students));
     }
 
@@ -66,8 +69,8 @@ class StudentController extends Controller
             $student->nickname = $request->nickname;
             $student->email = $request->email;
             $student->note = $request->note;
-            $student->type = $request->type;
-            $student->status = $request->status;
+            $student->type_id = $request->type_id;
+            $student->status_id = $request->status_id;
             $student->sex = $request->sex;
             $student->date_of_birth = $request->date_of_birth;
             $student->city_of_birth = $request->city_of_birth;
@@ -105,8 +108,8 @@ class StudentController extends Controller
         $student->nickname = $request->nickname;
         $student->email = $request->email;
         $student->note = $request->note;
-        $student->type = $request->type;
-        $student->status = $request->status;
+        $student->type_id = $request->type_id;
+        $student->status_id = $request->status_id;
         $student->sex = $request->sex;
         $student->date_of_birth = $request->date_of_birth;
         $student->city_of_birth = $request->city_of_birth;
@@ -121,6 +124,13 @@ class StudentController extends Controller
         $updated_student = Student::where('id', $student_id)->first();
 
         return response()->json(new StudentBasicInformationResource($updated_student));
+    }
+
+    public function min_infomation($student_id)
+    {
+        $student = Student::where('id', $student_id)->first();
+
+        return response()->json(new StudentBasicInformationResource($student));
     }
 
     public function basic_information($student_id)
@@ -142,44 +152,59 @@ class StudentController extends Controller
         ]);
     }
 
+
+    public function contact($student_id)
+    {
+        $student = Student::where('id', $student_id)->first();
+        $contacts = $student->contact()->whereNull('deleted_at')->get();
+
+        return response()->json([
+            'contacts' => ContactResource::collection($contacts)
+        ]);
+    }
+
+    public function address($student_id)
+    {
+        $student = Student::where('id', $student_id)->first();
+        $current_address = $student->address()->whereNull('deleted_at')->where('type', 'current')->orderBy('created_at', 'desc')->first();
+        $home_address = $student->address()->whereNull('deleted_at')->where('type', 'home')->orderBy('created_at', 'desc')->first();
+
+        return response()->json([
+            'current_address' => $current_address ? new AddressResource($current_address):[],
+            'home_address' => $home_address ? new AddressResource($home_address):[],
+        ]);
+    }
+
+    public function emergency_contact($student_id)
+    {
+        $student = Student::where('id', $student_id)->first();
+        $emergency_contact = $student->emergency_contact()->whereNull('deleted_at')->orderBy('created_at', 'desc')->first();
+
+        return response()->json([
+            'emergency_contact' => $emergency_contact ? new EmergencyContactResource($emergency_contact):[]
+        ]);
+    }
+
+
     public function class($student_id)
     {
         $student = Student::where('id', $student_id)->first();
+        
         $programs = $student->program;
         $class_selection_options = Classinfo::all();
-        // $program_selection_options = Product::where('parent_product_id', 1)->get();
-        $program_selection_options = collect($student->purchased_programs());
-        // $programs = $student->program
-
-
-        // $class_belonging_to = $student->classinfo()->first();
-        // $student = Student::where('id', $student_id)->first();
-        // $classes = Classinfo::all();
-
-        // $student_class_resource = StudentClassResource::collection($student->classinfo()->get());
-        // // $grouped_class = collect($student_class_resource)->sortBy('created_at')->groupBy('program_id');
-        // // $result = [];
-
-        // // foreach($grouped_class as $key => $value) {
-        // //     $result[] = $value;
-        // // }
-
-        // $programs_taken = $student->programs_taken();
+        $program_selection_options = collect($student->purchased_programs);
 
         return response()->json([
             'programs' => ProgramResource::collection($programs),
             'class_selection_options' => ClassListResource::collection($class_selection_options),
             'program_selection_options' => ProgramListResource::collection($program_selection_options),
-            // 'program_selection_options' => $program_selection_options,
-            // 'classes_belonging_to' => ClassBelongingToStudentResource::collection($classes_belonging_to),
-            // 'programs_taken' => ProgramTakenResource::collection(collect($programs_taken))
         ]);
     }
 
     public function payment($student_id)
     {
         $payment_methods = PaymentMethod::all();
-        $payments = Payment::all();
+        $payments = Payment::where('student_id', $student_id)->get();
 
         return response()->json([
             'payments' => InvoiceResource::collection($payments),
@@ -202,6 +227,32 @@ class StudentController extends Controller
             'leave_types' => $leave_types,
             'programs_taken' => ProgramSimpleResource::collection($programs_taken)
         ]);
+    }
+
+    public function program_term($student_id)
+    {   
+        $programs = Program::with('program_date')
+                            ->where('student_id', $student_id)
+                            ->whereNull('deleted_at')
+                            ->get();
+
+
+        return response()->json(ProgramResource::collection($programs));
+
+        // $start_dates = [];
+        // $completion_dates = [];
+        // foreach($programs as $program) {
+        //     foreach ($program->program_date as $date) {
+        //         // if ()
+        //         $start_dates[] = $date->start_date;
+        //         $completion_dates[] = $date->completion_date;
+        //     }
+        // }
+
+        // $sorted_start_dates = collect($start_dates)->sort()->values()->all();
+
+        // return $sorted_start_dates;
+        // $dates = $programs
     }
 
     // public function add_program(Request $request, $student_id)

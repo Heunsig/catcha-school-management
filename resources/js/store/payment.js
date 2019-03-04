@@ -37,10 +37,14 @@ export default {
   },
   actions: {
     init_data (context, payload) {
-      axios.get(`/student/${payload.student_id}/payment`).then(res => {
-        console.log('res', res)
-        context.commit('set_payments', res.data.payments)
-        context.commit('set_payment_methods', res.data.payment_methods)
+      return new Promise((resolve, reject) => {
+        axios.get(`/student/${payload.student_id}/payment`).then(res => {
+          console.log('hhi')
+          console.log('init_data', res)
+          context.commit('set_payments', res.data.payments)
+          context.commit('set_payment_methods', res.data.payment_methods)
+          resolve()
+        })
       })
     },
     store (context, payload) {

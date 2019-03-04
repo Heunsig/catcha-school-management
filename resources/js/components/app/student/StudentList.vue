@@ -36,11 +36,13 @@
             :headers="headers"
             :items="students"
             :search="search"
+            :loading="loading"
             :rows-per-page-items="RPPI"
             :pagination.sync="pagination"
           >
+            <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
             <template slot="items" slot-scope="props">
-              <td>
+              <td class="text-xs-center">
                 <v-btn 
                   fab 
                   icon
@@ -54,15 +56,15 @@
                   </v-avatar>
                 </v-btn>
               </td>
-              <td>{{ props.item.type }}</td>
+              <td class="text-xs-center">{{ props.item.type.name }}</td>
+              <td class="text-xs-center">{{ props.item.status.name }}</td>
               <td>{{ props.item.full_name }}</td>
-              <td>{{ props.item.status }}</td>
-              <td>{{ $moment(props.item.created_at).format('MM/DD/YYYY') }}</td>
-              <td>
+              <td class="text-xs-center">{{ $moment(props.item.created_at).format('MM/DD/YYYY') }}</td>
+              <td class="text-xs-center">
                 <v-btn 
                   icon
                   @click="$router.push({
-                    name: 'student.basic_information',
+                    name: 'student.information.basic_information',
                     params: {
                       student_id: props.item.id
                     }
@@ -87,6 +89,7 @@
 <script>
 export default {
   data: () => ({
+    loading: false,
     breadcrumbs: [
       {
         text: 'Dashboard',
@@ -106,25 +109,34 @@ export default {
       {
         text: '',
         sortable: false,
+        width: '120'
       },
       {
         text: 'Type',
-        value: 'type'
+        value: 'type.name',
+        align: 'center',
+        width: '180'
+      },
+      {
+        text: 'Status',
+        value: 'status.name',
+        align: 'center',
+        width: '150'
       },
       {
         text: 'Name',
         value: 'full_name'
       },
       {
-        text: 'Status',
-        value: 'status.name'
-      },
-      {
         text: 'Created At',
+        align: 'center',
+        width: '150',
         value: 'hidden_created_at'
       },
       {
         text: 'Actions',
+        width: '120',
+        align: 'center',
         sortable: false
       }
     ],
@@ -134,7 +146,7 @@ export default {
   }),
   methods: {
     open_big_img (src) {
-      console.log('src', src)
+      // console.log('src', src)
       this.big_image_dialog = true
       this.image_src = src
       // console.log('Hello World')
@@ -148,8 +160,10 @@ export default {
     // }
   },
   created () {
+    this.loading = true
     this.$axios.get('/student').then(res => {
       console.log('res', res)
+      this.loading = false
       this.students = res.data
     })
   }

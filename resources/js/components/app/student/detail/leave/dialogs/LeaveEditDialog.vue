@@ -1,15 +1,15 @@
 <template>
   <v-dialog v-model="is_active" persistent scrollable max-width="500">
     <v-card>
-      <v-card-title class="primary white--text ca-typo-title-4">
-        <span>Issue New Receipt</span>
+      <v-card-title>
+        <h4 class="ca-typo-title-4">Edit Leave of Absence</h4>
       </v-card-title>
       <v-card-text>
-        <el-form ref="form" :model="form" label-position="top">
+        <el-form ref="form" :model="form" :rules="rules" label-position="top">
           <v-container fluid class="pa-0 ca-grid-list-1">
             <v-layout wrap>
               <v-flex xs12>
-                <el-form-item label="Type of Leave" class="ca-label">
+                <el-form-item label="Type of Leave" class="ca-label" prop="leave_type_id">
                   <el-select 
                     v-model="form.leave_type_id" 
                     placeholder="Select type of leave"
@@ -26,7 +26,7 @@
                 </el-form-item>
               </v-flex>
               <v-flex xs6>
-                <el-form-item label="Start Date" class="ca-label">
+                <el-form-item label="Start Date" class="ca-label" prop="start_date">
                   <v-menu
                     :close-on-content-click="false"
                     v-model="start_date_picker"
@@ -45,13 +45,14 @@
                     ></el-input>
                     <v-date-picker
                       v-model="form.start_date"
+                      :max="form.completion_date"
                       @input="start_date_picker = false"
                     ></v-date-picker>
                   </v-menu>
                 </el-form-item>
               </v-flex>
               <v-flex xs6>
-                <el-form-item label="Completion Date" class="ca-label">
+                <el-form-item label="Completion Date" class="ca-label" prop="completion_date">
                   <v-menu
                     :close-on-content-click="false"
                     v-model="completion_date_picker"
@@ -70,6 +71,7 @@
                     ></el-input>
                     <v-date-picker
                       v-model="form.completion_date"
+                      :min="form.start_date"
                       @input="completion_date_picker = false"
                     ></v-date-picker>
                   </v-menu>
@@ -81,13 +83,14 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn flat @click="is_active = false">Disagree</v-btn>
+        <v-btn flat color="grey darken-2" @click="is_active = false">Close</v-btn>
         <v-btn 
           flat
+          color="primary"
           @click="submit()"
           :loading="wating_result"
         >
-          Agree
+          Submit
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -107,6 +110,17 @@ export default {
       leave_type_id: null,
       start_date: '',
       completion_date: ''
+    },
+    rules: {
+      leave_type_id: [
+        { required: true, message: 'Please select type', trigger: 'change' }
+      ],
+      start_date: [
+        { required: true, message: 'Please select start date', trigger: 'change' }
+      ],
+      completion_date: [
+        { required: true, message: 'Please select completion date', trigger: 'change' }
+      ]
     }
   }),
   computed: {
@@ -117,8 +131,8 @@ export default {
   watch: {
     is_active (new_v) {
       if (!new_v) {
-        this.reset_data()
-      }
+        this.$refs['form'].resetFields()
+      } 
     }
   },
   methods: {

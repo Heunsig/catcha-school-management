@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-card-title>
-      <div class="ca-typo-title-4">Class</div>
+      <div class="ca-typo-title-4">Program & Class</div>
       <v-spacer></v-spacer>
       <v-btn
         depressed
@@ -17,19 +17,7 @@
         :key="'program_id:'+program.id"
         :program="program"
       ></ProgramBox>
-      <!-- <template v-if="!_.isEmpty(class_groups)">
-        <class-group 
-          v-for="(group, i) in class_groups"
-          :key="i"
-          :group="group"
-        >
-        </class-group>
-      </template> -->
-      <!-- <template v-else>
-        <div class="text-xs-center ca-typo-5 ca-typo-style-blank">
-          There are no classes
-        </div>
-      </template> -->
+      
       <NewProgramAdditionDialog></NewProgramAdditionDialog>
       <NewClassAdditionDialog></NewClassAdditionDialog>
       <ClassChangeDialog></ClassChangeDialog>

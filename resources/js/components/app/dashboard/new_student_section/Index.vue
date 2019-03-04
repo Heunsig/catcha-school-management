@@ -1,7 +1,9 @@
 <template>
   <v-card class="ca-dashboard-section">
     <v-card-title>
-      <h3 class="ca-typo-title-4">New Students</h3>
+      <h4 class="ca-typo-title-4">New Students</h4>
+      <v-spacer></v-spacer>
+      <strong>added within 2 weeks</strong>
     </v-card-title>
     <v-card-text>
       <table class="insty-table">
@@ -9,8 +11,10 @@
           <tr>
             <th style="width:50px;"></th>
             <th class="text-xs-center" style="width:120px;">Type</th>
+            <th class="text-xs-center" style="width:120px;">Status</th>
             <th class="text-xs-center">Name</th>
             <th class="text-xs-center" style="width:125px;">Created At</th>
+            <th class="text-xs-center" style="width:70px;"></th>
           </tr>
         </thead>
         <tbody>
@@ -20,14 +24,28 @@
                 <v-avatar
                   size="35"
                   color="grey lighten-4 ca-cursor-pointer"
-                  @click="$router.push({name: 'student.basic_information', params: {student_id: student.id}})"
+                  @click="$router.push({name: 'student.information.basic_information', params: {student_id: student.id}})"
                 >
                   <img :src="AVATAR_BASE_URL+'/50/'+student.full_name" :alt="student.full_name"/>
                 </v-avatar>
               </td>
-              <td class="text-xs-center">{{ student.type }}</td>
+              <td class="text-xs-center">{{ student.type.name }}</td>
+              <td class="text-xs-center">{{ student.status.name }}</td>
               <td>{{ student.full_name }}</td>
-              <td class="text-xs-center">{{ student.created_at }}</td>
+              <td class="text-xs-center">{{ $moment(student.created_at).format('M/D/Y') }}</td>
+              <td class="text-xs-center">
+                <v-btn 
+                  icon
+                  @click="$router.push({
+                    name: 'student.information.basic_information',
+                    params: {
+                      student_id: student.id
+                    }
+                  })"
+                >
+                  <v-icon color="primary">visibility</v-icon>
+                </v-btn>
+              </td>
             </tr>
           </template>
           <template v-else>
@@ -39,12 +57,7 @@
       </table>
     </v-card-text>
     <v-card-actions>
-      <template v-if="is_no_more">
-        <v-btn flat block color="orange" disabled>
-          No more
-        </v-btn>
-      </template>
-      <template v-else>
+      <template v-if="more">
         <v-btn 
           flat 
           block 
@@ -52,9 +65,14 @@
           @click="open_dialog_for_new_students_extension()"
         >
           More
-          <span class="ml-1" v-if="more">
-          (+ {{ more }})
+          <span class="ml-1">
+          ({{ more }})
           </span>
+        </v-btn>
+      </template>
+      <template v-else>
+        <v-btn flat block color="orange" disabled>
+          More
         </v-btn>
       </template>
     </v-card-actions>
@@ -75,16 +93,16 @@ export default {
       return this.$store.getters['dashboard/new_students']
     },
     more () {
-      return null
-      // return this.new_students.count ? parseInt(this.new_students.count) - this.new_students.items.length
+      return this.new_students.count ? parseInt(this.new_students.count) : null
     },
-    is_no_more () {
-      return this.more <= 0
-    }
+    // is_no_more () {
+    //   return this.more <= 0
+    // }
   },
   methods: {
     open_dialog_for_new_students_extension () {
-      bus.$emit('open_dialog_for_new_students_extension')
+      // bus.$emit('open_dialog_for_new_students_extension')
+      bus.$emit('dialog:new_students')
     }
   }
 }
@@ -130,12 +148,24 @@ export default {
   }
   
   .insty-table th {
-    padding: 10px 0;
-    border-bottom:1px solid #dcdcdc;
+    font-weight: 300;
+    padding: 9px 0;
+    border-bottom:1px solid #919191;
     color: #727272;
   }
+
   .insty-table td {
-    padding: 8px 7px;
-    border-bottom: 1px solid #dcdcdc;
+    padding: 7px 7px;
+    border-bottom: 1px solid #e7e7e7;
+  }
+
+
+  .insty-table tbody tr:first-child > td {
+    /*border-bottom: none;*/
+    padding-top: 10px;
+  }
+
+  .insty-table tbody tr:last-child > td {
+    border-bottom: none;
   }
 </style>

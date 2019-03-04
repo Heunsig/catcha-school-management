@@ -4,7 +4,10 @@ import axios from '../helpers/axios'
 const student = {
   namespaced: true,
   state: {
-    student: {},
+    student: {
+      type: {},
+      status: {}
+    },
     current_address: {},
     home_address: {},
     cellphones: [],
@@ -54,16 +57,25 @@ const student = {
         }
       })
     },
-    delete_address (state, category) {
-      console.log('cate', category)
-      if (category === 'home') {
+    delete_address (state, type) {
+      // console.log('cate', category)
+      if (type === 'home') {
         state.home_address = []
-      } else if (category === 'current') {
+      } else if (type === 'current') {
         state.current_address = []
       }
     }
   },
   actions: {
+    get_min_info (context, payload) {
+      return new Promise((resolve, reject) => {
+        axios.get(`/student/${payload.student_id}/min`).then(res => {
+          console.log('student/min', res)
+          context.commit('set_student', res.data)
+          resolve(res.data)
+        })
+      })
+    },  
     get_student (context, payload) {
       return new Promise((resolve, reject) => {
         axios.get(`/student/${payload.student_id}`).then(res => {
@@ -74,6 +86,31 @@ const student = {
           context.commit('set_cellphones', res.data.contacts)
           context.commit('set_emergency_contact', res.data.emergency_contact)
           resolve(res.data)
+        })
+      })
+    },
+    get_contact (context, payload) {
+      return new Promise((resolve, reject) => {
+        axios.get(`/student/${payload.student_id}/contact`).then(res => {
+          context.commit('set_cellphones', res.data.contacts)
+          resolve()
+        })
+      })
+    },
+    get_address (context, payload) {
+      return new Promise((resolve, reject) => {
+        axios.get(`/student/${payload.student_id}/address`).then(res => {
+          context.commit('set_current_address', res.data.current_address)
+          context.commit('set_home_address', res.data.home_address) 
+          resolve()
+        })
+      })
+    },
+    get_emergency_contact (context, payload) {
+      return new Promise((resolve, reject) => {
+        axios.get(`/student/${payload.student_id}/emergency_contact`).then(res => {
+          context.commit('set_emergency_contact', res.data.emergency_contact)
+          resolve()
         })
       })
     },
@@ -135,9 +172,9 @@ const student = {
       return new Promise((resolve, reject) => {
         axios.post(`/address`, payload.form).then(res => {
           console.log('res', res)
-          if (res.data.category === 'home') {
+          if (res.data.type === 'home') {
             context.commit('set_home_address', res.data)
-          } else if (res.data.category === 'current') {
+          } else if (res.data.type === 'current') {
             context.commit('set_current_address', res.data)
           }
 
@@ -150,9 +187,9 @@ const student = {
       return new Promise((resolve, reject) => {
         axios.put(`/address/${payload.address_id}`, payload.form).then(res => {
           console.log('res', res)
-          if (res.data.category === 'home') {
+          if (res.data.type === 'home') {
             context.commit('set_home_address', res.data)
-          } else if (res.data.category === 'current') {
+          } else if (res.data.type === 'current') {
             context.commit('set_current_address', res.data)
           }
           resolve()
@@ -163,7 +200,7 @@ const student = {
       return new Promise((resolve, reject) => {
         axios.delete(`/address/${payload.address_id}`).then(res => {
           console.log('res', res)
-          context.commit('delete_address', res.data.category)
+          context.commit('delete_address', res.data.type)
           resolve()
         })
       })

@@ -24,7 +24,7 @@
                 <v-img :src="AVATAR_BASE_URL + '/510/'+ student.full_name +'.png'" aspect-ratio="1.3"></v-img>
                 <v-card-text>
                   <div class="mb-1">
-                    <span class="ca-typo-title-5">{{ student.type }}</span> <span class="ca-typo-title-5">/</span> <span class="ca-typo-title-5">{{ student.status }}</span>
+                    <span class="ca-typo-title-5">{{ student.type.name }}</span> <span class="ca-typo-title-5">/</span> <span class="ca-typo-title-5">{{ student.status.name }}</span>
                   </div>
                   <div class="ca-typo-title-3 mb-2">
                     <v-tooltip bottom>
@@ -62,10 +62,11 @@
             <v-flex xs12>
               <v-card>
                 <ul class="ca-tab">
-                  <li class="ca-tab-item" :class="{'ca-active':is_active('')}" @click="$router.push({name: 'student.basic_information', params:{student_id: $route.params.student_id}})">Basic Information</li>
-                  <li class="ca-tab-item" :class="{'ca-active':is_active('class')}" @click="$router.push({name: 'student.class', params:{student_id: $route.params.student_id}})">Class</li>
+                  <li class="ca-tab-item" :class="{'ca-active':is_active('profile')}" @click="$router.push({name: 'student.information.basic_information', params:{student_id: $route.params.student_id}})">Profile</li>
+                  <li class="ca-tab-item" :class="{'ca-active':is_active('class')}" @click="$router.push({name: 'student.class', params:{student_id: $route.params.student_id}})">Program & Class</li>
                   <li class="ca-tab-item" :class="{'ca-active':is_active('invoice')}" @click="$router.push({name: 'student.invoice', params:{student_id: $route.params.student_id}})">Payment</li>
                   <li class="ca-tab-item" :class="{'ca-active':is_active('leave')}" @click="$router.push({name: 'student.leave', params:{student_id: $route.params.student_id}})">Leave</li>
+                  <li class="ca-tab-item" :class="{'ca-active':is_active('document')}" @click="$router.push({name: 'student.document', params:{student_id: $route.params.student_id}})">Document</li>
                 </ul>
               </v-card>
             </v-flex>
@@ -124,14 +125,30 @@ export default {
     }
   },
   created () {
-    this.$store.dispatch('student/get_student', {
-      student_id: this.$route.params.student_id
-    }).then(res => {
       this.breadcrumbs.push({
-        text: res.full_name,
+        text: this.student.full_name,
         disabled: true
       })
-    })
+    // this.$store.dispatch('student/get_min_info', {
+    //   student_id: this.$route.params.student_id
+    // }).then(res => {
+    //   console.log('resadfssadfa', res)
+    //   this.breadcrumbs.push({
+    //     text: res.full_name,
+    //     disabled: true
+    //   })
+    // })
+    // console.log('hi')
+    // min_infomation
+    // this.$store.dispatch('student/get_student', {
+    //   student_id: this.$route.params.student_id
+    // }).then(res => {
+    //   console.log('hhihihihihih')
+    //   this.breadcrumbs.push({
+    //     text: res.full_name,
+    //     disabled: true
+    //   })
+    // })
 
     // this.$store.dispatch('student/get_countries')
   }

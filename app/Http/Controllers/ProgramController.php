@@ -37,7 +37,8 @@ class ProgramController extends Controller
         $program->program_date()->create([
             'start_date' => $request->start_date,
             'completion_date' => $request->completion_date,
-            'reason' => ($request->reason) ? $request->reason : null
+            'reason' => ($request->reason) ? $request->reason : null,
+            'active' => 1
         ]);
 
         $stored_program = Program::where('id', $program->id)->first();
@@ -130,18 +131,58 @@ class ProgramController extends Controller
         return response()->json(new ClassInProgramResource($destroyed_class));
     }
 
+    // public function set_init_program_date(Request $request, $program_id)
+    // {
+
+    //     DB::beginTransaction();
+
+    //     try {
+    //         $program = Program::where('id', $program_id)->first();
+
+    //         $program_date = new ProgramDate([
+    //             'start_date' => $request->start_date,
+    //             'completion_date' => $request->completion_date,
+    //             'active' => 1
+    //         ]);
+
+    //         $program->program_date()->save($program_date);
+
+    //         // Updated program
+    //         $program->updated_at = Carbon::now();
+    //         $program->updated_by = $request->user()->id;
+    //         $program->save();
+
+    //         DB::commit();
+    //     } catch (\Illuminate\Database\QueryException $e) {
+    //         DB::rollBack();
+
+    //         return response($e);
+    //     }
+
+    //     $updated_program = Program::where('id', $program_id)->first();
+    //     return response()->json(new ProgramResource($updated_program));
+
+    // }
+
     public function update_program_date(Request $request, $program_id)
     {
+
         DB::beginTransaction();
 
         try {
 
             $program = Program::where('id', $program_id)->first();
 
+            $update_program_date = ProgramDate::where('program_id', $program_id)
+                                                ->update([
+                                                    'active' => 0
+                                                ]);
+
             $program_date = new ProgramDate([
                 'start_date' => $request->start_date,
                 'completion_date' => $request->completion_date,
-                'reason' => $request->reason
+                'reason' => $request->reason,
+                'active' => 1
             ]);
 
             $program->program_date()->save($program_date);
@@ -175,10 +216,16 @@ class ProgramController extends Controller
             foreach($program_ids as $program_id) {
                 $program = Program::where('id', $program_id)->first();
 
+                $update_program_date = ProgramDate('program_id', $program_id)
+                                       ->update([
+                                            'active' => 0
+                                       ]);
+
                 $program_date = new ProgramDate([
                     'start_date' => $request->start_date,
                     'completion_date' => $request->completion_date,
-                    'reason' => $request->reason
+                    'reason' => $request->reason,
+                    'active' => 1
                 ]);
 
                 $program->program_date()->save($program_date);
@@ -198,5 +245,80 @@ class ProgramController extends Controller
         }
 
         return response()->json('success');
+    }
+
+    public function destroy_program_date(Request $request, $program_id, $date_id)
+    {
+        DB::beginTransaction();
+
+        try {
+            $program = Program::where('id', $program_id)->first();
+            $program->updated_at = Carbon::now();
+            $program->updated_by = $request->user()->id;
+            $program->save();
+
+            $update_program_date = ProgramDate::where('program_id', $program_id)
+                                                ->update([
+                                                    'active' => 0
+                                                ]);
+
+            $program_date = ProgramDate::where('id', $date_id)->first();
+            $program_date->deleted_at = Carbon::now();
+            $program_date->deleted_by = $request->user()->id;
+            $program_date->save();
+
+            $last_progra_date = ProgramDate::where('program_id', $program_id)
+                                             ->whereNull('deleted_at')
+                                             ->orderBy('id', 'desc')
+                                             ->first();
+
+            $last_progra_date->active = 1;
+            $last_progra_date->save();
+
+            DB::commit();
+        } catch(\Illuminate\Database\QueryException $e) {
+            DB::rollBack();
+
+            return response($e);
+        }
+
+        $destroyed_program_date = ProgramDate::where('id', $date_id)->first();
+
+        return response()->json(new ProgramDateResource($destroyed_program_date));
+    }
+
+    public function reset(Request $request, $program_id)
+    {
+        DB::beginTransaction();
+
+        try {
+
+            $program = Program::where('id', $program_id)->first();
+            $program_dates = $program->program_date;
+
+            $classes = $program->class;
+
+            foreach($program_dates as $date) {
+                $date->deleted_at = Carbon::now();
+                $date->deleted_by = $request->user()->id;
+                $date->save();
+            }
+
+            foreach($classes as $class) {
+                $class->deleted_at = Carbon::now();
+                $class->deleted_by = $request->user()->id;
+                $class->save();
+            }
+
+            DB::commit();
+        } catch(\Illuminate\Database\QueryException $e) {
+            DB::rollBack();
+
+            return response($e);
+        }
+
+        $updated_program = Program::where('id', $program_id)->first();
+
+        return response()->json(new ProgramResource($updated_program));
     }
 }

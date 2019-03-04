@@ -15,10 +15,20 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->group(function () {
-    Route::get('/user', function (Request $request) {
+Route::middleware('auth:api')->prefix('user')->group(function(){
+    Route::get('', function (Request $request) {
         return $request->user();
     });
+
+    Route::put('', 'UserController@update');
+
+    Route::patch('password', 'UserController@change_password');
+});
+
+Route::middleware('auth:api')->group(function () {
+    // Route::get('/user', function (Request $request) {
+    //     return $request->user();
+    // });
 
     Route::post('/logout', 'AuthController@logout');
 
@@ -27,12 +37,17 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/student', 'StudentController@store');
     Route::put('/student/{student_id}', 'StudentController@update');
 
-
+    Route::get('/student/{student_id}/min', 'StudentController@min_infomation');
     Route::get('/student/{student_id}', 'StudentController@basic_information');
+    Route::get('/student/{student_id}/contact', 'StudentController@contact');
+    Route::get('/student/{student_id}/address', 'StudentController@address');
+    Route::get('/student/{student_id}/emergency_contact', 'StudentController@emergency_contact');
+    // Route::get('/student/{student_id}/contact', 'StudentController@contact');
     Route::get('/student/{student_id}/class', 'StudentController@class');
     Route::post('/student/{student_id}/class', 'StudentController@add_class');
     Route::get('/student/{student_id}/payment', 'StudentController@payment');
     Route::get('/student/{student_id}/leave', 'StudentController@leave');
+    Route::get('/student/{student_id}/program_term', 'StudentController@program_term');
 
     // Route::post('/student/{student_id}/program', 'StudentController@add_program');
     // Route::post('/student/{student_id}/class/pivot/{pivot_id}/change_class', 'StudentController@change_class');
@@ -55,18 +70,22 @@ Route::middleware('auth:api')->prefix('dashboard')->group(function(){
     Route::get('finishing_programs', 'DashboardController@get_finishing_programs');
     Route::get('coming_leaves', 'DashboardController@get_coming_leaves');
     Route::get('finishing_leaves', 'DashboardController@get_finishing_leaves');
+    Route::get('leaves_today', 'DashboardController@get_leaves_today');
 });
 
 Route::middleware('auth:api')->prefix('program')->group(function(){
     Route::get('', 'ProgramController@list');
     Route::post('', 'ProgramController@store');
+    Route::post('{program_id}/reset', 'ProgramController@reset');
     Route::delete('{program_id}', 'ProgramController@destroy');
 
     Route::post('class', 'ProgramController@add_class');
     Route::post('class/{class_in_program_id}', 'ProgramController@change_class');
     Route::delete('class/{class_in_program_id}', 'ProgramController@destroy_class');
 
+    // Route::post('{program_id}/init_date', 'ProgramController@set_init_program_date');
     Route::post('{program_id}/date', 'ProgramController@update_program_date');
+    Route::delete('{program_id}/date/{date_id}', 'ProgramController@destroy_program_date');
     Route::post('date', 'ProgramController@update_programs_date');
 });
 
@@ -125,6 +144,11 @@ Route::middleware('auth:api')->prefix('emergency_contact')->group(function(){
     Route::post('', 'EmergencyContactController@store');
     Route::put('{emergency_contact_id}', 'EmergencyContactController@update');
     Route::delete('{emergency_contact_id}', 'EmergencyContactController@destroy');
+});
+
+Route::middleware('auth:api')->prefix('setting')->group(function(){
+    Route::get('', 'SettingController@index');
+    Route::put('', 'SettingController@update');
 });
 
 Route::post('/refresh', 'AuthController@refresh');

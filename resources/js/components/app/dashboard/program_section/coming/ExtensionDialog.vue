@@ -2,20 +2,22 @@
   <v-dialog v-model="is_active" scrollable persistent max-width="1000">
     <v-card>
       <v-card-title>
+        <h4 class="ca-typo-title-4">Students who will begin programs</h4>
         <v-spacer></v-spacer>
-        <v-text-field
-          v-model="search"
-          append-icon="search"
-          label="Search"
-          single-line
-          hide-details
-        ></v-text-field>
+        <div>
+          <el-input
+            v-model="search"
+            placeholder="Search"
+            suffix-icon="el-icon-search"
+          ></el-input>
+        </div>
       </v-card-title>
       <v-card-text>
         <v-data-table
           :headers="headers"
           :items="full_coming_programs"
           :search="search"
+          :pagination.sync="pagination"
           :rows-per-page-items="RPPI"
         >
           <template slot="items" slot-scope="props">
@@ -34,13 +36,13 @@
               </v-btn>
             </td>
             <td>{{ props.item.student.full_name }}</td>
-            <td>{{ props.item.start_date }}</td>
-            <td>{{ props.item.completion_date }}</td>
+            <td>{{ $moment(props.item.start_date).format('M/D/Y') }}</td>
+            <td>{{ $moment(props.item.completion_date).format('M/D/Y') }}</td>
             <td>
               <v-btn 
                 icon
                 @click="$router.push({
-                  name: 'student.basic_information',
+                  name: 'student.information.basic_information',
                   params: {
                     student_id: props.item.student.id
                   }
@@ -57,7 +59,7 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="green darken-1" flat @click="is_active = false">Close</v-btn>
+        <v-btn color="grey darken-2" flat @click="is_active = false">Close</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -71,6 +73,10 @@ export default {
       loading: false,
       is_active: false,
       search: '',
+      pagination: {
+        descending: false,
+        sortBy: 'start_date'
+      },
       headers: [
         {
           text: '',
@@ -112,7 +118,7 @@ export default {
     }
   },
   created () {
-    bus.$on('open_dialog_for_extension', (payload) => {
+    bus.$on('dialog:dashboard.full_coming_programs', (payload) => {
       this.is_active = true
     })
   }

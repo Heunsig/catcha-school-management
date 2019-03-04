@@ -5,7 +5,7 @@
       <div class="insty-space"></div>
       <div class="insty-program-date-box">
         <div class="insty-date">
-          {{ lastest_term.start_date }} - {{ lastest_term.completion_date }}
+          {{ $moment(lastest_term.start_date).format('M/D/Y') }} - {{ $moment(lastest_term.completion_date).format('M/D/Y') }}
         </div>
         <div>
           <v-menu 
@@ -32,7 +32,7 @@
                     <tr 
                       v-for="date in program.dates"
                     >
-                      <td class="insty-term">{{ date.start_date }} - {{ date.completion_date }}</td>
+                      <td class="insty-term">{{ $moment(date.start_date).format('M/D/Y') }} - {{ $moment(date.completion_date).format('M/D/Y') }}</td>
                       <td class="insty-term">{{ date.reason }}</td>
                     </tr>
                   </tbody>
@@ -75,8 +75,10 @@
       <template v-else>
         <div class="text-xs-center">
           <span class="grey--text">No classes</span>
-          <v-btn 
+          <v-btn
             flat
+            small
+            color="blue"
             @click="open_dialog_class_addition()"
           >
             Add Class

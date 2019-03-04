@@ -1,10 +1,57 @@
 <template>
-  <v-dialog v-model="is_active" persistent max-width="600">
+  <v-dialog v-model="is_active" persistent scrollable max-width="600">
     <v-card>
+      <v-card-title>
+        <h4 class="ca-typo-title-4">Edit {{ capitalize_first_letter(type) }} Address</h4>
+      </v-card-title>
       <v-card-text>
-        <el-form ref="form" :model="form" label-position="top">
+        <el-form ref="form" :model="form" :rules="rules" label-position="top">
           <v-container fluid class="pa-0 ca-grid-list-3">
             <v-layout wrap>
+              <v-flex xs12>
+                <el-form-item label="Address line 1" class="ca-label" prop="address_line1">
+                  <el-input class="mb-1" v-model="form.address_line1"></el-input>
+                </el-form-item>
+              </v-flex>
+              <v-flex xs12>
+                <el-form-item label="Address line 2" class="ca-label">
+                  <el-input class="mb-1" v-model="form.address_line2"></el-input>
+                </el-form-item>
+              </v-flex>
+              <v-flex xs6>
+                <el-form-item label="City" class="ca-label" prop="city">
+                  <el-input v-model="form.city"></el-input>
+                </el-form-item>
+              </v-flex>
+              <v-flex xs6>
+                <el-form-item label="State" class="ca-label">
+                  <el-input v-model="form.state"></el-input>
+                </el-form-item>
+              </v-flex>
+              <v-flex xs12>
+                <el-form-item label="Country" class="ca-label" prop="country">
+                  <el-select 
+                    v-model="form.country" 
+                    filterable
+                    class="ca-block"
+                  >
+                    <el-option
+                      v-for="option in countries"
+                      :key="option.code"
+                      :label="option.name"
+                      :value="option.code"
+                    >
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+              </v-flex>
+              <v-flex xs12>
+                <el-form-item label="Postal Code" class="ca-label">
+                  <el-input v-model="form.postal_code"></el-input>
+                </el-form-item>
+              </v-flex>
+            </v-layout>
+            <!-- <v-layout wrap>
               <v-flex xs12>
                 <el-form-item label="Address" class="ca-label">
                   <el-input placeholder="Please input" class="mb-1" v-model="form.address_line1"></el-input>
@@ -44,14 +91,19 @@
                   </el-select>
                 </el-form-item>
               </v-flex>
-            </v-layout>
+            </v-layout> -->
           </v-container>
         </el-form>
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn flat @click="is_active = false">Disagree</v-btn>
-        <v-btn flat @click="submit()">Agree</v-btn>
+        <v-btn flat color="grey darken-1" @click="is_active = false">Close</v-btn>
+        <v-btn 
+          flat 
+          @click="submit()"
+          color="primary"
+          :loading="wating_result"
+        >Submit</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -68,6 +120,8 @@ export default {
     return {
       is_active: false,
       address_id: null,
+      wating_result: false,
+      type: '',
       form: {
         address_line1: '',
         address_line2: '',
@@ -76,6 +130,24 @@ export default {
         postal_code: '',
         country: '',
         type: ''
+      },
+      rules: {
+        address_line1: [
+          { required: true, message: 'Please input address line 1', trigger: 'blur' },
+        ],
+        city: [
+          { required: true, message: 'Please input city', trigger: 'blur' },
+        ],
+        country: [
+          { required: true, message: 'Please select country', trigger: 'change' },
+        ]
+      }
+    }
+  },
+  watch: {
+    is_active (n_val) {
+      if(!n_val) {
+        this.$refs['form'].resetFields()
       }
     }
   },
@@ -95,6 +167,7 @@ export default {
       this.is_active = true
       this.address_id = payload.address_id
       Object.assign(this.form, payload.form)
+      this.type = payload.form.type
     })
   }
 }

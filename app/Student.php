@@ -10,13 +10,21 @@ class Student extends Model
     public $timestamps = false;
 
     protected $appends = [
-        'full_name'
+        'full_name',
+        'type',
+        'status'
     ];
 
-    // public function user()
-    // {
-    //     return $this->hasOne('App\User', 'id');
-    // }
+    
+    public function getTypeAttribute($value)
+    {
+        return SelectionOption::where('group', 'student_type')->where('value', $this->type_id)->first();
+    }
+
+    public function getStatusAttribute($value)
+    {
+        return SelectionOption::where('group', 'student_status')->where('value', $this->status_id)->first();
+    }
 
     public function address()
     {
@@ -93,26 +101,44 @@ class Student extends Model
         return $full_name;
     }
 
-    public function purchased_programs()
+    public function getPurchasedProgramsAttribute($value)
     {
-        $payments = $this->hasMany('App\Payment')->get();
+        $payments = $this->payment()->whereNull('deleted_at')->get();
 
         $result = [];
         foreach ($payments as $payment) {
-            foreach ($payment->payment_detail()->get() as $item) {
-                if ($item->product->category_id === 1) {
-                    // The category is "Type"
-                    if ($item->attribute()->where('attribute_id', 1)->first()) {
-                        if ($item->attribute()->where('attribute_id', 1)->first()->value->id === 1) {
-                            $result[] = $item;
-                        }
-                    }
+            foreach ($payment->payment_detail as $item) {
+                if ($item->attribute()->where('attribute_id', 1)->first()) {
+                    if ($item->attribute()->where('attribute_id', 1)->first()->value->id === 1) {
+                        $result[] = $item;
+                    }    
                 }
             }
         }
 
         return $result;
     }
+
+    // public function purchased_programs()
+    // {
+    //     $payments = $this->hasMany('App\Payment')->get();
+
+    //     $result = [];
+    //     foreach ($payments as $payment) {
+    //         foreach ($payment->payment_detail()->get() as $item) {
+    //             if ($item->product->category_id === 1) {
+    //                 // The category is "Type"
+    //                 if ($item->attribute()->where('attribute_id', 1)->first()) {
+    //                     if ($item->attribute()->where('attribute_id', 1)->first()->value->id === 1) {
+    //                         $result[] = $item;
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
+
+    //     return $result;
+    // }
 
     // public function programs_taken()
     // {

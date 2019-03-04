@@ -55,24 +55,24 @@
                   <v-card-text>
                     <v-container fluid class="pa-0">
                       <v-flex xs12>
-                        <el-form-item label="Type" class="ca-label" prop="type">
-                          <el-select v-model="form.type" placeholder="Select" class="ca-block" prop="type">
+                        <el-form-item label="Type" class="ca-label" prop="type_id">
+                          <el-select v-model="form.type_id" placeholder="Select" class="ca-block">
                             <el-option
                               v-for="option in type_options"
                               :key="option.value"
-                              :label="option.value"
+                              :label="option.key"
                               :value="option.value">
                             </el-option>
                           </el-select>
                         </el-form-item>
                       </v-flex>
                       <v-flex xs12>
-                        <el-form-item label="Status" class="ca-label" prop="status">
-                          <el-select v-model="form.status" placeholder="Select" class="ca-block" prop="status">
+                        <el-form-item label="Status" class="ca-label" prop="status_id">
+                          <el-select v-model="form.status_id" placeholder="Select" class="ca-block">
                             <el-option
                               v-for="option in status_options"
                               :key="option.value"
-                              :label="option.value"
+                              :label="option.key"
                               :value="option.value">
                             </el-option>
                           </el-select>
@@ -150,7 +150,7 @@
       :timeout="3000"
     >
       <a 
-        @click="$router.push({name: 'student.basic_information', params:{student_id: created_student_id}})"
+        @click="$router.push({name: 'student.information.basic_information', params:{student_id: created_student_id}})"
       >
         <span class="mr-2">{{ created_student_name }}</span>
       </a> 
@@ -208,8 +208,8 @@ export default {
       type_options: [],
       sex_options: ['Male', 'Female'],
       form: {
-        type: '',
-        status: 'In School',
+        type_id: '',
+        status_id: '1',
         email: '',
         first_name: '',
         middle_name: '',
@@ -223,10 +223,10 @@ export default {
         note: ''
       },
       rules: {
-        type: [
+        type_id: [
           { required: true, message: 'Please select status', trigger: 'change' },
         ],
-        status: [
+        status_id: [
           { required: true, message: 'Please select status', trigger: 'change' },
         ],
         first_name: [
@@ -237,6 +237,7 @@ export default {
   },
   methods: {
     submit () {
+      // console.log('ff', this.form)
       this.$refs['form'].validate((valid) => {
         if (valid) {
           this.wating_result = true
@@ -256,6 +257,7 @@ export default {
   },
   created () {
     this.$axios.get('/student/register').then(res => {
+      console.log('hih', res)
       this.status_options = res.data.status_options
       this.type_options = res.data.type_options
     })
