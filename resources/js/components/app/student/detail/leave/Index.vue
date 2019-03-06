@@ -35,27 +35,28 @@
       </v-container>
     </v-card-text>
 
-    <LeaveAdditionDialog></LeaveAdditionDialog>
-    <ProgramAttachmentDialog></ProgramAttachmentDialog>
-    <LeaveDeletionDialog></LeaveDeletionDialog>
-    <LeaveEditDialog></LeaveEditDialog>
+    <Dialog_AddLeave></Dialog_AddLeave>
+    <Dialog_UpdateProgramTerm></Dialog_UpdateProgramTerm>
+    <Dialog_DeleteLeave></Dialog_DeleteLeave>
+    <Dialog_EditLeave></Dialog_EditLeave>
   </v-card>
 </template>
 <script>
 import bus from 'bus'
 import LeaveRequestList from './particles/LeaveRequestList'
-import LeaveAdditionDialog from './dialogs/LeaveAdditionDialog'
-import ProgramAttachmentDialog from './dialogs/ProgramAttachmentDialog'
-import LeaveDeletionDialog from './dialogs/LeaveDeletionDialog'
-import LeaveEditDialog from './dialogs/LeaveEditDialog'
+
+import Dialog_AddLeave from './dialogs/Dialog_AddLeave'
+import Dialog_UpdateProgramTerm from './dialogs/Dialog_UpdateProgramTerm'
+import Dialog_DeleteLeave from './dialogs/Dialog_DeleteLeave'
+import Dialog_EditLeave from './dialogs/Dialog_EditLeave'
 
 export default {
   components: {
     LeaveRequestList,
-    LeaveAdditionDialog,
-    ProgramAttachmentDialog,
-    LeaveDeletionDialog,
-    LeaveEditDialog
+    Dialog_AddLeave,
+    Dialog_UpdateProgramTerm,
+    Dialog_DeleteLeave,
+    Dialog_EditLeave
   },
   data () {
     return {

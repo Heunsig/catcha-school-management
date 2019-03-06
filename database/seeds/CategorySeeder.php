@@ -24,14 +24,64 @@ class CategorySeeder extends Seeder
             ],
             [
                 'parent_category_id' => 2,
-                'name' => 'Beginner',
+                'name' => 'Beginning Track 1',
                 'description' => ''
             ],
             [
                 'parent_category_id' => 2,
-                'name' => 'Intermediate',
+                'name' => 'Beginning Track 2',
                 'description' => ''
-            ]
+            ],
+            [
+                'parent_category_id' => 2,
+                'name' => 'Intermediate Track 1',
+                'description' => ''
+            ],
+            [
+                'parent_category_id' => 2,
+                'name' => 'Intermediate Track 2',
+                'description' => ''
+            ],
+            [
+                'parent_category_id' => 2,
+                'name' => 'High Intermediate Track 1',
+                'description' => ''
+            ],
+            [
+                'parent_category_id' => 2,
+                'name' => 'High Intermediate Track 2',
+                'description' => ''
+            ],
+            [
+                'parent_category_id' => 2,
+                'name' => 'Advanced',
+                'description' => ''
+            ],
+            [
+                'parent_category_id' => 2,
+                'name' => 'TOFLE',
+                'description' => ''
+            ],
+            [
+                'parent_category_id' => 2,
+                'name' => 'Intermediate Conversation',
+                'description' => ''
+            ],
+            [
+                'parent_category_id' => 2,
+                'name' => 'Advanced Conversation',
+                'description' => ''
+            ],
+            [
+                'parent_category_id' => 2,
+                'name' => 'TOEIC',
+                'description' => ''
+            ],
+            [
+                'parent_category_id' => 2,
+                'name' => 'Business',
+                'description' => ''
+            ],
         ]);
     }
 }

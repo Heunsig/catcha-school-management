@@ -3,14 +3,10 @@
     <v-card-title>
       <h4 class="ca-typo-title-4">
         Total Students in school
-        <!-- <v-btn @click="haha()">test</v-btn> -->
       </h4>
     </v-card-title>
     <v-card-text style="height: 433px;">
       <div class="text-xs-center mb-4">
-        <!-- <div>
-          <span class="insty-total-title">Total Students</span>
-        </div> -->
         <div>
           <span class="insty-total">{{ total_student }}</span>
         </div>
@@ -20,10 +16,6 @@
           <div class="insty-detail-title">{{ key }}</div>
           <div class="insty-detail-content">{{ group.length }}</div>
         </div>
-        <!-- <div>
-          <div class="insty-detail-title">Non F1</div>
-          <div class="insty-detail-content">1000</div>
-        </div> -->
       </div>
     </v-card-text>
   </v-card>
@@ -41,11 +33,6 @@ export default {
       return this._.groupBy(this.current_studying_students, 'type.name')
     }
   },
-  methods: {
-    // haha () {
-    //   console.log('ttt', this._.groupBy(this.current_studying_students, 'type.name'))
-    // }
-  }
 }
 </script>
 <style scoped>

@@ -1,4 +1,8 @@
 .#{$prefix}-breadcrumbs {
   padding: 0 0 0 3px!important;
   margin: 0!important;
+
+  .#{$prefix}-disabled {
+    color: #acacac;
+  }
 }

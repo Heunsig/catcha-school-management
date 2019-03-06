@@ -69,6 +69,38 @@ class ClassSeeder extends Seeder
                 'updated_at' => Carbon::now(),
                 'updated_by' => 1
             ],
+            [
+                'name' => 'TOFLE',
+                'description' => '',
+                'created_at' => Carbon::now(),
+                'created_by' => 1,
+                'updated_at' => Carbon::now(),
+                'updated_by' => 1
+            ],
+            [
+                'name' => 'Intermediate Conversation',
+                'description' => '',
+                'created_at' => Carbon::now(),
+                'created_by' => 1,
+                'updated_at' => Carbon::now(),
+                'updated_by' => 1
+            ],
+            [
+                'name' => 'Advanced Conversation',
+                'description' => '',
+                'created_at' => Carbon::now(),
+                'created_by' => 1,
+                'updated_at' => Carbon::now(),
+                'updated_by' => 1
+            ],
+            [
+                'name' => 'Business Plus TOEIC',
+                'description' => '',
+                'created_at' => Carbon::now(),
+                'created_by' => 1,
+                'updated_at' => Carbon::now(),
+                'updated_by' => 1
+            ],
         ]);
     }
 }

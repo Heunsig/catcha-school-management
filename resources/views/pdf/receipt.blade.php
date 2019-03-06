@@ -1,87 +1,34 @@
 @extends('pdf.layout')
 
 @section('content')
-  <div>
-    <h2>Mentor Language Institute - Hollywood</h2>
-    <div class="header">
-      <div class="basic-info">
-        <div>7080 HOLLYWOOD BLVD, HOLLYWOOD, CA 90028</div>
-        <div><strong>TEL</strong> (323) 870-7102, <strong>FAX</strong> (323) 488-9748</div>
-      </div>
-      <div class="group">
-        <h1>RECEIPT <small>(Studnet Copy)</small></h1>
-      </div>
-    </div>
-    <div class="detail-wrapper">
-      <div class="meta-box">
-        <div class="meta">
-          <span class="meta-label">Receipt ID</span>
-          <span class="meta-value">{{ $invoice->id }}</span>
-        </div>
-        <div class="meta">
-          <span class="meta-label">Name</span>
-          <span class="meta-value">{{ $invoice->student->full_name }}</span>
-        </div>
-        <div class="meta">
-          <span class="meta-label">Method</span>
-          <span class="meta-value">{{ $invoice->payment_method->method }}</span>
-        </div>
-        <div class="meta">
-          <span class="meta-label">Issued At</span>
-          <span class="meta-value">{{ $invoice->updated_at }}</span>
-          <span class="meta-value"></span>
-        </div>
-      </div>
-      <div class="item-box">
-        <table class="table-fluid">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Date</th>
-              <th>Quantity</th>
-              <th style="text-align: right">Price</th>
-              <th style="text-align: right">Amount</th>
-            </tr>
-          </thead>
-          <tbody>
-            @foreach($invoice->product as $product)
-            <tr>
-              <td class="__item-name">{{ $product->name }}</td>
-              <td class="__item-term">{{ $product->pivot->start_date }} - {{ $product->pivot->completion_date }}</td>
-              <td class="__item-quantity">{{ $product->pivot->quantity }}</td>
-              <td class="__item-price">{{ $product->pivot->price }}</td>
-              <td class="__item-total">
-                {{ $product->pivot->price * $product->pivot->quantity }}
-              </td>
-            </tr>
-            @endforeach
-          </tbody>
-        </table>
-      </div>
-      <div class="footer">
-        <div class="issuer">
-          <strong class="issuer-label">Issued By</strong>
-          <span class="issuer-value">{{ $invoice->creator->full_name }}</span>
-        </div>
-        <div class="total">
-          <strong class="total-label">Total</strong>
-          <span class="total-value">
-            @php
-              $total = 0;
-              foreach ($invoice->product as $product) {
-                $total += ($product->pivot->quantity * $product->pivot->price);
-              }
-              echo $total;
-            @endphp
-          </span>
-        </div>
-      </div>
-    </div>
-  </div>
+  @include('pdf.student_copy')
+  @include('pdf.school_copy')
+  @include('pdf.student_file_copy')
 @endsection
 
 @section('style')
 <style>
+  .section {
+    margin: 65px 0;
+  }
+
+  .__option{
+    margin-left: 15px;
+  }
+  .__option_box {
+    display: inline-block;
+    margin-right: 7px;
+  }
+
+  .__option_name {
+    font-size: 13px;
+    font-weight: bold;
+  }
+
+  .__option_value {
+    font-size: 13px;
+  }
+
   .table-fluid {
     width: 100%;
   }
@@ -153,7 +100,7 @@
 
   .item-box {
     padding-top: 20px;
-    min-height: 300px;
+    min-height: 270px;
   }
 
   .footer {

@@ -5,7 +5,7 @@
       <v-spacer></v-spacer>
       <strong>added within 2 weeks</strong>
     </v-card-title>
-    <v-card-text>
+    <v-card-text style="height: 381px;">
       <table class="insty-table">
         <thead>
           <tr>

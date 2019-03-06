@@ -16,6 +16,7 @@ class EditColumnsInStudentTableToChageType extends Migration
         Schema::table('student', function (Blueprint $table) {
             $table->integer('type_id')->unsigned()->after('id');
             $table->integer('status_id')->unsigned()->after('type_id');
+            $table->dropColum(['type', 'status']);
         });
     }
 

@@ -11,42 +11,10 @@
       </v-flex>
       <v-flex xs12>
         <router-view :key="$route.fullPath"></router-view>
-        <!-- <BasicInformation></BasicInformation> -->
       </v-flex>
-      <!-- <v-flex xs5 class="pr-2">
-        <Contact></Contact>
-      </v-flex>
-      <v-flex xs7 class="pl-2">
-        <EmergencyContact></EmergencyContact>
-      </v-flex>
-      <v-flex x12>
-        <Address></Address>
-      </v-flex> -->
     </v-layout>
   </v-container>
 </template>
-<script>
-// import BasicInformation from './basic_information/Index'
-// import Contact from './Contact'
-// import EmergencyContact from './emergency_contact/Index'
-// import Address from './address/Index'
-
-export default {
-  components: {
-    // BasicInformation,
-    // Contact,
-    // EmergencyContact,
-    // Address
-  },
-  created () {
-    // this.$store.dispatch('student/get_student', {
-    //   student_id: this.$route.params.student_id
-    // }).then(res => {
-
-    // })
-  }
-}
-</script>
 <style scoped>
   .insty-ul {
     list-style: none;

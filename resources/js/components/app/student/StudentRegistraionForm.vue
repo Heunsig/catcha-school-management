@@ -184,21 +184,13 @@
   </el-form>
 </template>
 <script>
-// import countries from '../../../json/countries.json'
+
 import countriesMixin from '../../../mixins/countries.js'
 export default {
   mixins: [
     countriesMixin
   ],
   data () {
-    // var validate_password_confirmation = (rule, value, callback) => {
-    //   if (value !== this.form.password) {
-    //     callback(new Error())
-    //   } else {  
-    //     callback()  
-    //   }
-    // }
-
     return {
       created_student_name: '',
       created_student_id: null,
@@ -237,11 +229,12 @@ export default {
   },
   methods: {
     submit () {
-      // console.log('ff', this.form)
       this.$refs['form'].validate((valid) => {
         if (valid) {
+          // console.log('hi')
           this.wating_result = true
           this.$axios.post(`/student`, this.form).then(res => {
+            console.log('res', res)
             this.wating_result = false
             this.created_student_name = this.form.first_name
             this.created_student_id = res.data.student_id
@@ -257,7 +250,6 @@ export default {
   },
   created () {
     this.$axios.get('/student/register').then(res => {
-      console.log('hih', res)
       this.status_options = res.data.status_options
       this.type_options = res.data.type_options
     })

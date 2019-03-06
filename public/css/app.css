@@ -115,6 +115,10 @@ Lacacy of bootstrap
   margin: 0 !important;
 }
 
+.ca-breadcrumbs .ca-disabled {
+  color: #acacac;
+}
+
 .ca-list {
   padding: 0;
   margin: 0;

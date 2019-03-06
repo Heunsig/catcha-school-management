@@ -12,7 +12,8 @@ class AttributeSeeder extends Seeder
     public function run()
     {
         DB::table('attribute')->insert([
-            [ 'name' => 'Type' ]
+            [ 'name' => 'Type' ],
+            [ 'name' => 'Book Type' ]
         ]);
     }
 }

@@ -20,6 +20,22 @@ class AttributeValueSeeder extends Seeder
                 'attribute_id' => 1,
                 'value' => 'Renewal'
             ],
+            [
+                'attribute_id' => 2,
+                'value' => 'New'
+            ],
+            [
+                'attribute_id' => 2,
+                'value' => 'Used'
+            ],
+            [
+                'attribute_id' => 2,
+                'value' => 'Final'
+            ],
+            [
+                'attribute_id' => 2,
+                'value' => 'Rental'
+            ]
         ]);
     }
 }

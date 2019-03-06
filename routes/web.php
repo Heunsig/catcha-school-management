@@ -15,9 +15,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('pdf/{invoice_id}', 'InvoiceController@pdf_test');
+Route::get('pdf/{payment_id}', 'PaymentController@generate_receipt');
 
 Route::get('document/busletter', 'DocumentController@pdf_test');
+
+Route::get('test', 'PaymentController@test');
 
 // Route::resource('test', 'TestController');
 

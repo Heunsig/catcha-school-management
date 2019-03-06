@@ -6,12 +6,7 @@
           <v-card-title>
             <div>
               <h1 class="ca-typo-title-1">Student</h1>
-              <v-breadcrumbs :items="breadcrumbs" class="ca-breadcrumbs">
-                <template slot="item" slot-scope="props">
-                  <span v-if="props.item.disabled" :class="[props.item.disabled && 'ca-disabled']">{{ props.item.text }}</span>
-                  <a v-else @click="">{{ props.item.text }}</a>
-                </template>
-              </v-breadcrumbs>
+              <CaBreadcrumbs :items="breadcrumbs"></CaBreadcrumbs>
             </div>
             <v-spacer></v-spacer>
               <div class="insty-tool-box">
@@ -146,23 +141,13 @@ export default {
   }),
   methods: {
     open_big_img (src) {
-      // console.log('src', src)
       this.big_image_dialog = true
       this.image_src = src
-      // console.log('Hello World')
     },
-    // test () {
-    //   this.$axios.put(`/leave/1/program`,{
-    //     test: 'hi'
-    //   }).then(res => {
-    //     console.log('res', res)
-    //   })
-    // }
   },
   created () {
     this.loading = true
     this.$axios.get('/student').then(res => {
-      console.log('res', res)
       this.loading = false
       this.students = res.data
     })

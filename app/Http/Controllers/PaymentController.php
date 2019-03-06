@@ -10,6 +10,10 @@ use App\PaymentDetail;
 use App\PaymentDetailAttribute;
 use App\Program;
 use Carbon;
+use PDF;
+
+use Money\Currency;
+use Money\Money;
 
 
 use App\Http\Resources\InvoiceResource;
@@ -148,6 +152,33 @@ class PaymentController extends Controller
         $updated_payment = Payment::where('id', $payment_id)->first();
 
         return response()->json(new InvoiceResource($updated_payment));
+    }
+
+    public function generate_receipt($payment_id)
+    {
+        $payment = Payment::where('id', $payment_id)->first();
+
+        $pdf = PDF::loadView('pdf.receipt', ['payment'=>$payment]);
+
+        return response($pdf->inline(), 200)->withHeaders([
+            'Content-Type' => 'application/pdf'
+        ]);
+
+    //     $payment = Payment::where('id', $invoice_id)->first();
+        
+    //     $pdf = PDF::loadView('pdf.receipt', ['invoice'=>$payment]);
+    //     return response($pdf->inline(), 200)->withHeaders([
+    //         'Content-Type' => 'application/pdf'
+    //     ]);
+    }
+
+    public function test()
+    {
+        // $fiver = new Money(500, new Currency('USD'));
+        // // or shorter:
+        // $fiver = Money::USD(500);
+        // $json = json_encode($fiver);
+        // echo $json;
     }
 
 }

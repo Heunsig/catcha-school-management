@@ -36,6 +36,7 @@ import {
 } from 'element-ui'
 
 import CaFloatingBox from './components/ca-components/FloatingBox'
+import Breadcrumbs from './components/ca-components/Breadcrumbs'
 
 Vue.use(Vuetify)
 Vue.use(VueTheMask)
@@ -61,6 +62,7 @@ Vue.use(TableColumn)
 
 // Vue.component(CaFloatingBox)
 Vue.component('ca-floating-box', CaFloatingBox)
+Vue.component('CaBreadcrumbs', Breadcrumbs)
 
 const app = new Vue({
   el: '#app',

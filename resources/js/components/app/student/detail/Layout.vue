@@ -6,12 +6,7 @@
           <v-card-title>
             <div>
               <h1 class="ca-typo-title-1">{{ student.full_name }}'s Details</h1>
-              <v-breadcrumbs :items="breadcrumbs" class="ca-breadcrumbs">
-                <template slot="item" slot-scope="props">
-                  <span v-if="props.item.disabled" :class="[props.item.disabled && 'ca-disabled']">{{ props.item.text }}</span>
-                  <a v-else @click="">{{ props.item.text }}</a>
-                </template>
-              </v-breadcrumbs>
+              <CaBreadcrumbs :items="breadcrumbs"></CaBreadcrumbs>
             </div>
           </v-card-title>
         </v-card>
@@ -28,15 +23,12 @@
                   </div>
                   <div class="ca-typo-title-3 mb-2">
                     <v-tooltip bottom>
-                      <span slot="activator" class="flag-icon" :class="flag"></span>
+                      <span slot="activator" class="flag-icon" :class="'flag-icon-'+get_flag_code(get_country(student.country_of_citizenship).code)"></span>
                       <span>{{ get_country(student.country_of_citizenship).name }}</span>
                     </v-tooltip>
                     {{ student.full_name }}
                     <small class="ml-1" v-if="student.nickname">({{ student.nickname }})</small>
                   </div>
-                  <!-- <div class="ca-typo-style-meta-medium">
-                    217-760-1587
-                  </div> -->
                 </v-card-text>
               </v-card>
             </v-flex>
@@ -105,14 +97,6 @@ export default {
   computed: {
     student () {
       return this.$store.getters['student/student']
-    },
-    // country_name () {
-    //   if (this.student.country_of_citizenship) {
-    //     return this.get_country(this.student.country_of_citizenship).name  
-    //   }
-    // },
-    flag () {
-      return this.student.country_of_citizenship ? 'flag-icon-'+this.student.country_of_citizenship.toLowerCase():''
     }
   },
   methods: {
@@ -125,32 +109,10 @@ export default {
     }
   },
   created () {
-      this.breadcrumbs.push({
-        text: this.student.full_name,
-        disabled: true
-      })
-    // this.$store.dispatch('student/get_min_info', {
-    //   student_id: this.$route.params.student_id
-    // }).then(res => {
-    //   console.log('resadfssadfa', res)
-    //   this.breadcrumbs.push({
-    //     text: res.full_name,
-    //     disabled: true
-    //   })
-    // })
-    // console.log('hi')
-    // min_infomation
-    // this.$store.dispatch('student/get_student', {
-    //   student_id: this.$route.params.student_id
-    // }).then(res => {
-    //   console.log('hhihihihihih')
-    //   this.breadcrumbs.push({
-    //     text: res.full_name,
-    //     disabled: true
-    //   })
-    // })
-
-    // this.$store.dispatch('student/get_countries')
+    this.breadcrumbs.push({
+      text: this.student.full_name,
+      disabled: true
+    })
   }
 }
 </script>

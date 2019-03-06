@@ -127,7 +127,7 @@
 </template>
 <script>
 import bus from 'bus'
-import countries from '../../../../../../mixins/countries'
+import countries from 'mixins/countries'
 import EmergencyAdditionDialog from './EmergencyAdditionDialog'
 import EmergencyEditDialog from './EmergencyEditDialog'
 import EmergencyDeletionDialog from './EmergencyDeletionDialog'

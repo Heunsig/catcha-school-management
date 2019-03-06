@@ -121,13 +121,13 @@ class InvoiceController extends Controller
         return response()->json(new InvoiceResource($payment));
     }
 
-    public function pdf_test($invoice_id)
-    {
-        $payment = Payment::where('id', $invoice_id)->first();
+    // public function pdf_test($invoice_id)
+    // {
+    //     $payment = Payment::where('id', $invoice_id)->first();
         
-        $pdf = PDF::loadView('pdf.receipt', ['invoice'=>$payment]);
-        return response($pdf->inline(), 200)->withHeaders([
-            'Content-Type' => 'application/pdf'
-        ]);
-    }
+    //     $pdf = PDF::loadView('pdf.receipt', ['invoice'=>$payment]);
+    //     return response($pdf->inline(), 200)->withHeaders([
+    //         'Content-Type' => 'application/pdf'
+    //     ]);
+    // }
 }

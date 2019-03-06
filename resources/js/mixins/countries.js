@@ -6,6 +6,9 @@ export default {
     }
   },
   methods: {
+    get_flag_code (code) {
+      return code ? code.toLowerCase():null
+    },
     get_country(code) {
       if (code) {
         return this._.find(this.countries, ['code', code])

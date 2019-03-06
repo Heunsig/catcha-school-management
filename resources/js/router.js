@@ -14,11 +14,12 @@ import StudentRegistration from './components/app/student/StudentRegistration'
 import StudentDetailLayout from './components/app/student/detail/Layout'
 import StudentInformation from './components/app/student/detail/student_information/Index'
 import StudentBasicInformation from './components/app/student/detail/student_information/basic_information/Index'
-import StudentContact from './components/app/student/detail/student_information/Contact'
+import StudentContact from './components/app/student/detail/student_information/contact/Index'
 import StudentAddress from './components/app/student/detail/student_information/address/Index'
 import StudentEmergencyContact from './components/app/student/detail/student_information/emergency_contact/Index'
-import StudentProgramClass from './components/app/student/detail/ProgramClass'
-import StduentPament from './components/app/student/detail/Payment'
+import StudentProgramClass from './components/app/student/detail/program_and_class/Index'
+// import StudentPayment from './components/app/student/detail/Payment'
+import StudentPayment from './components/app/student/detail/payment/Index'
 import StudentLeave from './components/app/student/detail/leave/Index'
 import StudentDocument from './components/app/student/detail/document/Index'
 
@@ -123,7 +124,7 @@ const router = new VueRouter({
                 },
                 {
                   path: 'invoice',
-                  component: StduentPament,
+                  component: StudentPayment,
                   name: 'student.invoice'
                 },
                 {

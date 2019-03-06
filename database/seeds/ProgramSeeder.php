@@ -11,6 +11,47 @@ class ProgramSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Program::class, 500)->create();
+        DB::table('product')->insert([
+            [
+                'category_id' => 1,
+                'name' => 'ESL program',
+                'price' => 0,
+                'quantity' => -1,
+                'created_at' => Carbon::now(),
+                'created_by' => 1,
+                'updated_at' => Carbon::now(),
+                'updated_by' => 1
+            ],
+            [
+                'category_id' => 1,
+                'name' => 'Conversation program',
+                'price' => 0,
+                'quantity' => -1,
+                'created_at' => Carbon::now(),
+                'created_by' => 1,
+                'updated_at' => Carbon::now(),
+                'updated_by' => 1
+            ],
+            [
+                'category_id' => 1,
+                'name' => 'TOFLE program',
+                'price' => 0,
+                'quantity' => -1,
+                'created_at' => Carbon::now(),
+                'created_by' => 1,
+                'updated_at' => Carbon::now(),
+                'updated_by' => 1
+            ],
+            [
+                'category_id' => 1,
+                'name' => 'Business Plus TOEIC',
+                'price' => 0,
+                'quantity' => -1,
+                'created_at' => Carbon::now(),
+                'created_by' => 1,
+                'updated_at' => Carbon::now(),
+                'updated_by' => 1
+            ],
+        ]);
     }
 }

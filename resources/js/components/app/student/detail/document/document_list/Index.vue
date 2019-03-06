@@ -16,17 +16,17 @@
         </li>
       </ul>
     </v-card-text>
-    <BusLetterSettingDialog></BusLetterSettingDialog>
+    <Dialog_Setting></Dialog_Setting>
   </v-card>
 </template>
 <script>
 import bus from 'bus'
 
-import BusLetterSettingDialog from './bus_letter/SettingDialog'
+import Dialog_Setting from './bus_letter/Dialog_Setting'
 
 export default {
   components: {
-    BusLetterSettingDialog
+    Dialog_Setting
   },
   methods: {
     open_dialog_bus_letter () {
