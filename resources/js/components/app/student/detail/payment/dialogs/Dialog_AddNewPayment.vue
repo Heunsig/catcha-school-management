@@ -154,7 +154,7 @@ export default {
 
       if (data) {
         this.waiting_result = true
-        this.$store.dispatch('payment/store', {
+        this.$store.dispatch('student/payment/store', {
           form: {
             student_id: this.$route.params.student_id,
             status: data.status,

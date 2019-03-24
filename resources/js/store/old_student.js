@@ -1,8 +1,13 @@
 import _ from 'lodash'
 import axios from '../helpers/axios'
 
+import classModule from './student/class'
+
 const student = {
   namespaced: true,
+  modules: {
+    class: classModule
+  },
   state: {
     student: {
       type: {},

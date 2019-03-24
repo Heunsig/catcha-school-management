@@ -85,7 +85,7 @@ export default {
       this.$refs['form'].validate((valid) => {
         if (valid) {
           this.wating_result = true
-          this.$store.dispatch('class/complete_class', {
+          this.$store.dispatch('student/class/complete_class', {
             class_in_program_id: this.class_item.id,
             form: this.form
           }).then(res => {

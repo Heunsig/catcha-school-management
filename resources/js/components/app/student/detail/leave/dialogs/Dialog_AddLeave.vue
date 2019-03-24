@@ -125,7 +125,7 @@ export default {
   }),
   computed: {
     leave_types () {
-      return this.$store.getters['leave/leave_types']
+      return this.$store.getters['student/leave/leave_types']
     }
   },
   watch: {
@@ -143,7 +143,7 @@ export default {
           this.form.student_id = this.$route.params.student_id
       
           this.wating_result = true
-          this.$store.dispatch('leave/store', {
+          this.$store.dispatch('student/leave/store', {
             form: this.form
           }).then(res => {
             this.is_active = false

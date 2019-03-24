@@ -101,7 +101,7 @@ export default {
   },
   computed: {
     available_classes () {
-      return this.$store.getters['class/available_classes'](this.program)
+      return this.$store.getters['student/class/available_classes'](this.program)
     },
     exist_date () {
       return !this._.isEmpty(this.program.dates)
@@ -139,7 +139,7 @@ export default {
       })
     },
     del () {
-      this.$store.dispatch('class/delete_program', {
+      this.$store.dispatch('student/class/delete_program', {
         program_id: this.program.id
       }).then(res => {
 

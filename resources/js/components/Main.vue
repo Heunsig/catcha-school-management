@@ -22,6 +22,14 @@
             <v-list-tile-title>Student</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
+        <v-list-tile @click="$router.push({ name: 'class.list' })">
+          <v-list-tile-action>
+            <v-icon>school</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Class</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
       </v-list>
     </v-navigation-drawer>
     <v-toolbar color="indigo" dark fixed app>
@@ -95,7 +103,6 @@
     },
     created () {
       this.$axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.getters.token
-
     }
   }
 </script>

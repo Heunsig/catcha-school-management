@@ -84,7 +84,7 @@ export default {
         if (valid) {
           this.waiting_result = true
 
-          this.$store.dispatch('payment/destory', {
+          this.$store.dispatch('student/payment/destory', {
             payment_id: this.payment.id
           }).then(res => {
             this.waiting_result = false

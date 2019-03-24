@@ -1,3 +1,3 @@
 export default {
-  APP_NAME: 'Catcha School Management'
+  APP_NAME: 'Mentor Language Institute'
 }

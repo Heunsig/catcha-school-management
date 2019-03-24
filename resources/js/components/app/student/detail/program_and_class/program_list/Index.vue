@@ -88,7 +88,7 @@ export default {
   },
   computed: {
     programs () {
-      return this.$store.getters['class/programs']
+      return this.$store.getters['student/class/programs']
     },
     available_programs () {
       let original_arr = _.clone(this.programs)
@@ -104,7 +104,8 @@ export default {
   },
   created () {
     this.loading = true
-    this.$store.dispatch('class/get_class_page', this.$route.params.student_id).then(res => {
+    // this.$store.dispatch('class/get_class_page', this.$route.params.student_id).then(res => {
+    this.$store.dispatch('student/class/get_class_page', this.$route.params.student_id).then(res => {
       this.loading = false
     })
   }

@@ -26,7 +26,7 @@ export default {
   methods: {
     submit () {
       this.wating_result = true
-      this.$store.dispatch('class/del_class', {
+      this.$store.dispatch('student/class/del_class', {
         student_id: this.$route.params.student_id,
         pivot_id: this.selected_student_class.id
       }).then(res => {

@@ -23,6 +23,14 @@ import StudentPayment from './components/app/student/detail/payment/Index'
 import StudentLeave from './components/app/student/detail/leave/Index'
 import StudentDocument from './components/app/student/detail/document/Index'
 
+import Class from './components/app/class/Index'
+import ClassList from './components/app/class/ClassList'
+import ClassDetailLayout from './components/app/class/detail/Layout'
+import ClassStudent from './components/app/class/detail/student/Index'
+import ClassGrade from './components/app/class/detail/grade/Index'
+import ClassReport from './components/app/class/detail/report/Index'
+import ClassReportStudent from './components/app/class/detail/report/student/Index'
+
 import Account from './components/app/account/Index'
 import AccountProfile from './components/app/account/profile/Index'
 import AccountSecurity from './components/app/account/security/Index'
@@ -78,12 +86,9 @@ const router = new VueRouter({
             },
             {
               beforeEnter: (to, from, next) => {
-                // console.log('to', to)
-                // console.log('from', from)
                 store.dispatch('student/get_min_info', {
                   student_id: to.params.student_id
                 }).then(res => {
-                  // console.log('iiiiii', res)
                   next()
                 })
               },
@@ -155,6 +160,52 @@ const router = new VueRouter({
               path: 'security',
               component: AccountSecurity,
               name: 'account.security'
+            }
+          ]
+        },
+        {
+          path: 'class',
+          component: Class,
+          children: [
+            {
+              path: '',
+              component: ClassList,
+              name: 'class.list'              
+            },
+            {
+              beforeEnter: (to, from, next) => {
+                store.dispatch('class/get_class', {
+                  classinfo_id: to.params.classinfo_id
+                }).then(res => {
+                  next()
+                })
+              },
+              path: ':classinfo_id',
+              component: ClassDetailLayout,
+              children: [
+                {
+                  path: 'student',
+                  component: ClassStudent,
+                  name: 'class.student'
+                },
+                {
+                  path: 'grade/subject/:subject_id/date/:date',
+                  component: ClassGrade,
+                  name: 'class.grade'
+                },
+                {
+                  path: 'report',
+                  component: ClassReport,
+                  name: 'class.report',
+                  children: [
+                    {
+                      path: 'groupby/student',
+                      component: ClassReportStudent,
+                      name: 'class.report.student'
+                    }
+                  ]
+                }
+              ]
             }
           ]
         },

@@ -42,7 +42,7 @@ export default {
   methods: {
     submit () {
       this.wating_result = true
-      this.$store.dispatch('class/destroy_program_term', {
+      this.$store.dispatch('student/class/destroy_program_term', {
         program_id: this.program.id,
         date_id: this.date.id
       }).then(res => {

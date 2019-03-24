@@ -54,8 +54,23 @@ Route::middleware('auth:api')->group(function () {
     // Route::post('/student/{student_id}/class/pivot/{pivot_id}/edit_date', 'StudentController@edit_date');
     // Route::delete('/student/{student_id}/class/pivot/{pivot_id}', 'StudentController@delete_class');
 
-    Route::get('/class', 'ClassinfoController@list');
+    // Route::get('/class', 'ClassinfoController@list');
 });
+
+Route::middleware('auth:api')->prefix('class')->group(function(){
+   Route::get('', 'ClassinfoController@list');
+   Route::post('', 'ClassinfoController@store');
+   Route::get('{classinfo_id}', 'ClassinfoController@show');
+   // Route::get('{classinfo_id}/subject/{subject_id}/score', 'ClassinfoController@get_scores');
+});
+
+Route::middleware('auth:api')->prefix('grade_score')->group(function(){
+    Route::post('', 'GradeScoreController@store');
+    Route::get('class/{classinfo_id}/subject/{subject_id}/date/{date}', 'GradeScoreController@get_scores');
+    Route::get('class/{classinfo_id}/report/group_by/student/from/{from}/to/{to}', 'GradeScoreController@get_avg_scores_by_student');
+    Route::get('class/{classinfo_id}/report/group_by/student/{student_id}/from/{from}/to/{to}', 'GradeScoreController@get_detail_scores_by_student');
+});
+
 
 // Route::middleware('auth:api')->get('dashboard', 'DashboardController@index');
 Route::middleware('auth:api')->prefix('selection_option')->group(function(){

@@ -81,7 +81,7 @@ export default {
   }),
   computed: {
     payment_methods () {
-      return this.$store.getters['payment/payment_methods']
+    return this.$store.getters['student/payment/payment_methods']
     }
   },
   methods: {

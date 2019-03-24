@@ -2,12 +2,13 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from '../helpers/axios'
 
-import studentModule from './student'
-import invoiceModule from './invoice'
-import classModule from './class'
-import paymentModule from './payment'
+import studentModule from './student/index'
+import classMoudle from './class/index'
+// import invoiceModule from './invoice'
+// import classModule from './student/class'
+// import paymentModule from './payment'
 import productModule from './product'
-import leaveModule from './leave'
+// import leaveModule from './leave'
 import dashboardModule from './dashboard'
 import accountMoudle from './account'
 
@@ -16,11 +17,15 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   modules: {
     student: studentModule,
-    invoice: invoiceModule,
-    class: classModule,
-    payment: paymentModule,
+    class: classMoudle,
+    // test: {
+    //   class: classModule
+    // },
+    // invoice: invoiceModule,
+    // class: classModule,
+    // payment: paymentModule,
     product: productModule,
-    leave: leaveModule,
+    // leave: leaveModule,
     dashboard: dashboardModule,
     account: accountMoudle
   },

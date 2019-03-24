@@ -16,7 +16,9 @@ class ClassListResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name
+            'name' => $this->name,
+            'description' => $this->description,
+            'number_of_students' => count($this->students)
         ];
     }
 }

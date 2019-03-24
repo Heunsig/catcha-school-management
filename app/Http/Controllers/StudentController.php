@@ -22,6 +22,7 @@ use App\Http\Resources\ProgramTakenResource;
 
 use App\Http\Resources\ClassListResource;
 use App\Http\Resources\ClassBelongingToStudentResource;
+use App\Http\Resources\ClassListForOptionResource;
 
 use App\Http\Resources\ProgramResource;
 use App\Http\Resources\ProgramListResource;
@@ -196,7 +197,8 @@ class StudentController extends Controller
 
         return response()->json([
             'programs' => ProgramResource::collection($programs),
-            'class_selection_options' => ClassListResource::collection($class_selection_options),
+            // 'class_selection_options' => ClassListResource::collection($class_selection_options),
+            'class_selection_options' => ClassListForOptionResource::collection($class_selection_options),
             'program_selection_options' => ProgramListResource::collection($program_selection_options),
         ]);
     }

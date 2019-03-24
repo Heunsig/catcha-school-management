@@ -54,7 +54,7 @@ export default {
   },
   computed: {
     available_classes () {
-      return this.$store.getters['class/available_classes'](this.program)
+      return this.$store.getters['student/class/available_classes'](this.program)
     },
     get_status () {
       if (this.class_item.deleted_at) {
@@ -105,7 +105,7 @@ export default {
       })
     },
     del () {
-      this.$store.dispatch('class/del_class', {
+      this.$store.dispatch('student/class/del_class', {
         class_in_program_id: this.class_item.id
       })
     },

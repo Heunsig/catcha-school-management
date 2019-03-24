@@ -161,7 +161,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
         Barryvdh\Snappy\ServiceProvider::class,
-
+        Barryvdh\Cors\ServiceProvider::class,
         /*
          * Package Service Providers...
          */

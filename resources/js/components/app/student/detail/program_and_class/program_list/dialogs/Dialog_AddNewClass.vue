@@ -103,7 +103,8 @@ export default {
   }),
   computed: {
     class_selection_options () {
-      return this.$store.getters['class/class_selection_options']
+      // return this.$store.getters['class/class_selection_options']
+      return this.$store.getters['student/class/class_selection_options']
     },
   },
   watch: {
@@ -123,7 +124,8 @@ export default {
           this.form.student_id = this.$route.params.student_id
           
           this.wating_result = true
-          this.$store.dispatch('class/add_class', {
+          // this.$store.dispatch('class/add_class', {
+          this.$store.dispatch('student/class/add_class', {
             form: this.form
           }).then(res => {
             this.wating_result = false

@@ -65,7 +65,7 @@ export default {
   },
   computed: {
     leave_requests () {
-      return this.$store.getters['leave/available_leave_requests']
+      return this.$store.getters['student/leave/available_leave_requests']
     }
   },
   methods: {
@@ -75,7 +75,7 @@ export default {
   }, 
   created () {
     this.loading = true
-    this.$store.dispatch('leave/get_init', {
+    this.$store.dispatch('student/leave/get_init', {
       student_id: this.$route.params.student_id
     }).then(res => {
       console.log('hi')

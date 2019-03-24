@@ -121,7 +121,7 @@ export default {
   },
   computed: {
     programs_taken () {
-      return this.$store.getters['leave/programs_taken']
+      return this.$store.getters['student/leave/programs_taken']
     }
   },
   watch: {
@@ -135,7 +135,7 @@ export default {
     submit () {
       // console.log('submit!!!')
       this.wating_result = true
-      this.$store.dispatch('leave/update_programs_date', {
+      this.$store.dispatch('student/leave/update_programs_date', {
         form: this.form
       }).then(res => {
         this.wating_result = true

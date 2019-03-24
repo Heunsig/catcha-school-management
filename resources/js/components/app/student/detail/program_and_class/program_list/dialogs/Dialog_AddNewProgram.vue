@@ -121,7 +121,7 @@ export default {
   }),
   computed: {
     program_selection_options () {
-      return this.$store.getters['class/program_selection_options']
+      return this.$store.getters['student/class/program_selection_options']
     }
   },
   watch: {
@@ -137,7 +137,7 @@ export default {
         if (valid) {
           this.waiting_result = true
           this.form.student_id = this.$route.params.student_id
-          this.$store.dispatch('class/add_program', {
+          this.$store.dispatch('student/class/add_program', {
             form: this.form
           }).then(res => {
             this.waiting_result = false

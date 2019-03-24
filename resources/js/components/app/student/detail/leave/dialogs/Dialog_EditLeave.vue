@@ -125,7 +125,7 @@ export default {
   }),
   computed: {
     leave_types () {
-      return this.$store.getters['leave/leave_types']
+      return this.$store.getters['student/leave/leave_types']
     }
   },
   watch: {
@@ -138,7 +138,7 @@ export default {
   methods: {
     submit () {
       this.wating_result = true
-      this.$store.dispatch('leave/edit', {
+      this.$store.dispatch('student/leave/edit', {
         leave_id: this.leave_request.id,
         form: this.form
       }).then(res => {

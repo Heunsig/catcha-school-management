@@ -50,7 +50,7 @@ export default {
   },
   computed: {
     payments () {
-      return this.$store.getters['payment/payments']
+      return this.$store.getters['student/payment/payments']
     },
     filtered_payments () {
       let $this = this
@@ -69,7 +69,7 @@ export default {
   },
   created () {
     this.loading = true
-    this.$store.dispatch('payment/init_data', {
+    this.$store.dispatch('student/payment/init_data', {
       student_id: this.$route.params.student_id
     }).then(res => {
       this.loading = false

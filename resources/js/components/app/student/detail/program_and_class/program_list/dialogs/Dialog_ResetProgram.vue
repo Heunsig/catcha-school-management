@@ -25,7 +25,7 @@ export default {
   methods: {
     submit () {
       this.waiting_result = true
-      this.$store.dispatch('class/reset_program', {
+      this.$store.dispatch('student/class/reset_program', {
         program_id: this.program.id
       }).then(res => {
         this.waiting_result = false

@@ -109,7 +109,7 @@ export default {
       this.$refs['form'].validate((valid) => {
         if (valid) {
           this.waiting_result = true
-          this.$store.dispatch('class/edit_date', {
+          this.$store.dispatch('student/class/edit_date', {
             class_in_program_id: this.class_item.id,
             form: this.form
           }).then(res => {

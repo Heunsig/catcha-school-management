@@ -85,7 +85,7 @@ export default {
 
           this.wating_result = true
 
-          this.$store.dispatch('leave/destroy', {
+          this.$store.dispatch('student/leave/destroy', {
             leave_id: this.leave_request.id
           }).then(res => {
             this.wating_result = false

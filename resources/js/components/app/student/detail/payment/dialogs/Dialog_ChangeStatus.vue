@@ -65,7 +65,7 @@ export default {
   methods: {
     submit () {
       this.wating_result = true
-      this.$store.dispatch('payment/change_status', {
+      this.$store.dispatch('student/payment/change_status', {
         payment_id: this.payment.id,
         form: this.form
       }).then(res => {

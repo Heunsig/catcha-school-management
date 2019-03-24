@@ -55,7 +55,7 @@ export default {
   },
   computed: {
     leave_requests () {
-      return this.$store.getters['leave/available_leave_requests']
+      return this.$store.getters['student/leave/available_leave_requests']
     }
   },
   methods: {
