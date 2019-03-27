@@ -87,6 +87,11 @@ class Student extends Model
         return $this->hasMany('App\Program');
     }
 
+    public function leaves()
+    {
+        return $this->hasMany('App\Leave')->whereNull('deleted_at');
+    }
+
     public function getFullNameAttribute($value)
     {
         $full_name = $this->first_name;

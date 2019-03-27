@@ -28,7 +28,13 @@ class GradeGroupSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
                 // 'created_by' => 1
-            ]
+            ],
+            [
+                'name' => 'Test',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+                // 'created_by' => 1
+            ],
         ]);
     }
 }

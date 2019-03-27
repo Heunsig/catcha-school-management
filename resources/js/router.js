@@ -189,7 +189,7 @@ const router = new VueRouter({
                   name: 'class.student'
                 },
                 {
-                  path: 'grade/subject/:subject_id/date/:date',
+                  path: 'grade/subject/:subject_id',
                   component: ClassGrade,
                   name: 'class.grade'
                 },
@@ -197,13 +197,13 @@ const router = new VueRouter({
                   path: 'report',
                   component: ClassReport,
                   name: 'class.report',
-                  children: [
-                    {
-                      path: 'groupby/student',
-                      component: ClassReportStudent,
-                      name: 'class.report.student'
-                    }
-                  ]
+                  // children: [
+                  //   {
+                  //     path: 'groupby/student',
+                  //     component: ClassReportStudent,
+                  //     name: 'class.report.student'
+                  //   }
+                  // ]
                 }
               ]
             }

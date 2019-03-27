@@ -51,4 +51,9 @@ class DocumentController extends Controller
 
       return $name;
     }
+
+    public function transcript()
+    {
+        return view('transcript');
+    }
 }

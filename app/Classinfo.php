@@ -16,6 +16,7 @@ class Classinfo extends Model
                                     'link_class_student', 
                                     'classinfo_id', 
                                     'student_id')
+                    ->withPivot('classinfo_id', 'student_id', 'start_date')
                     ->whereNull('student.deleted_at')
                     ->whereNull('completion_date');
     }

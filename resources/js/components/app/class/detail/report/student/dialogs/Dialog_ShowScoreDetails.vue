@@ -1,13 +1,19 @@
 <template>
   <v-dialog v-model="is_active" persistent scrollable max-width="1200">
     <v-card>
-      <v-card-title></v-card-title>
+      <v-card-title>
+        <h4 class="ca-typo-title-4">{{ student.full_name }}</h4>
+      </v-card-title>
       <v-card-text>
-        <v-container fluid class="pa-0 ca-grid-list-1">
+        <v-container fluid class="pa-0 ca-grid-list-3">
           <v-layout wrap>
             <v-flex xs2>
               <v-list>
-                <v-list-tile @click="apple(group)" v-for="group in grade_groups" :key="group.id">
+                <v-list-tile 
+                  v-for="group in grade_groups" 
+                  :key="group.id"
+                  @click="apple(group)"
+                >
                   <v-list-tile-content>
                     <v-list-tile-title>{{ group.name }}</v-list-tile-title>
                   </v-list-tile-content>
@@ -19,6 +25,8 @@
                 :grade_group_name="grade_group_name"
                 :grade_group_id="grade_group_id"
                 :scores="scores"
+                :from="from"
+                :to="to"
               ></ReportSection>
             </v-flex>
           </v-layout>
@@ -38,6 +46,10 @@ import bus from 'bus'
 
 import ReportSection from './particles/ReportSection'
 export default {
+  props: [
+    'from',
+    'to'
+  ],
   components: {
     ReportSection
   },
@@ -51,12 +63,12 @@ export default {
     }
   },
   computed: {
-    from () {
-      return this.$route.query.from
-    },  
-    to () {
-      return this.$route.query.to
-    },
+    // from () {
+    //   return this.$route.query.from || this.$moment().format('Y-MM-DD')
+    // },  
+    // to () {
+    //   return this.$route.query.to || this.$moment().format('Y-MM-DD')
+    // },
     grade_groups () {
       return this.$store.getters['class/grade_groups']
     }
@@ -67,7 +79,7 @@ export default {
 
       } else {
         this.$axios.get(`grade_score/class/${this.$route.params.classinfo_id}/report/group_by/student/${this.student.id}/from/${this.from}/to/${this.to}`).then(res => {
-          console.log('res222', res)
+          console.log('hihihi', res)
           this.scores = res.data
         })
       }

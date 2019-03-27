@@ -14,6 +14,15 @@
             </v-btn>
           </div>
         </li>
+        <li>
+          <div class="list-title">Transcript</div>
+          <v-spacer></v-spacer>
+          <div>
+            <v-btn icon @click="">
+              <v-icon color="grey darken-2">visibility</v-icon>
+            </v-btn>
+          </div>
+        </li>
       </ul>
     </v-card-text>
     <Dialog_Setting></Dialog_Setting>

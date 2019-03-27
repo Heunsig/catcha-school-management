@@ -66,19 +66,33 @@ class GradeScoreController extends Controller
                             ->get();
 
         $grouped_by_student = $scores->groupBy(['student_id', 'grade_group_id']);
+        $aaa = $scores->groupBy(['student_id', 'grade_group_id']);
 
         foreach($grouped_by_student as $student) {
             foreach($student as $grade => $value) {
-                $count = count($value);
-                $student[$grade] = collect($value)->sum(function($product) {
-                    return $product['score'];
-                });
+                $j = 0;
+                $result = 0;
+                foreach($value as $test) {
+                    if (!is_null($test['score'])) {
+                        $j++;
+                        $result += $test['score'];
+                    }
+                }
+                
+                // $count = count($value);
+                // $student[$grade] = collect($value)->sum(function($product) {
+                //     return $product['score'];
+                // });
 
-                $student[$grade] = $student[$grade] / $count;
+                $student[$grade] = $result / $j;
             }
         }
 
         return response()->json($grouped_by_student);
+        // return response()->json([
+        //     'test' => $aaa,
+        //     'result' => $grouped_by_student
+        // ]);
     }
 
     public function get_detail_scores_by_student($classinfo_id, $student_id, $from, $to)

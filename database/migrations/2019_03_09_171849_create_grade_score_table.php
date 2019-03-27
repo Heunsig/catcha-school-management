@@ -19,7 +19,7 @@ class CreateGradeScoreTable extends Migration
             $table->integer('student_id')->unsigned();
             $table->integer('classinfo_id')->unsigned();
             $table->integer('subject_id')->unsigned();
-            $table->integer('score')->default(0);
+            $table->integer('score');
             $table->datetime('date');
             $table->datetime('updated_at');
             $table->integer('updated_by')->unsigned()->nullable();

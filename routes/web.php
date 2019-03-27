@@ -21,6 +21,8 @@ Route::get('document/busletter', 'DocumentController@pdf_test');
 
 Route::get('test', 'PaymentController@test');
 
+Route::get('transcript', 'DocumentController@transcript');
+
 // Route::resource('test', 'TestController');
 
 // Route::get('/test', function () {

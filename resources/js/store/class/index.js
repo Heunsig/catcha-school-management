@@ -45,7 +45,7 @@ export default {
     get_class (context, payload) {
       return new Promise((resolve, reject) => {
         axios.get(`class/${payload.classinfo_id}`).then(res => {
-          console.log('res', res)
+          console.log('classinfo', res)
           // context.commit('set_classinfo', res.data)
           context.state.classinfo = res.data
           resolve()

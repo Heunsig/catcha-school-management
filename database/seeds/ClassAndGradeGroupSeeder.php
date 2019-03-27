@@ -23,6 +23,10 @@ class ClassAndGradeGroupSeeder extends Seeder
             [
                 'classinfo_id' => 2,
                 'grade_group_id' => 3
+            ],
+            [
+                'classinfo_id' => 2,
+                'grade_group_id' => 4  
             ]
         ]);
     }

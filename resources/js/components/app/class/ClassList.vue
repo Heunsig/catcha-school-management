@@ -30,7 +30,7 @@
               <td class="text-xs-center">
                 <v-btn 
                   icon
-                  @click=""
+                  @click="$router.push({name: 'class.student', params: {classinfo_id: props.item.id}})"
                 >
                   <v-icon color="primary">visibility</v-icon>
                 </v-btn>

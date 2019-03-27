@@ -11,7 +11,7 @@
           </v-card-title>
         </v-card>
       </v-flex>
-      <v-flex xs12>
+      <v-flex xs3>
         <v-container fluid class="pa-0 ca-grid-list-3-y">
           <v-layout wrap>
             <v-flex xs12>
@@ -19,11 +19,20 @@
                 <v-card-text>
                   <h4 class="ca-typo-title-4">{{ classinfo.name }}</h4>
                   <div>{{ classinfo.description }}</div>
+                  <!--<div>
+                    <v-list dense>
+                      <v-list-tile v-for="subject in subjects">
+                        <v-list-tile-content>
+                          <v-list-tile-title>{{ subject.name }}</v-list-tile-title>
+                        </v-list-tile-content>
+                      </v-list-tile>
+                    </v-list>
+                  </div>-->
                 </v-card-text>
               </v-card>
             </v-flex>
-            <!-- <v-flex xs12>
-              <v-card>
+            <!-- <v-flex xs12> -->
+            <!--   <v-card>
                 <v-card-title>
                   <h4 class="ca-typo-title-4">Subject</h4>
                 </v-card-title>
@@ -34,12 +43,12 @@
                     </li>
                   </ul>
                 </v-card-text>
-              </v-card>
-            </v-flex> -->
+              </v-card> -->
+            <!-- </v-flex> -->
           </v-layout>
         </v-container>
       </v-flex>
-      <v-flex xs12>
+      <v-flex xs9>
         <v-container fluid class="pa-0 ca-grid-list-3-y">
           <v-layout wrap>
             <v-flex xs12>
