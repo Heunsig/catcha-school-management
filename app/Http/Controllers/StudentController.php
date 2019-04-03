@@ -14,6 +14,7 @@ use App\Product;
 use App\PaymentMethod;
 use App\Leave;
 use App\Program;
+use App\ClassInProgram;
 
 use App\Http\Resources\StudentResource;
 use App\Http\Resources\StudentBasicInformationResource;
@@ -195,7 +196,32 @@ class StudentController extends Controller
         $class_selection_options = Classinfo::all();
         $program_selection_options = collect($student->purchased_programs);
 
+        $test = [];
+        foreach($programs as $index => $program) {
+            $classes_in_program = $program->class->filter(function($value, $key){
+                return $value['completion_date'] === null;
+            });
+            $test[] = $classes_in_program;
+        }
+
+        foreach($programs as $index => $program) {
+            $program_dates = $program->program_date;
+            $first = Carbon::parse($program_dates[count($program_dates) - 1]['completion_date']);
+            $second = Carbon::now();
+
+            if ($first->lessThan($second)) {
+                $classes = $program->class;
+                $aaa = $classes[count($classes) - 1];
+                $class = ClassInProgram::where('id', $aaa->id)->whereNull('completion_date')->first();
+                if($class) {
+                    $class->completion_date = $second->format('Y-m-d');
+                    $class->save();    
+                }
+            }
+        }
+
         return response()->json([
+            'test' => $test,
             'programs' => ProgramResource::collection($programs),
             // 'class_selection_options' => ClassListResource::collection($class_selection_options),
             'class_selection_options' => ClassListForOptionResource::collection($class_selection_options),

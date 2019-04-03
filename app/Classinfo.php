@@ -23,7 +23,7 @@ class Classinfo extends Model
 
     public function subjects()
     {
-        return $this->hasMany('App\Subject');
+        return $this->belongsToMany('App\Subject', 'link_class_subject', 'classinfo_id', 'subject_id');
     }
 
     public function grade_groups()

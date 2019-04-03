@@ -54,9 +54,25 @@
             <v-flex xs12>
               <v-card>
                 <ul class="ca-tab">
-                  <li class="ca-tab-item" @click="$router.push({name: 'class.student', params: {classinfo_id: $route.params.classinfo_id}})">Student</li>
-                  <li class="ca-tab-item" @click="$router.push({name: 'class.grade', params: {classinfo_id: $route.params.classinfo_id, subject_id: 1, date: $moment().format('YYYY-MM-DD')}})">Grade</li>
-                  <li class="ca-tab-item" @click="$router.push({name: 'class.report', params: {classinfo_id: $route.params.classinfo_id}})">Report</li>
+                  <li class="ca-tab-item" @click="$router.push({
+                    name: 'class.student', 
+                    params: {
+                      classinfo_id: $route.params.classinfo_id
+                    }
+                  })">Student</li>
+                  <li class="ca-tab-item" @click="$router.push({
+                    name: 'class.grade', 
+                    params: {
+                      classinfo_id: $route.params.classinfo_id, 
+                      subject_id: first_subject.id, 
+                      date: $moment().format('YYYY-MM-DD')}
+                    })">Grade</li>
+                  <li class="ca-tab-item" @click="$router.push({
+                    name: 'class.report', 
+                    params: {
+                      classinfo_id: $route.params.classinfo_id
+                    }
+                  })">Report</li>
                 </ul>
               </v-card>
             </v-flex>
@@ -91,6 +107,9 @@ export default {
     },
     subjects () {
       return this.classinfo.subjects
+    },
+    first_subject () {
+      return this._.sortBy(this.subjects, ['id'])[0]
     }
   },
   created () {

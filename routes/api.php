@@ -21,7 +21,6 @@ Route::middleware('auth:api')->prefix('user')->group(function(){
     });
 
     Route::put('', 'UserController@update');
-
     Route::patch('password', 'UserController@change_password');
 });
 
@@ -32,22 +31,22 @@ Route::middleware('auth:api')->group(function () {
 
     Route::post('/logout', 'AuthController@logout');
 
-    Route::get('/student', 'StudentController@list');
-    Route::get('/student/register', 'StudentController@register');
-    Route::post('/student', 'StudentController@store');
-    Route::put('/student/{student_id}', 'StudentController@update');
+    // Route::get('/student', 'StudentController@list');
+    // Route::get('/student/register', 'StudentController@register');
+    // Route::post('/student', 'StudentController@store');
+    // Route::put('/student/{student_id}', 'StudentController@update');
 
-    Route::get('/student/{student_id}/min', 'StudentController@min_infomation');
-    Route::get('/student/{student_id}', 'StudentController@basic_information');
-    Route::get('/student/{student_id}/contact', 'StudentController@contact');
-    Route::get('/student/{student_id}/address', 'StudentController@address');
-    Route::get('/student/{student_id}/emergency_contact', 'StudentController@emergency_contact');
+    // Route::get('/student/{student_id}/min', 'StudentController@min_infomation');
+    // Route::get('/student/{student_id}', 'StudentController@basic_information');
     // Route::get('/student/{student_id}/contact', 'StudentController@contact');
-    Route::get('/student/{student_id}/class', 'StudentController@class');
-    Route::post('/student/{student_id}/class', 'StudentController@add_class');
-    Route::get('/student/{student_id}/payment', 'StudentController@payment');
-    Route::get('/student/{student_id}/leave', 'StudentController@leave');
-    Route::get('/student/{student_id}/program_term', 'StudentController@program_term');
+    // Route::get('/student/{student_id}/address', 'StudentController@address');
+    // Route::get('/student/{student_id}/emergency_contact', 'StudentController@emergency_contact');
+    // // Route::get('/student/{student_id}/contact', 'StudentController@contact');
+    // Route::get('/student/{student_id}/class', 'StudentController@class');
+    // Route::post('/student/{student_id}/class', 'StudentController@add_class');
+    // Route::get('/student/{student_id}/payment', 'StudentController@payment');
+    // Route::get('/student/{student_id}/leave', 'StudentController@leave');
+    // Route::get('/student/{student_id}/program_term', 'StudentController@program_term');
 
     // Route::post('/student/{student_id}/program', 'StudentController@add_program');
     // Route::post('/student/{student_id}/class/pivot/{pivot_id}/change_class', 'StudentController@change_class');
@@ -55,6 +54,25 @@ Route::middleware('auth:api')->group(function () {
     // Route::delete('/student/{student_id}/class/pivot/{pivot_id}', 'StudentController@delete_class');
 
     // Route::get('/class', 'ClassinfoController@list');
+});
+
+Route::middleware('auth:api')->prefix('student')->group(function(){
+    Route::get('', 'StudentController@list');
+    Route::get('register', 'StudentController@register');
+    Route::post('', 'StudentController@store');
+    Route::put('{student_id}', 'StudentController@update');
+ 
+    Route::get('{student_id}/min', 'StudentController@min_infomation');
+    Route::get('{student_id}', 'StudentController@basic_information');
+    Route::get('{student_id}/contact', 'StudentController@contact');
+    Route::get('{student_id}/address', 'StudentController@address');
+    Route::get('{student_id}/emergency_contact', 'StudentController@emergency_contact');
+    // Route::get('/student/{student_id}/contact', 'StudentController@contact');
+    Route::get('{student_id}/class', 'StudentController@class');
+    Route::post('{student_id}/class', 'StudentController@add_class');
+    Route::get('{student_id}/payment', 'StudentController@payment');
+    Route::get('{student_id}/leave', 'StudentController@leave');
+    Route::get('{student_id}/program_term', 'StudentController@program_term');
 });
 
 Route::middleware('auth:api')->prefix('class')->group(function(){
