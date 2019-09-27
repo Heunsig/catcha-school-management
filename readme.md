@@ -1,4 +1,4 @@
-# Catcha School Management System
+# Catcha School Management System (Developing)
 
 Management system which can manage Student, Exam, Payment information etc
 
