@@ -29,7 +29,7 @@
         "flag-icon-css": "^3.2.1",
         "jspdf": "^1.4.1",
         "material-design-icons-iconfont": "^4.0.2",
-        "moment": "^2.22.2",
+        "moment": "^2.29.2",
         "printd": "^1.0.1",
         "vee-element": "^1.0.0-alpha.3",
         "vee-validate": "^2.1.3",
