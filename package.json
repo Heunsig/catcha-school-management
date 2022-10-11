@@ -27,7 +27,7 @@
         "accounting-js": "^1.1.1",
         "element-ui": "^2.4.11",
         "flag-icon-css": "^3.2.1",
-        "jspdf": "^1.4.1",
+        "jspdf": "^2.5.1",
         "material-design-icons-iconfont": "^4.0.2",
         "moment": "^2.22.2",
         "printd": "^1.0.1",
